@@ -1,0 +1,252 @@
+\documentclass[a4paper]{ujarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+\usepackage{bm} %太字
+\usepackage{tcolorbox} %定理環境のやつ
+\usepackage{physics}
+\tcbuselibrary{breakable, skins, theorems}
+\usepackage{enumerate} %箇条書き
+\usepackage{ulem} %下線
+\usepackage{mathrsfs} %花文字
+\usepackage{url}
+
+%コマンド
+\newcommand{\red}[1]{\textcolor{red}{#1}} %赤文字
+\newcommand{\vecn}[1]{({#1}_1, \cdots, {#1}_{n})}
+\newcommand{\inner}[2]{(#1, #2)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lpn}[1]{\|#1\|_{L^{p}}}
+\newcommand{\esssup}[1]{\mathop{\mathrm{ess.sup}}_{#1}}
+\newcommand{\cl}[1]{\bar{#1}}
+\newcommand{\pd}[2]{\partial_{#1}^{#2}}
+\newcommand{\alev}{\ \mathrm{a.e.}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\weak}{\ \mathrm{(weakly)}}
+\newcommand{\Div}{\mathrm{div}}
+\newcommand{\Grad}{\mathrm{grad} }
+\newcommand{\Rot}{\mathrm{rot} }
+
+
+\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+\newcommand{\rme}{\mathrm{e}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{cor}{Corlollary}
+\newtheorem{conj}{Conjecture}
+\newtheorem{axiom}{Axiom}
+%%証明環境
+\makeatletter
+\renewenvironment{proof}[1][Proof]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+
+\title{ベクトル空間における基底の存在性}
+\begin{document}
+\date{2025年1月23日}
+\author{まるげり}
+
+\maketitle
+\setcounter{section}{-1}
+\section{まえがき}
+    「ベクトル空間における基底の存在性は選択公理と同値」という, 
+    有名な主張の証明を今更追ったので, 備忘録としてまとめました.
+    以下は Schechter の \textit{Handbook of Analysis and its Foundations is a large book} \cite{Schechter99} の
+    Chap.11 に載ってた内容を和訳したものです. 
+    エラッタ(\url{https://math.vanderbilt.edu/schectex/ccc/addenda/partb.html})も参照しました
+    （具体的には, "In 11.29 on page 285, ..." の部分）.
+
+\section{選択公理 \cite[Chap.6]{Schechter99}}
+
+    今回使うのは, 以下の形のもの.
+
+    \begin{axiom} \label{AC2}
+        集合族$\{X_{\lambda} | X_{\lambda} \neq \varnothing, \ X_{\lambda} \cap X_{\mu} = \varnothing \ (\lambda \neq \mu \in \Lambda)\}$が空でないとする.
+        このとき, 集合$C \subset \bigcup_{\lambda \in \Lambda} X_{\lambda}$で各$X_{\lambda}$の要素をちょうど1つ含むようなものが存在する.
+    \end{axiom}
+
+    これは, 次の命題と同値.
+
+    \begin{axiom}[Finite Character Principle, または Tukeyの補題] \label{AC5}
+        集合$X$について, $X$の部分集合によりなる集合族$\mathcal{F}$が以下の条件を満たすとき, 
+        $\mathcal{F}$を\textbf{Finite Character Set}という:
+        「$S \subset X$について, $S \in \mathcal{F}$になるのは$S$の任意の有限部分集合が$\mathcal{F}$に含まれるとき, 
+        かつまたそのときに限る.」
+
+        このとき, $\mathcal{F}$の任意の元は, $\mathcal{F}$の$\subset$ - 極大元の部分集合である.
+        つまり, ある$A \in \mathcal{F}$が存在して, $A \subset S'$となる$S' \in \mathcal{F}$は$A$自身以外には存在せず, 
+        また任意の$S \in \mathcal{F}$について$S \subset A$となる.
+    \end{axiom}
+
+\section{ベクトル空間の基底 \cite[Chap.11]{Schechter99}}
+
+    おさらいしておく.
+    \begin{definition}
+        係数体$\mathbb{K}$上のベクトル空間$V$について, $V$の部分集合$B$が次の同値な条件のどれかを満たすとき, 
+        $B$を$V$の\textbf{基底}であると言う.
+        \begin{enumerate}[(A)]
+            \item $v \neq 0 \in V$について, ある正の整数$n$と, 
+            $n$個のスカラー $c_1, \cdots, c_n \in \mathbb{K}$
+            および$n$個の相異なる$B$の要素$s_1, \cdots, s_n \in B$がただ一通りだけ存在して,
+            \[
+                v = c_1 s_1 + \cdots, c_n s_n
+            \]
+            が成り立つ.
+            \item $B$は線形独立で, かつ$\mathrm{span}(B) := \{W \subset X | \text{$W$は$B$を含む最小の線形空間} \} = X$.
+            \item $B$は$X$の線形独立な集合の中で最大.
+            \item $B$は$X$を張る集合の中で最小.
+        \end{enumerate}
+    \end{definition}
+
+    ベクトル空間$V$における基底$B$の存在性は次のように表現される.
+
+    \begin{theorem}[基底の存在定理（強いバージョン）] \label{Th:str}
+        $I$をベクトル空間$X$の線形独立な部分集合, $G$を$X$を張る部分集合とする.
+        もし $I \subset G$ であれば, $X$の基底$B$で$I \subset B \subset G$なるものが存在する.
+    \end{theorem}
+
+    \begin{theorem}[基底の存在定理（中間のバージョン）] \label{Th:imd}
+        $G$をベクトル空間$X$を張る部分集合とする.
+        このとき, $X$の基底$B$で$B \subset G$なるものが存在する.
+    \end{theorem}
+
+    \begin{theorem}[基底の存在定理（弱いバージョン）] \label{Th:weak}
+        ベクトル空間$X$の基底$B$が存在する.
+    \end{theorem}
+
+    以下では, 主に「選択公理が成立するならばベクトル空間の基底が存在する」ということの証明,
+    および「ベクトル空間の基底が存在する(中間バージョン)ならば選択公理が成立する」ということの証明を目標にします.
+    ちなみに, 「ベクトル空間の基底が存在する(弱いバージョン)ならば選択公理が成立する」ということの証明は
+    Blass \cite{Blass84}に載っているらしいです. 気が向いたらまた勉強します.
+    \begin{proof}
+        \begin{itemize}
+            \item 明らかに, Theorem \ref{Th:str} $\Rightarrow$ Theorem \ref{Th:imd} $\Rightarrow$ Theorem \ref{Th:weak}である.
+            \item Axiom \ref{AC5}ならばTheorem \ref{Th:str}(強いバージョン)が成立することについて.
+             
+            Axiom \ref{AC5}の$X$を$V$とし, $\mathcal{F}$を「線形独立な$X$の部分集合全体」とするとよい.
+            実際, $A$を$X$の線形独立な部分集合とすると, 任意の$n$と$c_1, \cdots, c_n \in \mathbb{K}$,
+            $s_1, \cdots, s_n \in A$について, 
+            \[
+                c_1 s_1 + c_2 s_2 + \cdots + c_n s_n \neq 0 
+            \]
+            であり, $A$の任意の有限部分集合$A'$について$A'$は線形独立である. 
+            逆に, $A \subset X$の任意の有限部分集合$A'$が線形独立であるとする.
+            もし$A$が線形独立でないとすると, ある$n$と$c_1, \cdots, c_n \in \mathbb{K}$,
+            $s_1, \cdots, s_n \in A$について,
+            \[
+                c_1 s_1 + c_2 s_2 + \cdots + c_n s_n = 0 
+            \]
+            となるが, $A' := \{s_1, \cdots, s_n\}$が線形独立でない$A$の有限部分集合として取れてしまい, 矛盾.
+            よって, $A$は線形独立である. すなわち, $\mathcal{F}$はFinite Character Set である.
+            Axiom \ref{AC5}から, $\mathcal{F}$には極大元$B$が存在し, 基底の定義(C)から$B$は基底である.
+            \item Theorem \ref{Th:imd}(中間のバージョン)から Axiom \ref{AC2}が従うこと.
+            
+            集合族$\{S_{\alpha}| S_{\alpha} = \varnothing, \ S_{\alpha} \cap S_{\alpha'} = \varnothing \ (\alpha \neq \alpha' \in A)\}$とする.
+            示したい集合$S_0$とは, $S_0 \subset \bigcup_{\alpha \in A} S_{\alpha}$
+            かつ$S_{0} \cap S_{\alpha}$がちょうど一つの元からなっているようなものである.
+
+            いま, $\displaystyle S = \bigcup_{\alpha \in A} S_{\alpha}$とし, 
+            $\mathbb{E}$を$S$と交わらない体とする.
+            これは, ラベリングで達成することができる. すなわち, 仮に体$\mathbb{E}$が$S$との共通部分を持ってしまった場合にも,
+            $a, b$をラベルとし, 直積集合$\{a, b\} \times \mathbb{E} \cup S$を考え,
+            $\mathbb{E}, S$をそれぞれ上の集合の部分集合$\{(a, c) | c \in E\}, \{(b, s) | s \in S\}$と捉え直すことで,
+            共通部分がないようにできる.
+            (上の議論で選択公理を暗に用いてないかについては正直自信がない. よりちゃんとした構成は
+            Zariski, Samuelの\textit{Commutative algebra vol.I}に載っているらしい.)
+
+            $\mathbb{F} = \mathbb{E}(S)$を$\mathbb{E}$を係数, $S$を不定元とする有理式の集合(有理関数体)とする.
+            集合$\Phi$を外部直和
+            \[
+                \Phi = \bigsqcup_{\alpha \in A} \mathbb{F} = \{f: A \rightarrow \mathbb{F}| f(\alpha) \neq 0 \text{となる$\alpha \in A$は高々有限個} \}
+            \]
+            で与える.
+            このとき, $\Phi$は体$\mathbb{F}$上のベクトル空間になる:
+            \begin{align}
+                &\text{和:} &(f_1 + f_2)(\alpha) &= f_1(\alpha) + f_2(\alpha) &&(\text{$\mathbb{F}$上の和の意味}),\\
+                &\text{スカラー倍:} &(gf)(\alpha) &= g \cdot (f(\alpha)) &&(\text{$\mathbb{F}$上の積の意味}).
+            \end{align}
+            各$s \in S$と$\alpha \in A$について
+            \[
+                g_s(\alpha) = \left\{
+                \begin{aligned}
+                    &s &&(s \in S_{\alpha}) \\
+                    &0 &&(s \notin S_{\alpha})
+                \end{aligned}
+                \right.
+            \]
+            とすると, $\displaystyle S = \bigcup_{\alpha \in A} S_{\alpha}$よりある$\alpha \in A$では
+            $s \in S_{\alpha}$であるから$g_s(\alpha) = s$ で,
+            さらに$S_{\alpha} \cap S_{\alpha'} = \varnothing$より他の$\alpha' \in A$で$g_s(\alpha') = 0$となる.
+            これより$g_s \in \Phi$である. 
+            
+            また, $\{g_s | s \in S \}$は$\Phi$を張ることが, 次のようにしてわかる.
+            任意の$f \in \Phi$に対し, $f(\alpha) \in \mathbb{F} = \mathbb{E}(S)$であるから, 
+            $c_i, c'_j \in \mathbb{E}$, $s_i, s'_j \in S$で
+            \[
+                f(\alpha) = \frac{c_0 + c_1 s_1 + \cdots + c_n s_n}{c'_0 + c'_1 s'_1 + \cdots + c'_m s'_m} = \sum_{i = 1}^{n} \frac{c_i}{c'_1 s'_1 + \cdots + c'_m s'_m} s_i
+            \]
+            と書ける. 各$\displaystyle \frac{c_i}{c'_1 s'_1 + \cdots c'_m s'_m}$は$\mathbb{F}$の元, 
+            つまり$\Phi$のスカラーであるから, 
+            これらを$\tilde{c}_i \in \mathbb{F}$のように書き改めて
+            \[
+                f(\alpha) = c_0 + \sum_{i = 1}^{n} \tilde{c}_i s_i
+            \]
+            と表す. 各項$\tilde{c}_i s_i$および定数項$c_0$について,
+            $s_i \in S$は$S_{\alpha}$の元であるかはわからないが, 
+            $S$は有理関数体$\mathbb{E}[S]$に含まれており逆元も持つことに気を付けて,
+            $s_i \in S_{\alpha}$であれば$\tilde{c}_i s_i = \tilde{c}_i g_{s_i}(\alpha)$とし,
+            $s_i \notin S_{\alpha}$または定数項$c_0$であれば適当な$t \in S_{\alpha}$を用いて
+            $\tilde{c}_i s_i = \tilde{c}_i s_i t^{-1} g_{t}(\alpha), c_0 = c_0 t^{-1} g_{t}(\alpha)$と置くことで,
+            各項を$\mathbb{F}$係数の$g_s(\alpha)$の線形結合の形で書くことができる.
+            このことから, $G = \{g_s | s \in S \}$は$\Phi$を張るとわかる.
+
+            さて, $\Phi$がベクトル空間で$G = \{g_s | s \in S \}$が$\Phi$を張る集合であることがわかったので,
+            Theorem \ref{Th:imd}から, $B \subset G$で$\Phi$の$\mathbb{F}$上の基底が存在する.
+            この$B$は$G = \{g_s | s \in S \}$の部分集合だから, ある$S_0 \subset S$によって
+            $B = \{g_s | s \in S_0 \}$と書ける.
+            各$\alpha \in A$について, 1点集合$\{\alpha\}$の定義関数$\chi_{\alpha}: A \rightarrow \{0, 1\} \subset \mathbb{F}$
+            ($0, 1$はそれぞれ$\mathbb{F}$の加法単位元と乗法単位元)は定義から$\Phi$に属しているため, 
+            基底$B$の線形結合で表せる. このことから, 少なくとも一つの$g_s \in B$について$g_s(\alpha) \neq 0$であり,
+            $S_0$と$S_{\alpha}$の共通部分は空でない.
+
+            また, もし相異なる$t, u$が$S_0 \cap S_{\alpha}$が属しているのであれば, 
+            $S_{\alpha} \cap S_{\alpha'} = \varnothing$より$\alpha' \neq \alpha$ならば$t, u \notin S_{\alpha'}$となるので,
+            \[
+                t g_u(\alpha') = u g_t(\alpha') = 
+                \left\{
+                    \begin{aligned}
+                        &tu &&(\alpha' = \alpha) \\
+                        &0 &&(\alpha' \neq \alpha)
+                    \end{aligned}
+                \right.,
+            \]
+            ゆえに$t g_u = u g_t$となる. しかし, これは$B$は基底であること(特に, Definition (A))に反する. 
+            
+            以上から, $S_0$は$S \subset S = \bigcup_{\alpha \in A} S_{\alpha}$であって, 
+            かつ各$\alpha \in A$について$S_0 \cap S_{\alpha}$の元がちょうど1つだけになるような集合になっている.
+            \end{itemize}
+    \end{proof}
+    \begin{thebibliography}{10}
+    \nocite{*}
+    \bibitem{Blass84} A. Blass, Existence of bases implies the Axiom of Choice, pp. 31-33 in: Axiomatic Set
+	Theory, ed. by J. E. Baumgartner, D. A. Martin, and S. Shelah, Contemp. Math. 31,
+	Amer. Math. Soc., Providence, 1984
+	\bibitem{Schechter99} E. Schechter, Handbook of analysis and its foundations, Academic Press, Inc., San Diego, CA, (1999)
+\end{thebibliography}
+\end{document}
