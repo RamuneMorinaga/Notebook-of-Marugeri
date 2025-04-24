@@ -88,6 +88,12 @@
     出発点とそのときの反射角が決まれば, 次にぶつかる点とそのときの入射角は一意に定まる.
     これを写像と捉えるのである.
 
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width = 0.4\textwidth]{billiard2.png}
+        \caption{ビリヤード系}
+    \end{figure}
+
     この写像$T: (s, \alpha) \mapsto (s', \alpha')$を\textbf{ビリヤード写像}という.
     なお, $\gamma$の一周の長さを$L$としておくと, 
     この写像の定義域・値域(\textbf{相空間}という)は$(\mathbb{R}/L \mathbb{Z}) \times [0, \pi]$と書ける.
@@ -96,7 +102,7 @@
     さて, 実はこのビリヤード写像$T$は, 相空間$(\mathbb{R}/L \mathbb{Z}) \times [0, \pi]$上で
     次の$2$次微分形式($2$ - form)を保存することが知られている.
 
-    \begin{theorem}
+    \begin{theorem} \label{th:area}
         ビリヤード写像$T: (s, \alpha) \mapsto (s', \alpha')$は
         面積形式$\sin{\alpha} d s \wedge d \alpha$を保存する. 
         つまり, 
@@ -105,14 +111,60 @@
         \]
     \end{theorem}
 
+    このTheorem\ref{th:area}より, ビリヤード写像$T$は\textbf{面積保存写像}であるという.
+    (ここで言う「面積」は, あくまで台$D$のいる平面での面積ではなく,
+    相空間$(\mathbb{R}/L \mathbb{Z}) \times [0, \pi]$における面積のことである.)
+
     以下, この証明をやります.
 \section{初等幾何的方法}
+    こちらはよく知られている方法で, Birkhoffの証明を多少現代的に書いたもの.
+    ビリヤード写像に触れている文献には大体書いているが,
+    たとえば Tabachnikovの"Geometry and Billiards"や日本語のものだと柴山先生の『重点解説　ハミルトン系』などに載っている.
 
-\section{Poincar\'{e}-Cartan の積分不変式を用いた方法}
-    手遊びにV.I.Arnold と A.Avez の『古典力学のエルゴード問題』をペラペラめくってたときに見つけたやつ.
-    APPENDIX 31です.
+    \begin{proof}[Theorem \ref{th:area}の証明1]
+        いま, $\gamma(s)$と$\gamma(s')$の距離（の$-1$倍）を$h(s, s')$と置く.
+        $s$は弧長パラメータなので, 
+        その微分$\pdv{\gamma(s)}{s}$は点$\gamma(s)$における単位接ベクトルである.
+        内積を$\langle \cdot, \cdot \rangle$で表すことにすれば,
+		\begin{align*}
+			2 h(s, s') \pdv{h}{s'} &= \pdv{h^2}{s'}\\
+            &= - \pdv{|\gamma(s) - \gamma(s')|^2}{s'}\\
+            &= 2 \pdv{\langle \gamma(s) , \gamma(s') \rangle}{s'} - \pdv{\langle \gamma(s') , \gamma(s') \rangle}{s'} \\
+			&= 2 \langle \gamma(s) , \pdv{\gamma(s')}{s'} \rangle - 2 \langle \gamma(s') , \pdv{\gamma(s')}{s'} \rangle \\
+            &= 2\langle \gamma(s') - \gamma(x) , \pdv{\gamma(s')}{s'} \rangle \\
+			&= - 2h(s, s') \cos \alpha'. \\
+            \therefore \pdv{h}{s'} &= - \cos \alpha'.
+        \end{align*}
+        となる.
+		同様にして, $\pdv{h}{s} = \cos \alpha$もわかる. 
+        以上から, $\dd h = \cos \alpha \dd s - \cos \alpha' \dd s'$, 
+        つまり 
+        \[
+            0 = \dd^2 h = \sin \alpha \dd s \land \dd \alpha - \sin \alpha' \dd s' \land \dd \alpha'
+        \]
+        となり,
+        これから面積保存性$\sin \alpha \dd s \land \dd \alpha = \sin \alpha' \dd s' \land \dd \alpha'$がわかる.
+    \end{proof}
+    \section{その2: }
 
+
+\section{その3: Poincar\'{e}-Cartan の積分不変式を用いた方法}
+
+    以下は, ほとんどArnoldとAvezの"Ergodic Problems of Classical Mechanics"\cite{ArnoldAvez}のAPPENDIX 31に載っている内容です. 
+    
+    大まかに説明すると, 「ビリヤード写像を自由運動を記述するハミルトン系に適当なPoincar\'{e}断面を取ったときのPoincar\'{e}写像とみなしたとき, 
+    Poincar\'{e}-Cartan の積分不変式から導かれる微分形式がなんと$\sin{\alpha} d s \wedge d \alpha$になっている」ということです.
+    
     \subsection{ハミルトン系の準備: Poincar\'{e}-Cartan の積分不変式}
+    まず準備としてハミルトン系とPoincar\'{e}-Cartan の積分不変式について解説します.
+    このあたりはArnoldの"Mathematical Methods of Classical Mechanics"や
+    Arnold, Kozlov, Neishtadtの"Mathematical Aspects of Classical and Celestial Mechanics"を大いに参考にしました.
+    とはいえ, 多少は微分幾何に慣れてないとチンプンカンプンかもしれない（僕も微分幾何に弱いですが...）になってしまっていると思います. 
+
+    Poincar\'{e}-Cartan の積分不変式のもっと直接的な導出が知りたい人は, 
+    伊藤先生の『常微分方程式と解析力学』をオススメします.
+
+    \vspace{\baselineskip}
 
     普通\textbf{ハミルトン系}というと, 
     $\mathbb{R}^{2n}$上の運動方程式で, ある関数(\textbf{ハミルトニアン})$H(p, q)$に対し, 
@@ -376,7 +428,7 @@
         \dot{q}_k = \frac{\partial H}{\partial p_k}, \ \dot{p}_k = -\frac{\partial H}{\partial q_k},\  \dot{t} = 1 \quad (k = 1, \cdots, n)
     \end{equation}
     にほかならない. 
-    定理\ref{Kl}から, 拡張したハミルトン系\eqref{etd}のフロー$x^s$に沿って, 積分
+    Theorem\ref{Kl}から, 拡張したハミルトン系\eqref{etd}のフロー$x^s$に沿って, 積分
     \begin{equation} \label{PC-inv}
         \int_{x^{s}(\gamma_0)} p dq - H dt
     \end{equation}
@@ -423,7 +475,7 @@
     写像$A: \Sigma_1 \rightarrow \Sigma_0$が定義できる. 
     （このような写像を\textbf{Poincar\'{e}写像}という.）
 
-    \begin{theorem}
+    \begin{theorem} \label{th:A31.5}
         上で定めたハミルトン系のPoincar\'{e}写像$A: \Sigma_1 \rightarrow \Sigma_0$は正準的である.
         すなわち, $\Sigma_1$内の任意の閉曲線$\gamma$について, 
         \begin{equation} \label{A31.5}
@@ -439,7 +491,7 @@
         ($\gamma'$は$t = 0$の面の上での$\gamma_0$にほかならないが, 
         再帰時間は点ごとに異なるため$A \gamma'$の各点での$t$座標は一致しない)
 
-        Poincar\'{e}-Cartanの積分不変式\ref{PC-etd}より
+        Poincar\'{e}-Cartanの積分不変式（Theorem\ref{PC-etd}）より
         \begin{equation}
             \int_{\gamma'} p dq - H dt = \int_{A \gamma'} p dq - H dt.
         \end{equation}
@@ -469,6 +521,81 @@
     \end{proof}
 
     \subsection{ビリヤード系への応用}
+        \begin{proof}[Theorem\ref{th:area}の証明その3]
+            いま, 台$D \subset \mathbb{R}^2$内を自由運動(等速直線運動)するボールを考える.
+            この質点の位置と速度をまとめて$(x, v) = (x_1, x_2, v_1, v_2)$と置くと, 運動方程式は
+            \[
+                \dot{x}_i = v_{i}, \ \dot{v}_i = 0 \quad (i = 1, 2)
+            \]  
+            である. この運動のハミルトニアン$H(x, v)$は運動エネルギーだけ, つまり
+            \[
+                H(x, v) = \frac{1}{2} (v_1^2 + v_2^2).
+            \]
+            となる.
+
+            ここで, 原点$O$が台の境界$\gamma = \partial D$の上になるようにし, 
+            $(q_1, q_2)$を, 
+            $q_1$をボールの位置$M$から最も近い境界上の点$N$までの距離,
+            $q_2$を原点$O$から点$N$までの弧の長さ
+            と定める.
+            $q = (q_1, q_2)$は$D$全体では定義できないが,
+            $\gamma = (\gamma_1, \gamma_2)$の近傍に限って言えば正しく定まる.
+
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width = 0.4\textwidth]{billiard_Hamilton.png}
+                \caption{ハミルトン系（自由運動）としてのビリヤード}
+            \end{figure}
+
+            境界上の各点$\gamma(s)$における接ベクトルを$\vec{t}(s)$,
+            法ベクトルを$\vec{n}(s)$と書けば,
+            $\vec{t}(s)$は$\gamma(s)$の弧長パラメータでの微分であり,
+            $\vec{n}(s)$は$\vec{t}(s)$を$\pi/2$だけ反時計回りに回転させたものなので,
+            \[
+                \vec{t}(s) = (\gamma'_1(s), \gamma'_2(s)), \ \vec{n}(s) = (- \gamma'_2(s), \gamma'_1(s))
+            \]
+            となる.
+            $\vec{ON} = (\gamma_1(q_2), \gamma_2(q_2))$であり,
+            $\vec{NM} = q_1 \vec{n}(q_2)$なので,
+            $x = (x_1, x_2)$から$q = (q_1, q_2)$の点変換は
+            \[
+                x_1 = \gamma_1(q_2) - q_1 \gamma'_2(q_2), \ x_2 = \gamma_2(q_2) + q_1 \gamma'_1(q_2)
+            \]  
+            と書ける. (ここのプライムは$s$での微分.)
+
+            $\gamma$の近傍（とその上での定まる速度ベクトル全体）のなす相空間内の開集合に対し,
+            点変換$q \mapsto x = x(q_1, q_2)$から定まる$(x, v)$から$(q, p) = $への正準変換を考えることができる.
+            具体的には, 正準変換の母関数$S(v, q)$を
+            \[
+                S(v, q) = v_1 x_1(q_1, q_2) + v_2 x_2(q_1, q_2) = v_1(\gamma_1(q_2) - q_1 \gamma'_2(q_2)) + v_2 (\gamma_2(q_2) + q_1 \gamma'_1(q_2))
+            \]
+            とすれば, 点変換に対応する正準変換が定まり, このとき曲率を$\kappa$で書けば, 
+            運動量$p = (p_1, p_2)$は
+            \begin{align}
+                p_1 &= \frac{\partial S}{\partial q_1} = - v_1 \gamma'_2(q_2) + v_2 \gamma'_1(q_2) \\
+                &= v \cdot \vec{n}(q_2), \\
+                p_2 &= \frac{\partial S}{\partial q_2} = v_1 (\gamma'_1(q_2) - q_1 \gamma''_2(q_2)) + v_2 (\gamma'_2(q_2) - q_1 \gamma''_1(q_2)), \\
+                &= v \cdot \vec{t}(q_2) + q_1 \kappa(q_2) v \cdot \vec{n}(q_2).
+            \end{align}
+            で表示できる.
+
+            さて, このハミルトン系に対し, $H = 1/2, q_1 = 0$でのPoincar\'{e}断面$\Sigma$を取る.
+            これは, $|v| = 1$かつボールが$\gamma$上（つまり, 壁にぶつかる瞬間）という条件にほかならず,
+            ビリヤード写像$T$はこのPoincar\'{e}断面$\Sigma$についてのPoincar\'{e}写像とみることができる.
+            すなわち, Theorem\ref{th:A31.5}から$T$は$\Sigma_1$上で$2$-form $d p_2 \wedge d q_2$を保存する.
+
+            運動量$p$の式に$|v| = 1, q_1 = 0$を入れてみると, 入射角$\alpha$に対して
+            \begin{align}
+                p_1 &= v \cdot \vec{n}(q_2) = \sin{\alpha}, \\
+                p_2 &= v \cdot \vec{t}(q_2) = \cos{\alpha}
+            \end{align}
+            であるから, $\Sigma_0$上で$d p_2 \wedge d q_2 = d (\cos{\alpha}) \wedge d q_2 = \sin{\alpha} d q_2 \wedge d \alpha$.
+            $q_2$は$\gamma$の弧長パラメータだったから, これは$\sin{\alpha} d s \wedge d \alpha$にほかならない.
+        \end{proof}
+
+
+
+        
     
 
     \begin{thebibliography}{10}

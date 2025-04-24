@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.0-u1.29-230214-2.6 (utf8.uptex) (TeX Live 2023) (preloaded format=uplatex 2023.9.23)  23 APR 2025 02:15
+This is e-upTeX, Version 3.141592653-p4.1.0-u1.29-230214-2.6 (utf8.uptex) (TeX Live 2023) (preloaded format=uplatex 2023.9.23)  25 APR 2025 01:17
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -602,30 +602,36 @@ LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 6.73553pt on input line 71.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 4.8111pt on input line 71.
+File: billiard2.png Graphic file (type bmp)
+<billiard2.png>
 LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT2/gt/m/n' tried instead on input line 91.
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 97.
 LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 9.6222pt on input line 91.
+(Font)              scaled to size 9.6222pt on input line 97.
 LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY2/gt/m/n' tried instead on input line 91.
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 97.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 9.6222pt on input line 91.
-LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT2/gt/m/n' tried instead on input line 115.
-LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
-(Font)              scaled to size 11.54663pt on input line 115.
-LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY2/gt/m/n' tried instead on input line 115.
-LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 11.54663pt on input line 115.
+(Font)              scaled to size 9.6222pt on input line 97.
  [1
 
 ]
+LaTeX Font Info:    Font shape `JT2/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT2/gt/m/n' tried instead on input line 158.
+LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
+(Font)              scaled to size 11.54663pt on input line 158.
+LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY2/gt/m/n' tried instead on input line 158.
+LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
+(Font)              scaled to size 11.54663pt on input line 158.
+ [2]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 6.73553pt on input line 149.
+(Font)              scaled to size 6.73553pt on input line 201.
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 4.8111pt on input line 149.
- [2] [3] [4] [5] (./ビリヤード写像の面積保存性について.aux)
+(Font)              scaled to size 4.8111pt on input line 201.
+ [3] [4] [5]
+File: billiard_Hamilton.png Graphic file (type bmp)
+<billiard_Hamilton.png>
+ [6] [7] (./ビリヤード写像の面積保存性について.aux)
  ***********
 pLaTeX2e <2023-02-14u04>+1, based on
 LaTeX2e <2023-06-01> patch level 1
@@ -633,12 +639,12 @@ L3 programming layer <2023-08-29>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 19260 strings out of 475586
- 400729 string characters out of 5777886
+ 19282 strings out of 475586
+ 401228 string characters out of 5777886
  1934621 words of memory out of 5000000
- 40471 multiletter control sequences out of 15000+600000
+ 40487 multiletter control sequences out of 15000+600000
  577057 words of font info for 121 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 83i,14n,93p,627b,293s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 83i,14n,93p,627b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ビリヤード写像の面積保存性について.dvi (5 pages, 25468 bytes).
+Output written on ビリヤード写像の面積保存性について.dvi (7 pages, 37212 bytes).
