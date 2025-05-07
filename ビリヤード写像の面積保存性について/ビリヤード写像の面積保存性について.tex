@@ -40,6 +40,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{cor}{Corlollary}
 \newtheorem{conj}{Conjecture}
@@ -116,12 +117,13 @@
     相空間$(\mathbb{R}/L \mathbb{Z}) \times [0, \pi]$における面積のことである.)
 
     以下, この証明をやります.
-\section{初等幾何的方法}
+\section{その1: 初等幾何的方法}
     こちらはよく知られている方法で, Birkhoffの証明を多少現代的に書いたもの.
     ビリヤード写像に触れている文献には大体書いているが,
-    たとえば Tabachnikovの"Geometry and Billiards"や日本語のものだと柴山先生の『重点解説　ハミルトン系』などに載っている.
+    たとえば Tabachnikovの"Geometry and Billiards"や日本語のものだと柴山先生の『重点解説　ハミルトン系』などに載っています.
+    初等的だけど, 正準変換の母関数の大域的な存在性が自然に示せる点でかなり優れています.
 
-    \begin{proof}[Theorem \ref{th:area}の証明1]
+    \begin{proof}[Theorem \ref{th:area}の証明その1]
         いま, $\gamma(s)$と$\gamma(s')$の距離（の$-1$倍）を$h(s, s')$と置く.
         $s$は弧長パラメータなので, 
         その微分$\pdv{\gamma(s)}{s}$は点$\gamma(s)$における単位接ベクトルである.
@@ -145,13 +147,139 @@
         となり,
         これから面積保存性$\sin \alpha \dd s \land \dd \alpha = \sin \alpha' \dd s' \land \dd \alpha'$がわかる.
     \end{proof}
-    \section{その2: }
+
+    \section{その2: Poincar\'{e}写像を用いた方法}
+    KatokとHasselblattの"Introduction to Dynamical Systems"に載っている方法.
+
+    \vspace{\baselineskip}
+
+    まず, Riemann多様体$M$上のベクトル場$X$に対し, その発散$\Div{V}$を定義する.
+    これは, $M$の体積要素$\Omega$に対し, そのLie微分を$L_{X}$と書けば, 次で与えられえる.
+    \[
+        L_{X} \Omega = \Div{X} \cdot \Omega.
+    \]
+    
+    この定義は, 次の意味でベクトル解析に出てくる発散$\Div$と同じである:
+
+    \begin{proposition}
+        $M = \mathbb{R}^n, \Omega = d x_1 \wedge \cdots \wedge d x_n$に対し, 
+        ベクトル場$X$を(ベクトル解析の意味の)ベクトル場$X = (X_1, \cdots, X_n): \mathbb{R}^n \rightarrow \mathbb{R}^n$と同一視すれば, 
+        \[
+            L_{X} \Omega =  \sum_{k = 1}^{n} \frac{\partial X_k}{\partial x_k} \Omega.
+        \]
+    \end{proposition}
+
+    \begin{proof}
+        Cartanの公式から, 
+        $L_{X} \Omega = d (\iota(X) \Omega) + \iota(X) (d \Omega)$.
+        $\Omega$は$n$次微分形式なので, $d \Omega = 0$.
+
+        したがって, 記号$\hat{d x_i}$を「$d x_i$を除く」の意味で用いれば, 
+        \begin{align}
+            L_{X} \Omega &= d (\iota(X) \Omega) \\
+            &= d (\sum X _ k d x_1 \wedge \cdots \wedge \hat{d x_k} \wedge \cdots \wedge d x_n)\\
+            &= \sum \frac{\partial X_k}{\partial x_k} d x_1 \wedge \cdots \wedge d x_k \wedge \cdots \wedge d x_n \\
+            &= \sum \frac{\partial X_k}{\partial x_k} \Omega.
+        \end{align}
+    \end{proof}
+
+    ベクトル場$X$が定めるフロー$x^{t}: M \rightarrow M$とは, 
+    \[
+        \left. \frac{d}{d t} x^{t}(x_0) \right|_{t} = X_{x^{t}(x_0)}
+    \]
+    となる写像のことである. 
+    (要するに. $x^{t}(x_0) = x(t, x_0)$がベクトル場$X$の定める常微分方程式の初期点$x_0$での解になるということ.)
+    フロー$x^{t}$が体積を保存する$(x^{t})^{*} \Omega = \Omega$というのは, 
+    この$t$での微分を考えれば, 
+    \[
+        L_{X} \Omega = \frac{d}{d t} (x^{t})^{*} \Omega = 0
+    \]
+    と同じことであるから, $\Div X = 0$と同値である.
+
+    いま, フローと横断的に交わる断面$\sigma$を考え, $\omega$を断面$\sigma$上の体積要素で$\omega = \iota(X) \Omega$であるものと定義する.
+    断面$\sigma$上にとった初期点$x_0$から出発したフロー$x^{t}(x_0)$が, 
+    適当な時刻で断面$\sigma$に帰ってくるとしたとき, 
+    フローの連続性から$x_0$の($\sigma$の相対位相でにおける)近傍$\sigma_0 \subset \sigma$で, 
+    フローで動かした像が$\sigma$に帰ってくるようなものが取れる.
+    (再帰時刻が同じとは限らないことに注意!)
+    この写像$\tilde{x} : \sigma_0 \rightarrow \sigma$を\textbf{Poincar\'{e}写像}という.
+
+    フローが体積保存である場合, 次のことが言える.
+    \begin{proposition}
+        上記の設定の下で, 
+        ベクトル場$X$のフロー$x^{t}: M \rightarrow M$が体積保存$(x^{t})^{*} \Omega = \Omega$であるとき,
+        そのPoincar\'{e}写像$\tilde{x} : \sigma_0 \rightarrow \sigma$もまた体積保存である:
+        \[
+            \tilde{x}^{*} \omega  = \omega
+        \]
+    \end{proposition}
+
+    \begin{proof}
+        点$p \in \sigma$上における接ベクトル空間$T_{p} \sigma$の枠（標構ともいう）として,
+        $(v_2, \cdots, v_n)$を取ると, $X$は$\sigma$に対し横断的なので,
+        $(X, v_2, \cdots, v_n)$は$T_{p} M$を張る基底になる.
+        $(v_2, \cdots, v_n)$をPoincar\'{e}写像$\tilde{x}$の接写像で写した像を
+        $(w_2, \cdots, w_n)$とし,
+        $(X, v_2, \cdots, v_n)$をフロー$x^{t}$の接写像で写した像を$(X, w'_2, \cdots, w'_n)$とすれば,
+        $k = 2, \cdots, n$に対し$w'_k - w_k = c_k X$($c_k$はスカラー)という関係が成り立つ.
+        フローは体積$\Omega$を保存するので, 
+        \[
+            \omega (v_2, \cdots, v_n) = \Omega(X, v_2, \cdots, v_n) = (x^{t})^{*} \Omega(X, v_2, \cdots, v_n) = \Omega((x^{t})_{*}X, (x^{t})_{*}v_2, \cdots, (x^{t})_{*}v_n) = \Omega(X, w'_2, \cdots, w'_n).
+        \]
+        一方で
+        \[
+            (\tilde{x}^{*} \omega) (v_2, \cdots, v_n) = \omega(w_2, \cdots, w_n) = \Omega(X, w_2, \cdots, w_n) = \Omega(X, w'_2, \cdots, w'_n).
+        \]
+        以上から,
+        \[
+            \tilde{x}^{*} \omega  = \omega.
+        \]
+        \end{proof}
+
+    以上の話をビリヤードに応用しよう.
+
+    \begin{proof}[Theorem \ref{th:area}の証明その2]
+        平面内の自由運動(等速直線運動)を考える. 
+        質点の位置と速度をまとめて$(x, v) = (x_1, x_2, v_1, v_2)$と置くと, 運動方程式は
+        \[
+            \dot{x}_i = v_{i}, \ \dot{v}_i = 0 \quad (i = 1, 2)
+        \]  
+        である.
+        いま, 速さを$|v| = 1$と固定し, $v_1 = \cos \theta, v_2 = \sin \theta$とすれば,
+        運動方程式は
+        \[
+            \dot{x}_1 = \cos \theta, \ \dot{x}_2 = \sin \theta, \ \dot{\theta} = 0
+        \]
+        となる.
+        この系のベクトル場$X = (\cos \theta, \sin \theta, 0)$について, $\Div X = 0$であるから,
+        $\mathbb{R}^2 \times \mathbb{S}$上の体積要素$\Omega = d x_1 \wedge d x_2 \wedge d \theta$はフロー$x^{t}$により保存される.
+
+        断面$\sigma$にビリヤード台の境界$\gamma$を選ぶ.
+        初期点を$\gamma$上にとり, 入射角を$\alpha$とすると, 
+        弧長パラメータ$s$を入れると,
+        平面上の点は$x = \gamma(s) + tv = (\gamma_1(s) + t \cos \theta, \gamma_2(s)+ t \sin \theta)$とかけて, 
+        $dx_1 = \gamma'_1(s) ds + \cos \theta d t, dx_2 = \gamma'_2(s) ds + \sin \theta d t$となり, 
+        $\gamma(s)$の法線ベクトルを$\vec{n}(s)$とかけば, 
+        \begin{align}
+            \Omega &= d x_1 \wedge d x_2 \wedge d \theta \\
+            &= (\gamma'_1(s) \sin \theta - \gamma'_2(s) \cos \theta) ds \wedge dt \wedge d \theta \\
+            &= - v \cdot \vec{n}(s) dt \wedge ds \wedge d \theta \\
+            &= dt \wedge (\sin \alpha ds \wedge d \alpha)
+        \end{align}
+        である. ($\theta$は$\alpha$に定数だけ足したものなので, 代わりに変数として$\alpha$を用いてもよい.)
+        いま, 断面$\sigma = \gamma$に対するPoincar\'{e}写像がビリヤード写像$T$だったので, $T$は面積形式
+        \[
+            \omega = \iota(X) \Omega = \sin \alpha ds \wedge d \alpha
+        \]
+        を保存する.
+    \end{proof}
 
 
 \section{その3: Poincar\'{e}-Cartan の積分不変式を用いた方法}
 
     以下は, ほとんどArnoldとAvezの"Ergodic Problems of Classical Mechanics"\cite{ArnoldAvez}のAPPENDIX 31に載っている内容です. 
     
+    方法その2と本質的には同じですが, こちらはハミルトン系からの出発します.
     大まかに説明すると, 「ビリヤード写像を自由運動を記述するハミルトン系に適当なPoincar\'{e}断面を取ったときのPoincar\'{e}写像とみなしたとき, 
     Poincar\'{e}-Cartan の積分不変式から導かれる微分形式がなんと$\sin{\alpha} d s \wedge d \alpha$になっている」ということです.
     
