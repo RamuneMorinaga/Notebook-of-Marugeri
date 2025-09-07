@@ -1,0 +1,767 @@
+\documentclass[a4paper]{ujarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+\usepackage{bm} %太字
+\usepackage{tcolorbox} %定理環境のやつ
+\usepackage{physics}
+\tcbuselibrary{breakable, skins, theorems}
+\usepackage{enumerate} %箇条書き
+\usepackage{ulem} %下線
+\usepackage{mathrsfs} %花文字
+\usepackage{url}
+
+%コマンド
+\newcommand{\red}[1]{\textcolor{red}{#1}} %赤文字
+\newcommand{\vecn}[1]{({#1}_1, \cdots, {#1}_{n})}
+\newcommand{\inner}[2]{(#1, #2)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lpn}[1]{\|#1\|_{L^{p}}}
+\newcommand{\esssup}[1]{\mathop{\mathrm{ess.sup}}_{#1}}
+\newcommand{\cl}[1]{\bar{#1}}
+\newcommand{\pd}[2]{\partial_{#1}^{#2}}
+\newcommand{\alev}{\ \mathrm{a.e.}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\weak}{\ \mathrm{(weakly)}}
+\newcommand{\Div}{\mathrm{div}}
+\newcommand{\Grad}{\mathrm{grad} }
+\newcommand{\Rot}{\mathrm{rot} }
+
+
+\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+\newcommand{\rme}{\mathrm{e}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem{cor}{Corlollary}
+\newtheorem{conj}{Conjecture}
+\newtheorem{axiom}{Axiom}
+%%証明環境
+\makeatletter
+\renewenvironment{proof}[1][Proof]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+
+\title{ネーターの定理}
+\begin{document}
+\date{2025年1月23日}
+\author{まるげり}
+\setcounter{section}{-1}
+\maketitle
+    ガチのマジの備忘録.
+
+    \section{準備: 接バンドルと余接バンドル・ラグランジュ系・ハミルトン系}
+        \subsection{接バンドル}
+        $M$を$n$次元多様体とし, $M$の局所座標系を$\{(U_{\alpha}, \varphi_{\alpha})\}_{\alpha}$とする.
+        ($\varphi_{\alpha} : U_{\alpha} \subset \mathbb{R}^n \rightarrow \varphi_{\alpha}(U_{\alpha}) \subset M$.)
+        $q \in M$での接ベクトル空間を$T_q M$と書くことにする.
+        接バンドル（あるいは接束）$TM$を$2n$次元多様体として定めよう. 
+        まず, 集合として
+        \[
+            TM := \bigcup_{q \in M} T_{q} M
+        \]
+        とする. $TM$の要素は$(q, v)$のように書くことができる($q \in M, v \in T_p M$). 
+
+        射影$\pi: TM \rightarrow M$を, $\pi(q, v) = q$で定める. 
+        $q \in M$のまわりの座標近傍$(U_{\alpha}, \varphi_{\alpha})$に対し, 
+        $x = (x_1, \cdots, x_n) = \varphi_{\alpha}^{-1}(q) \in \mathbb{R}^n$とする.
+        このとき, $T_{q} M$の基底として$\displaystyle \left\{ \left(\frac{\partial}{\partial x_i}\right)_q \right\}$を選ぶことができる.
+        $\bar{x} = (\bar{x}_1, \cdots, \bar{x}_{n})\in \mathbb{R}^n$として,
+        $\Phi_{\alpha}: \varphi_{\alpha}^{-1}(U_{\alpha}) \times \mathbb{R}^n \rightarrow \pi^{-1}(U_{\alpha})$を
+        \[
+            \Phi_{\alpha}(x, \bar{x}) = \left(\varphi_{\alpha}(x), \sum \bar{x}_i \left(\frac{\partial}{\partial x_i}\right)_{\varphi_{\alpha}(x)} \right)
+        \]
+        で定める. このようにして定まる$\{(\pi^{-1}(U_{\alpha}), \Phi_{\alpha})\}_{\alpha}$は$TM$の局所座標系になる.
+        実際, このとき$\varphi_{\alpha}^{-1}(U_{\alpha} \cap U_{\beta}) \times \mathbb{R}^n$上の座標変換$\Phi_{\alpha \beta} = \Phi_{\beta}^{-1} \circ \Phi_{\alpha}$は,
+        $\displaystyle y = \varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x) = y(x_1, \cdots, x_n), \ \bar{y} = \left(\frac{\partial y}{\partial x}\right) \bar{x}, \ ( \bar{y}_i= \sum \left(\frac{\partial y_i}{\partial x_j}\right) \bar{x}_j)$として, 
+        \begin{align}
+            \Phi_{\alpha \beta}(x, \bar{x}) 
+            &= \Phi_{\beta}^{-1}\left(\varphi_{\alpha}(x), \sum \bar{x}_i \left(\frac{\partial}{\partial x_i}\right)_{\varphi_{\alpha}(x)} \right)\\
+            &= \Phi_{\beta}^{-1}\left(\varphi_{\beta}(\varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x)), \sum \bar{x}_j \left(\frac{\partial y_i}{\partial x_j}\right) \left(\frac{\partial}{\partial y_i}\right)_{\varphi_{\beta}(\varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x))} \right)\\
+            &= \Phi_{\beta}^{-1}\left(\varphi_{\beta}(y), \sum \bar{y}_i \left(\frac{\partial}{\partial y_i}\right)_{\varphi_{\beta}(y)} \right) \\
+            &= (y, \bar{y})
+        \end{align}
+        となる.
+        これにより, $TM$が$2n$次元多様体として定まる. 
+
+        $M$上の座標変換$y = \varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x) = y(x_1, \cdots, x_n)$によって, 
+        $T_q M$の基底は
+        \[
+            \left(\frac{\partial}{\partial y_i}\right)_q  = \sum \left(\frac{\partial x_j}{\partial y_i}\right)_q \left(\frac{\partial}{\partial x_j}\right)_q
+        \]
+        と変換されるので, $\displaystyle J = \left(\frac{\partial x}{\partial y}\right) = \left(\frac{\partial x_{i}}{\partial y_{j}}\right)_{i, j}$と書けば, 形式的に
+        \[
+            \left[ \left(\frac{\partial}{\partial y_1}\right)_q \cdots \left(\frac{\partial}{\partial y_n}\right)_q \right] = \left[ \left(\frac{\partial}{\partial x_1}\right)_q \cdots \left(\frac{\partial}{\partial x_n}\right)_q \right] J
+        \]
+        と書ける.
+        これに対して, $TM$上の座標変換$\Phi_{\alpha \beta}(x, \bar{x})$について, 
+        \[
+            \bar{y} = \left(\frac{\partial y}{\partial x}\right) \bar{x} = J^{-1} \bar{x}
+        \]
+        となる. 言い換えると,
+        \[
+            \left(\frac{\partial \bar{x}}{\partial \bar{y}}\right) = \left(\frac{\partial x}{\partial y}\right) = J.
+        \]
+        つまり, $T_q M$の成分は$M$上の座標変換(で定まる基底変換)に対して反変的である.
+
+    \vskip \baselineskip
+        この構成の下で$M$上の曲線$t \mapsto q(t) $について考える.
+        $\varphi_{\alpha}(q(t)) = q_{\alpha}(t) \in \mathbb{R}^n, \varphi_{\beta}(q(t)) = q_{\beta}(t) \in \mathbb{R}^n$と書くとき, 
+        $(q_{\alpha}(t), \dot{q}_{\alpha}(t)) \in \varphi_{\alpha}^{-1}(U_{\alpha} \cap U_{\beta}) \times \mathbb{R}^n$上であれば, 
+        \[
+            \Phi_{\alpha \beta}(q_{\alpha}(t), \dot{q}_{\alpha}(t)) = \left(q_{\beta}(t), \sum (q_{\alpha}(t))_j \left(\frac{\partial y_i}{\partial x_j}\right)_{q(t)}\right)
+        \]
+        となる. これにより, 
+        \[
+            \dot{q}_{\beta}(t) = \left(\frac{\partial y}{\partial x}\right)_{q(t)} \dot{q}_{\alpha}(t) = J^{-1} \dot{q}_{\alpha}(t)
+        \]
+        が正当化される.
+
+        \subsection{余接バンドル}
+        接ベクトル空間$T_q M$の双対空間を$T^{*}_q M$で表すことにする.
+        余接バンドルを$T^{*}M$を接バンドルと同じように定める.
+        つまり, 集合として
+        \[
+                T^{*}M = \bigcup_{q \in M} T^{*}_q M
+        \]
+        とし, 射影$\pi(q, p) = q$とする. ($q \in M, p \in T^{*}_{q} M$)
+
+        $q \in M$のまわりの座標近傍$(U_{\alpha}, \varphi_{\alpha})$に対し, 
+        $T_{q} M$の基底$\displaystyle \left\{ \left(\frac{\partial}{\partial x_i}\right)_q \right\}$に対応する
+        双対基底$\displaystyle \left\{ (d x_i)_q\right\}$を$T^{*}_q M$の基底として選ぶ.
+        $\Psi_{\alpha}: \varphi_{\alpha}^{-1}(U_{\alpha}) \times \mathbb{R}^n \rightarrow \pi^{-1}(U_{\alpha})$を
+        \[
+            \Psi_{\alpha}(x, \tilde{x}) = \left(\varphi_{\alpha}(x), \sum \tilde{x}_i (d x_i)_{\varphi_{\alpha}(x)} \right)
+        \]
+        で定めれば, 先ほどと同様に$\{( \pi^{-1}(U_{\alpha}), \Psi_{\alpha})\}_{\alpha}$が$T^{*}M$の局所座標系として定まり,
+        $T^{*}M$は$2n$次元可微分多様体になる.
+        $\displaystyle y = \varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x) = y(x_1, \cdots, x_n), \ , \tilde{y} = \left(\frac{\partial x}{\partial y}\right)^{\mathsf{T}} \tilde{x} = \left(\left(\frac{\partial y}{\partial x}\right)^{-1} \right)^{\mathsf{T}} \tilde{x}, \ (\tilde{y}_i = \sum \left(\frac{\partial x_j}{\partial y_i}\right) \tilde{x}_j)$として, 
+        このときの座標変換$\Psi_{\alpha \beta} = \Psi_{\beta}^{-1} \circ \Psi_{\alpha}$は
+        \begin{align}
+            \Psi_{\alpha \beta}(x, \tilde{x}) 
+            &= \Psi_{\beta}^{-1}\left(\varphi_{\alpha}(x), \sum \tilde{x}_i \left( d x_i \right)_{\varphi_{\alpha}(x)} \right)\\
+            &= \Psi_{\beta}^{-1}\left(\varphi_{\beta}(\varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x)), \sum \tilde{x}_j \left(\frac{\partial x_j}{\partial y_i}\right) \left( d y_i\right)_{\varphi_{\beta}(\varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x))} \right)\\
+            &= \Psi_{\beta}^{-1}\left(\varphi_{\beta}(y), \sum \tilde{y}_i \left(d y_i\right)_{\varphi_{\beta}(y)} \right) \\
+            &= (y, \tilde{y})
+        \end{align}
+        となる. 
+        
+        $M$上の座標変換$y = \varphi_{\beta}^{-1} \circ \varphi_{\alpha}(x) = y(x_1, \cdots, x_n)$によって, 
+        $T^{*}_q M$の基底は
+        \[
+            \left(d y_i\right)_q  = \sum \left(\frac{\partial y_i}{\partial x_j}\right)_q \left( d x_j\right)_q 
+        \]
+        と変換されるので, 形式的に
+        \[
+            \begin{bmatrix}
+                d y_1 \\
+                \vdots \\
+                d y_n
+            \end{bmatrix} = \left(\frac{\partial y}{\partial x}\right)
+            \begin{bmatrix}
+                d x_1 \\
+                \vdots \\
+                d x_n
+            \end{bmatrix} =
+            J
+            \begin{bmatrix}
+                d x_1 \\
+                \vdots \\
+                d x_n
+            \end{bmatrix}
+        \]
+        と書ける.
+        これに対して, $T^{*}M$上の座標変換$\Psi_{\alpha \beta}(x, \bar{x})$について, 
+        \[
+            \tilde{y} = \left(\frac{\partial x}{\partial y}\right)^{\mathsf{T}} \tilde{x} = J^{\mathsf{T}} \tilde{x}
+        \]
+        となる. 
+        である.
+        あるいは, 数ベクトル$\tilde{x}$を横ベクトルで書けば,
+        \[
+            \begin{bmatrix}
+                \tilde{y}_1 \cdots \tilde{y}_n
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+                \tilde{x}_1 \cdots \tilde{x}_n
+            \end{bmatrix}
+            J
+        \]
+        となる. 
+        つまり, $T^{*}_q M$の成分は$M$上の座標変換(で定まる基底変換)に対して共変的である.
+
+        $f: M \rightarrow \mathbb{R}$について, $f_{\alpha} := f \circ \varphi_{\alpha}(x) : U_{\alpha} \subset \mathbb{R}^{n} \rightarrow \mathbb{R}$は,
+        \[
+            \frac{\partial}{\partial y_i} f_{\beta}(y)
+            = \frac{\partial}{\partial y_i} f \circ \varphi_{\beta}(y) 
+            = \frac{\partial}{\partial y_i} f \circ \varphi_{\alpha} \circ \varphi_{\beta \alpha}(y)
+            = \sum \left(\frac{\partial x_j}{\partial y_i}\right) \frac{\partial}{\partial x_j}  f \circ \varphi_{\alpha}(x)
+            = \sum \left(\frac{\partial x_j}{\partial y_i}\right) \frac{\partial}{\partial x_j}  f_{\alpha}(x)
+        \]
+        となるから, $\displaystyle \frac{\partial}{\partial y} f_{\beta} = J^{\mathsf{T}} \frac{\partial}{\partial x} f_{\alpha}$
+        である. 
+        これより, $w \in T_q M$に対して$\Phi^{-1}_{\alpha}(q, w) = (x, \bar{w}_{\alpha})$とすれば, 
+        $\displaystyle f'_q(q)(w) := \langle \frac{\partial}{\partial x}f_{\alpha}(\varphi^{-1}_{\alpha}(q)), w_{\alpha} \rangle$は$T_q M \rightarrow \mathbb{R}$として定まる.
+        ただし, ここでは数ベクトル$a, b$に対し$\langle a, b\rangle := a^{\mathsf{T}} b$としている.
+        実際, $\bar{w}_{\beta} = J^{-1} \bar{w}_{\alpha}$であるから,
+        \begin{align}
+            \langle \frac{\partial}{\partial y}f_{\beta}(\varphi^{-1}_{\beta}(q)), \bar{w}_{\beta} \rangle
+            &= \frac{\partial}{\partial y}f_{\beta}(\varphi^{-1}_{\beta}(q))^{\mathsf{T}} \bar{w}_{\beta} \\
+            &= \frac{\partial}{\partial x}f_{\alpha}(\varphi^{-1}_{\alpha}(q))^{\mathsf{T}} J J^{-1} \bar{w}_{\alpha} \\
+            &= \frac{\partial}{\partial x}f_{\alpha}(\varphi^{-1}_{\alpha}(q))^{\mathsf{T}} \bar{w}_{\alpha} \\
+            &= \langle \frac{\partial}{\partial x}f_{\alpha}(\varphi^{-1}_{\alpha}(q)), \bar{w}_{\alpha} \rangle
+        \end{align}
+        であり, $f'_q(q)$はwell-definedである.
+        これは. $f'_q(q) \in T^{*}_q M$であることを意味する.
+
+        \subsection{ラグランジュ系}
+        $q_0, q_1 \in M$を固定した下で, 固定端の曲線集合$C := \{q: [t_0, t_1] \rightarrow M | q(t_0) = q_0, q(t_1) = q_1\}$を考える.
+        曲線$q(t) \in C$に沿った固定端変分ベクトル場$W$を, 各$t$に対して$W_t \in T_{q(t)} M$として定まるもので,
+        滑らかな関数$f: M \rightarrow \mathbb{R}$について関数
+        \[
+                t \mapsto \langle f'_q(q(t)),  W_t\rangle
+        \]
+        が$\mathbb{R} \rightarrow \mathbb{R}$として滑らかになるもので, 特に$W_{t_0} = W_{t_1} = 0$となるものとする.
+
+        曲線$q(t) \in C$に対する固定端変分曲線$\hat{q} : (-\epsilon, \epsilon) \times [t_0, t_1] \times M$（variation of the pathだが, たぶんそんな呼び方しないので後でちゃんと調べる）
+        とは滑らかな関数であって, 
+        $\hat{q}(0, t) = q(t)$であり, 任意の$u \in (- \epsilon, \epsilon)$について
+        $\hat{q}(u, t_0) = q_0, \hat{q}(u, t_1) = q_1$となるものとする.
+        曲線$q(t)$の任意の固定端変分曲線$\hat{q}$に対し, 対応する固定端のベクトル場$W$は
+        \[
+            W_t = \left.\frac{\partial \hat{q}(u, t)}{\partial u}\right|_{u = 0}
+        \]  
+        で与えられる. 逆に, 与えられた固定端変分ベクトル場$W$に対して上を満たす変分曲線$\hat{q}$が存在する.
+
+        汎関数$F: C \rightarrow \mathbb{R}$に対し, $q(t) \in C$の第一変分$\delta F[W]$は,
+        $W$に対応する$q(t)$の変分曲線$\hat{q}(u, t)$を用いて
+        \[
+            \delta F[W] = \left.\frac{\partial F(\hat{q}(u, t))}{\partial u}\right|_{u = 0}
+        \]
+        で定義される. 曲線$q(t)$が汎関数$F$の停留点であるとは, $\delta F \equiv 0$となるような$q(t) \in C$のことである.
+
+    \vskip \baselineskip
+
+        $C^{3}$級関数$L : \mathbb{R} \times TM \rightarrow \mathbb{R}$とする. これをラグランジアンと呼ぶ.
+        $M = \mathbb{R}^n$の際には, $TM \cong \mathbb{R}^{2n}$として, 典型的には
+        \[
+            L(t, q, v) = \frac{1}{2}\norm{v}^2 - U(q)
+        \]
+        という形のラグランジアンを考えることが多い. ($U(q)$をポテンシャル関数という.)
+
+        $L(t, q, v)$に対し, $t \in \mathbb{R}, q \in M$を固定した下で$L(t, q, \cdot): T_{q} M \rightarrow \mathbb{R}$を考えることができる.
+        $\displaystyle L_{\alpha}(t, x, \bar{x}) := L(t, \Phi_{\alpha}(x, \bar{x})) = L(t, \varphi_{\alpha}(x), \sum x_i \left(\frac{\partial}{\partial x_i}\right)_{q})$
+        とする.
+        \begin{align}
+            \frac{\partial}{\partial \bar{y}_i} L_{\beta}(t, y, \bar{y}) 
+            &= \frac{\partial}{\partial \bar{y}_i} L(t, \Phi_{\beta}(y, \bar{y})) \\
+            &= \frac{\partial}{\partial \bar{y}_i} L(t, \Phi_{\alpha} \circ \Phi_{\beta \alpha}(t, y, \bar{y})) \\
+            &= \frac{\partial}{\partial \bar{y}_i} L_{\alpha}(t, x(y), \bar{x}(\bar{y}))\\
+            &= \sum \left(\frac{\partial \bar{x}_j}{\partial \bar{y}_i}\right)_{q} \frac{\partial}{\partial \bar{x}_j} L_{\alpha}(t, x(y), \bar{x}(\bar{y}))
+        \end{align}
+        したがって, 
+        \[
+            \frac{\partial}{\partial \bar{y}} L_{\beta}(t, y, \bar{y}) = J^{\mathsf{T}} \frac{\partial}{\partial \bar{x}} L_{\alpha}(t, x, \bar{x})
+        \]
+        となる. 
+        
+        これより, $w \in T_q M$に対して$\Phi^{-1}_{\alpha}(q, w) = (x, \bar{w}_{\alpha})$とし, 
+        また数ベクトル$a, b \in \mathbb{R}^n$について$\langle a, b \rangle := a^{\mathsf{T}} b$と表せば, 
+        \[
+            L'_v(t, q, v)(w) := \langle \frac{\partial}{\partial \bar{x}} L_{\alpha}(t, \Phi_{\alpha}^{-1}(q, v)), \bar{w}_{\alpha}\rangle 
+        \]
+        とすれば, $L'_v(t, q, v): T_q M \rightarrow \mathbb{R}$が定まる.
+        実際, $w \in T_q M$に対して$\Phi^{-1}_{\beta}(q, w) = (x, \bar{w}_{\beta})$とすれば$\bar{w}_{\beta} = J^{-1} \bar{w}_{\alpha}$であるから,
+        \begin{align}
+            \langle \frac{\partial}{\partial \bar{y}} L_{\beta} (t, \Phi_{\beta}^{-1}(q, v)), \bar{w}_{\beta}\rangle 
+            &= \left( \frac{\partial}{\partial \bar{y}} L_{\beta} (t, \Phi_{\beta}^{-1}(q, v)) \right)^{\mathsf{T}} \bar{w}_{\beta} \\
+            &= \left( \frac{\partial}{\partial \bar{x}} L_{\alpha} (t, \Phi_{\alpha}^{-1}(q, v)) \right)^{\mathsf{T}} J J^{-1}\bar{w}_{\alpha} \\
+            &= \langle \frac{\partial}{\partial \bar{x}} L_{\alpha} (t, \Phi_{\alpha}^{-1}(q, v)), \bar{w}_{\alpha}\rangle 
+        \end{align}
+        であり,$L'_v(t, q, v)$はwell-definedである.
+        これは$L'_v(t, q, v) \in T^{*}_q M$であることを意味する.
+
+        また, $t \in \mathbb{R}$を固定した下で$L_{\alpha}(t, x, \bar{x})$を
+        $L_{\alpha}(t, \cdot, \cdot): \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$として,
+        任意の固定端の曲線を$U_{\alpha}$に写したもの$x(t)$に対し
+        $\displaystyle [L]_{\alpha}(x(t)) := \frac{d}{d t}\left(\frac{\partial}{\partial \bar{x}}L_{\alpha}(t, x(t), \dot{x}(t))\right) - \frac{\partial}{\partial x}L_{\alpha}(t, x(t), \dot{x}(t))$とすれば,
+        $y(t) = \varphi_{\alpha \beta}(x(t))$として, 
+        \begin{align}
+            [L]_{\beta, i}(y(t)) 
+            &= \frac{d}{d t}\left(\frac{\partial}{\partial \bar{y}_i}L_{\beta}(t, y(t), \dot{y}(t))\right) - \frac{\partial}{\partial y_i}L_{\beta}(t, y(t), \dot{y}(t))\\
+            &= \frac{d}{d t}\left(\frac{\partial}{\partial \bar{y}_i}L_{\alpha}(t, x(y(t)), \bar{x}(\dot{y}(t)))\right) - \frac{\partial}{\partial y_i}L_{\alpha}(t, x(y(t)), \bar{x}(\dot{y}(t)))\\
+            &= \frac{d}{d t}\left(\sum \left(\frac{\partial \bar{x}_j}{\partial \bar{y}_i}\right)_{q} \frac{\partial}{\partial \bar{x}_j} L_{\alpha}(t, x(y), \bar{x}(\bar{y}))\right) \\
+            &\quad - \sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} \frac{\partial}{\partial x_j}L_{\alpha}(t, x(t), \dot{x}(t)) - \sum \left(\frac{\partial x_j}{\partial y_i \partial y_k}\right)_{q} \dot{y}_k \frac{\partial}{\partial \bar{x}_j}L_{\alpha}(t, x(t), \dot{x}(t)) \\
+            &= \frac{d}{d t}\left(\sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} \frac{\partial}{\partial \bar{x}_j} L_{\alpha}(t, x(y), \bar{x}(\bar{y}))\right) \\
+            &\quad - \sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} \frac{\partial}{\partial x_j}L_{\alpha}(t, x(t), \dot{x}(t)) - \sum \left(\frac{\partial x_j}{\partial y_i \partial y_k}\right)_{q} \dot{y}_k \frac{\partial}{\partial \bar{x}_j}L_{\alpha}(t, x(t), \dot{x}(t)) \\
+            &= \sum \left(\frac{\partial x_j}{\partial y_i \partial y_k}\right)_{q} \dot{y}_k \frac{\partial}{\partial \bar{x}_j} L_{\alpha}(t, x(y), \bar{x}(\bar{y})) + \sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} \frac{d}{dt} \left(\frac{\partial}{\partial \bar{x}_j} L_{\alpha}(t, x(y), \bar{x}(\bar{y}))\right)\\
+            &\quad - \sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} \frac{\partial}{\partial x_j}L_{\alpha}(t, x(t), \dot{x}(t)) - \sum \left(\frac{\partial x_j}{\partial y_i \partial y_k}\right)_{q} \dot{y}_k \frac{\partial}{\partial \bar{x}_j}L_{\alpha}(t, x(t), \dot{x}(t)) \\
+            &= \sum \left(\frac{\partial x_j}{\partial y_i}\right)_{q} [L]_{\alpha, j}(x(t)) 
+        \end{align}
+        である. したがって, $[L]_{\beta}(y(t)) = J^{\mathsf{T}} [L]_{\alpha}(x(t))$であり,
+        $w_t \in T_{q(t)} M$に対して$\Phi^{-1}_{\alpha}(q(t), w_t) = (x(t), \bar{w}_{t, \alpha})$として,
+        $[L](q(t))(w_t) := \langle [L]_{\alpha}(\varphi^{-1}_{\alpha}(q(t))), \bar{w}_{t, \alpha}\rangle$と定めれば
+        $[L](q(t))$は$T_{q(t)} M \rightarrow \mathbb{R}$, つまり$T^{*}_{q(t)}M$の元として定まる.
+
+        作用積分$F: C \rightarrow \mathbb{R}$を
+        \[
+            F[q] = \int^{t_1}_{t_0} L(t, q(t), \dot{q}(t)) d t
+        \]
+        で定める. 
+        このとき, $F$の第一変分$\delta F[W]$は
+        \[
+            \delta F[W] = - \int^{t_1}_{t_0} [L](q(t))(W_t) d t
+        \]
+        となる.
+        実際, $W$に対応する変分曲線$\hat{q}(u, t)$について, 
+        \begin{align}
+            \delta F_{\alpha}[W_{\alpha}] &= \left. \frac{\partial}{\partial u} \int^{t_1}_{t_0} L_{\alpha}(t, \hat{x}(u, t), \hat{x}'_{t}(u, t)) d t \right|_{u = 0}\\
+            &= \left. \int^{t_1}_{t_0} \sum \left(\frac{\partial}{\partial x_i} L_{\alpha}(t, \hat{x}(u, t), \hat{x}'_{t}(u, t))\right) \hat{x}'_{i, u} (u, t) d t \right|_{u = 0}\\
+            &\quad + \left. \int^{t_1}_{t_0} \sum \left(\frac{\partial}{\partial \bar{x}_i} L_{\alpha}(t, \hat{x}(u, t), \hat{x}'_{t}(u, t))\right) \hat{x}''_{i, ut} (u, t) d t \right|_{u = 0}
+        \end{align}
+        第二項は部分積分をすれば, $\hat{x}(0, t) = x(t), W_{\alpha, t} = \hat{x}'_{u}(0, t)$であり, $W_{t_0} = W_{t_1} = 0$であるから,
+        \begin{align}
+            &\left.\int^{t_1}_{t_0} \sum \left(\frac{\partial}{\partial \bar{x}_i} L_{\alpha}(t, \hat{x}(u, t), \hat{x}'_{t}(u, t))\right) \hat{x}''_{i, ut} (u, t) d t \right|_{u = 0}\\
+            &= \left[\langle \frac{\partial}{\partial \bar{x}_i} L_{\alpha}(t, x(t), \dot{x}(t)), W_{\alpha, t}\rangle\right]_{t = t_0}^{t_1} 
+             - \left.\int^{t_1}_{t_0} \sum \frac{d}{d t}\left(\frac{\partial}{\partial \bar{x}_i} L_{\alpha}(t, \hat{x}(u, t), \hat{x}'_{t}(u, t))\right) \hat{x}'_{i, u} (u, t) d t \right|_{u = 0} \\
+            &= - \int^{t_1}_{t_0} \sum \frac{d}{d t}\left(\frac{\partial}{\partial \bar{x}_i} L_{\alpha}(t, x(t), \dot{x}(t))\right) W_{i, \alpha, t} d t
+        \end{align}
+        であるから, 結局
+        \[
+            \delta F_{\alpha}[W_{\alpha}] = - \int^{t_1}_{t_0} \langle \frac{d}{d t}\left(\frac{\partial}{\partial \bar{x}} L_{\alpha}(t, x(t), \dot{x}(t))\right) - \frac{\partial}{\partial x} L_{\alpha}(t, x(t), \dot{x}(t)),  W_{\alpha, t} \rangle d t
+            = - \int^{t_1}_{t_0} \langle [L]_{\alpha}(q(t)), W_{\alpha, t}\rangle d t
+        \]
+        一方, この右辺は$\alpha$によらず, $\displaystyle \delta F [W] = - \int^{t_1}_{t_0} \langle [L](q(t)), W_{t}\rangle d t$である.
+
+        以上の話は, $q(t) \in C$が作用積分$F$の停留点であることと$[L](q(t)) \equiv 0$であることが同値であることを意味する.
+        この方程式
+        \[
+            [L](q(t)) = \frac{d}{dt} L'_v(q(t), \dot{q}(t)) - L'_{q}(q(t), \dot{q}(t)) = 0
+        \]
+        をオイラー - ラグランジュ方程式という.
+
+        オイラー - ラグランジュ方程式は, 適当な局所座標の下で書き下すと,
+        \[
+            \sum \frac{\partial^2 L}{\partial \bar{x}_i \partial \bar{x}_j}(x(t), \dot{x}(t)) \ddot{x}_j(t) + \sum \frac{\partial^2 L}{\partial \bar{x}_i \partial x_j}(x(t), \dot{x}(t)) \dot{x}_j(t) + \frac{\partial^2 L}{\partial \bar{x}_i \partial t} - \frac{\partial L}{\partial x_i}(x(t), \dot{x}(t)) = 0
+        \]
+        であるから, ラグランジアンが正則性条件
+        \[
+            \det(\frac{\partial^2 L}{\partial \bar{x} \partial \bar{x}}) \neq 0
+        \]
+        を満たす下で$\ddot{x} = \cdots$の形に書ける. これを更に$(x, \dot{x})$の$2n$変数の$1$階の常微分方程式と見たものをラグランジュ系という.
+
+        \subsection{ハミルトン系}
+        $L'_{v}(t, q, v)$は$T^{*}_q M$の元と考えられた. 
+        $C^2$級写像$FL : \mathbb{R} \times TM \rightarrow \mathbb{R} \times T^{*} M$を
+        \[
+            FL(t, q, v) = (t, q, L'_{v}(t, q, v))
+        \]
+        で定めると, 適当な局所座標の下で$FL$の微分に対応するヤコビ行列は
+        \[
+            J(FL)(t, x, \bar{x})
+            =
+            \begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & E_n & O_n \\
+                L''_{t \bar{x}}& L''_{x \bar{x}} & L''_{\bar{x} \bar{x}}
+            \end{bmatrix}
+        \]
+        であるからヤコビアンは$\det(L''_{\bar{x} \bar{x}})$となる.
+        したがって, 逆関数の定理からラグランジアン$L$が正則性条件を満たす点$(t, q, v)$の近傍で$FL$は微分同相になる.
+        
+        $FL$が微分同相になる領域, つまり$p \in T^{*}_q M$に対し
+        ただ一つ$v \in T_q M$が存在して$p = L'_v(t, q, v)$となる領域において, 
+        この$v$は$v(t, q, p)$と考えてよい.
+        この領域$U \subset \mathbb{R} \times TM, V \subset \mathbb{R} \times T^{*}M$で
+        ハミルトニアン$H : V \rightarrow \mathbb{R}$を
+        \[
+            H(t, q, p) := \langle p, v(t, q, p)\rangle - L(t, q, v(t, q, p))
+        \]
+        と定義できる.
+        先ほどの写像$FL$をルジャンドル変換という.
+
+        変換則$L'_v = p$より,
+        \begin{align}
+            H_{x_i} &= \sum p_j \frac{\partial v_j}{\partial x_i} - L'_{x_i} - \sum L'_{v_j} \frac{\partial v_j}{\partial x_i} = - L_{x_i}、, \\
+            H_{p_i} &= v_i + \sum p_j \frac{\partial v_j}{\partial p_i} - \sum L'_{v_j} \frac{\partial v_j}{\partial p_i} = v_i
+        \end{align}
+        がわかる. 
+        $x(t)$がオイラー-ラグランジュ方程式の解ならば$L'_x = \frac{d}{dt} L'_{v} = \dot{p}$であり,
+        ハミルトン方程式
+        \begin{align}
+            \dot{q}_i = H_{p_i} \\
+            \dot{p}_i = - H_{q_i}
+        \end{align}
+        を満たす.
+
+        一方で, $p = p(t, q, v)$と表すことも可能で, この場合$v(t, q, p(t, q, v)) = v$となるので,
+        ルジャンドル変換の定義式を移項すれば
+        \[
+            \langle p(t, q, v), v\rangle - H(t, q, p(t, q, v)) = L(t, q, v(t, q, p)) = L(t,q v)
+        \]
+        であり, 逆にハミルトニアンが与えられた下でラグランジアンを与えることもでき, 
+        その際はハミルトン方程式の解がオイラー-ラグランジュ方程式を満たす.
+
+        以上の話は局所的にのみルジャンドル変換が定義されたが, 
+        ラグランジアンに$L''_{v v}$に$TM$上の一様正定値性と超線形性($\displaystyle \lim_{|v| \rightarrow \infty} L(v)/|v| = \infty$)を課した下では
+        ルジャンドル変換
+        \[
+            H(t, q, p) = \sup_{v} \{\langle p, v\rangle - L(t, q, v)\}
+        \]
+        が大域的に定義される.
+
+        \vskip \baselineskip
+        以下, ハミルトニアン$H$は時間によらないものとする.
+        ハミルトン方程式のベクトル場をハミルトンベクトル場$X_{H}$という. 
+        これは, 局所座標を用いて
+        \[
+            X_{H} = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}
+        \]
+        と書けるので, 正準$2$-形式$\omega = \sum dp_i \wedge dq_i$を用いれば
+        \[
+            \iota_{X_{H}} \omega = - \frac{\partial H}{\partial q_i} d q_i - \frac{\partial H}{\partial p} d p_i = d H(q, p)
+        \]
+        となる.
+        したがって, 
+        \[
+            \iota_{X_{H}} \omega = - dH
+        \]
+        である. こちらをハミルトンベクトル場$X_{H}$の定義とすることも多い.
+        
+        特に, ハミルトニアン$H$が時間$t$によらずに定まるとき, $H(q, p)$はハミルトン方程式の解に沿って不変である.
+        実際,
+        \[
+            \frac{d}{d t} H(q(t), p(t)) = \frac{\partial H}{\partial q} \dot{q} + \frac{\partial H}{\partial p} \dot{p} = \frac{\partial H}{\partial q} \frac{\partial H}{\partial p} - \frac{\partial H}{\partial p} \frac{\partial H}{\partial q} = 0
+        \] 
+        となる. これは, ハミルトンベクトル場$X_H = \frac{\partial H}{\partial p} \frac{\partial}{\partial q} - \frac{\partial H}{\partial q} \frac{\partial}{\partial p}$を用いて
+        \[
+            X_H H = 0
+        \]
+        と書くこともできる. 
+        $z = (q, p) \in T^{*}M$と書けば, ハミルトン方程式は
+        \[
+            \dot{z} = J \nabla H(z), 
+            \quad J = 
+            \begin{bmatrix}
+                0 & E_n \\
+                -E_n & 0 \\
+            \end{bmatrix}
+        \]
+        と書くことができる.
+        ハミルトンベクトル場のフロー$\phi^{t}(\zeta)$について,
+        \[
+            \frac{d}{d t} \phi^{t}(\zeta) = J \left(\frac{\partial H}{\partial z}(\phi^{t}(\zeta))\right) 
+        \] 
+        であるが,
+        ヤコビ行列$\displaystyle \left( \frac{\partial \phi^{t}(\zeta)}{\partial \zeta} \right)$は変分方程式
+        \[
+            \frac{d}{d t} Y = J \left(\frac{\partial^2 H}{\partial z \partial z}\right)_{\phi^{t}(\zeta)} Y, \quad Y(0) = E
+        \]
+        の解である. 
+        $Y^{\mathsf{T}} J Y$の時間微分を考えると, $J^{\mathsf{T}} = J^2 = - J$より,
+        \[
+            \frac{d}{d t}(Y^{\mathsf{T}} J Y) = \dot{Y}^{\mathsf{T}} J Y + Y^{\mathsf{T}} J \dot{Y} = Y^{\mathsf{T}}(\left(\frac{\partial^2 H}{\partial z \partial z}\right)_{\phi^{t}(\zeta)}^{\mathsf{T}} J^{\mathsf{T}}J + J^2 \left(\frac{\partial^2 H}{\partial z \partial z}\right)_{\phi^{t}(\zeta)}^{\mathsf{T}} )Y = 0
+        \]
+        となるので
+        \[
+            Y^{\mathsf{T}}(t) J Y(t) = Y^{\mathsf{T}}(0) J Y(0) = J.
+        \]
+        である. つまり,
+        \[
+            \left( \frac{\partial \phi^{t}(\zeta)}{\partial \zeta} \right)^{\mathsf{T}} J \left( \frac{\partial \phi^{t}(\zeta)}{\partial \zeta} \right) = J
+        \]
+        であり, $\phi^{t}$は正準変換である.
+
+        特に, $X_H$フローは正準$2$-形式$\omega = \sum dp_i \wedge dq_i$を保存するのみならず, 
+        正準$1$-形式$\lambda = \sum p_i d q_i$について
+        $(\phi^{t})^{*}\lambda - \lambda$が完全形式にもなる. (証明にはポアンカレ-カルタンの積分不変式を用いる.)
+
+        このように, 正準変換$\varphi$について$\varphi^{*}\lambda - \lambda$が完全形式になる場合, $\varphi$を完全シンプレクティック写像という.
+
+        \vskip \baselineskip
+        ハミルトン方程式の第一積分を$G$とする. これはつまり, ハミルトン方程式の解$(q(t), p(t))$について
+        \[
+            \frac{d}{d t} G(q(t), p(t)) = \frac{\partial G}{\partial q} \frac{\partial H}{\partial p} - \frac{\partial G}{\partial p} \frac{\partial H}{\partial q} = 0
+        \]
+        を意味する. ハミルトンベクトル場で書けば$X_H G = 0$である.
+        そこで, ポアソン括弧$\{\cdot , \cdot\}$を
+        \[
+            \{F , G\} := X_F G = \langle \nabla G, J \nabla F\rangle
+        \]
+        で定義する. 局所座標で書けば
+        \[
+            \{F , G\} = \sum \frac{\partial G}{\partial q_i} \frac{\partial F}{\partial p_i} - \frac{\partial G}{\partial p_i} \frac{\partial F}{\partial q_i}
+        \]
+        である. 明らかに$\{G, F\} = - \{F, G\}$である.
+        また, 正準変換$\varphi$に対して$\{F, G\} \circ \varphi = \{F\circ \varphi, G\circ \varphi\}$が成り立つ.
+
+    \section{オイラー-ラグランジュ方程式に関するネーターの定理}
+    $M$を$n$次元可微分多様体とする.
+    $\{\varphi^{t}\}_{t \in \mathbb{R}}$を$M$上の$1$パラメータ変換群, つまり
+    \begin{enumerate}[(i)]
+        \item 各$t$で$\varphi^{t}: M \rightarrow M$が微分同相で,
+        \item $\varphi^{0} = id, \varphi^{t} \circ \varphi^{s} = \varphi^{s + t}, (\varphi^{t})^{-1} = \varphi^{-t}$を満たし, 
+        \item $TM \ni (t, q) \mapsto \varphi^{t}(q) \in M$は$C^{\infty}$級写像
+    \end{enumerate}
+    となるものとする.
+
+    このとき, 元の$M$上の$1$パラメータ変換群$\{\varphi^{t}\}_{t}$から誘導される
+    接バンドル$TM$上の$1$パラメータ変換群$\{\Phi^{t}\}_{t}$を次で定める:
+    \[
+        \Phi^{t}(q, v) = (\varphi^{t}(q), (d \varphi^{t})_{q}(v)).
+    \]
+    (実際,
+        \[
+            \Phi^{t} \circ \Phi^{s}(q, v) = \Phi^{s}(\varphi^{t}(q), (d \varphi^{t})_{q}(v) ) = (\varphi^{s}(\varphi^{t}(q)), (d\varphi^{s})_{\varphi^{t}(q)} ((d \varphi^{t})_{q} (v))) = ((\varphi^{s + t}(q)), (d\varphi^{s + t})_{q}(v)) = \Phi^{s + t}(q, v)
+        \]
+        であるから$1$パラメータ変換群になっている.
+    )
+
+    $M$上のベクトル場$X$が$1$パラメータ変換群$\{\varphi^{t}\}_{t}$の無限小変換であるとは,
+    任意の関数$f: M \rightarrow \mathbb{R}$に対し, $X_{q} \in T_{q} M$が
+    \[
+        X_{q}(f) = \left.\frac{d}{dt} f(\varphi^{t}(q))\right|_{t = 0}
+    \]
+    を満たすことである. ($\mathbb{R} \ni t \mapsto f(\varphi^{t}(q)) \in \mathbb{R}$であることに注意.)
+    これは, 局所座標を使って言い換えれば, 
+    $\displaystyle q = (\xi_1, \cdots, \xi_n), \ \varphi^{t}(\xi) = (x_1(t; \xi), \cdots, x_n(t; \xi)), \ X = \sum X_i \frac{\partial}{\partial x_i}$と書いたときに,
+    \[
+        X_i(\xi) = \left.\frac{d x_i(t; \xi)}{d t}\right|_{t = 0}
+    \]
+    を満たすのと同じであり, このとき$1$パラメータ変換群$x(t; \xi)$はは常微分方程式$\frac{d x}{d t}(t) = X(x(t))$の初期値$\xi$の下での解になる.
+    
+    いま, 「系が対称性を持つ」というのを,
+    ラグランジアン$L: TM \rightarrow \mathbb{R}$がこの$1$パラメータ変換群$\{\Phi^{t}\}_{t}$で不変であること, つまり
+    \[
+        L \circ \Phi^{t}(q, v) = L(q, v)
+    \]
+    を満たすことと定義する.
+
+    ネーターの定理(Noether's theorem)\footnote{たまに綴りがN\"{o}therの本もあるが, Noetherが正しそう.}は, 「系が対称性を持つのならば, 第一積分（保存量）が存在する」ということを述べたものである.
+    \begin{theorem}[ネーター]
+        $TM$上の$1$パラメータ変換群$\{\Phi^{t}\}_{t}$を, 
+        $M$上の $1$パラメータ変換群$\{\varphi^{t}\}_{t}$から誘導されるものとする.
+        関数$L: TM \rightarrow \mathbb{R}$が$\{\Phi^{t}\}_{t}$で不変であるとき,
+        $\{\varphi^{t}\}_{t}$の無限小変換を$X$とすると
+        \[
+            G(q, v) := \langle L'_v(q, v), X_q\rangle
+        \]
+        はオイラー-ラグランジュ方程式の第一積分である.
+    \end{theorem}
+    \begin{proof}
+        上で述べたように, $1$パラメータ変換群$\varphi^{t}(\xi)$は常微分方程式$\frac{dx}{dt} = X(x(t))$の初期値$\xi$の下での解になる.
+        また, 局所座標の下で$(d \varphi^{t})_{\xi}$はヤコビ行列$\displaystyle \left(\frac{\partial x}{\partial \xi}\right)$であるが,
+        これは先の常微分方程式の解$\varphi^{t}(\xi)$に沿った変分方程式$\displaystyle \frac{d}{dt} Y = \left(\frac{\partial X}{\partial \xi}\right) Y$
+        の初期値$Y(0) = E$(単位行列)についての解になる.
+
+        仮定より$L \circ \Phi^{t}$は$t$について不変なので, 任意の$(\xi. \bar{\xi})$について,
+        \begin{align}
+            \left. \frac{d}{d t} L \circ \Phi^{t}(\xi, \bar{\xi})\right|_{t = 0}
+            &= \langle L'_x(\xi, \bar{\xi}), \left. \frac{d}{d t} \varphi^{t}(\xi)\right|_{t = 0} \rangle + \langle L'_v(\xi, \bar{\xi}), \left. \frac{d}{d t} \frac{\partial x(t)}{\partial \xi}\right|_{t = 0}\bar{\xi} \rangle\\
+            &= \langle L'_x(\xi, \bar{\xi}), X_{\xi}\rangle + \langle L'_v(\xi, \bar{\xi}), \left(\frac{\partial X}{\partial \xi}\right)\bar{\xi}\rangle\\
+            &\equiv 0
+        \end{align}
+        となる.
+
+        一方, 初期値$(\xi. \bar{\xi})$とするオイラー・ラグランジュ方程式の解$(x(t), \dot{x}(t))$について,
+        \begin{align}
+            \left. \frac{d}{d t} G(x(t), \dot{x}(t))\right|_{t = 0}
+            &= \left. \frac{d}{d t} \langle L'_v(x(t), \dot{x}(t)), X_{x(t)}\rangle\right|_{t = 0} \\
+            &= \left.\langle \frac{d}{d t} L'_v(x(t), \dot{x}(t)), X_{x(t)}\rangle\right|_{t = 0} + \left.\langle L'_v(x(t), \dot{x}(t)), \frac{d}{d t}  X_{x(t)}\rangle \right|_{t = 0}\\
+            &= \left.\langle L'_{x}(x(t), \dot{x}(t)), X_{x(t)}\rangle\right|_{t = 0} + \left.\langle L'_v(x(t), \dot{x}(t)), \left(\frac{\partial X}{\partial \xi}\right) \dot{x}(t)\rangle \right|_{t = 0}\\
+            &= \langle L'_{x}(\xi, \bar{\xi}), X_{\xi}\rangle + \langle L'_v(\xi, \bar{\xi}), \left(\frac{\partial X}{\partial \xi}\right) \bar{\xi}\rangle
+        \end{align}
+        となる. これは上の式と一致するので, $\displaystyle \left. \frac{d}{d t} G(x(t), \dot{x}(t))\right|_{t = 0} = 0$であり, 
+        $G$はオイラー-ラグランジュ方程式の解に沿って保存される.
+    \end{proof}
+
+    \begin{example}[角運動量保存則]
+        $M = \mathbb{R}^3$として, 中心力場のラグランジアン
+        \[
+            L(x, v) = \frac{m}{2}|v|^2 - U(|x|) \quad (x \in \mathbb{R}^3, v \in T \mathbb{R}^3 \cong \mathbb{R}^3)
+        \]  
+        を考える. 
+        $\mathbb{R}^3$の回転を表す行列$R(t) \in SO(3)$に関して$M$上の$1$パラメータ変換群$\varphi^{t}(x) = R(t) x$
+        を考えると, それから誘導される$TM$上の$1$パラメータ変換群は
+        \[
+            \Phi^{t}(x, v) = (\varphi^{t}(x), (d \varphi^{t})_{x} (v)) = (R(t) x, R(t) v)
+        \]
+        で, $L \circ \Phi^{t}(x, v) = L(Rx, Rv) = L(x, v)$よりラグランジアンは不変である.
+
+        この変換に対応する第一積分を求めよう.
+        $SO(3)$内の$1$パラメータ変換群$R(t)$は
+        \[
+            R_1(t) = 
+            \begin{bmatrix}
+                1 & 0 & 0 \\
+                0 & \cos{t} & - \sin{t} \\
+                0 & \sin{t} & \cos{t}   
+            \end{bmatrix}, 
+            \ 
+            R_2(t) = 
+            \begin{bmatrix}
+                \cos{t} & 0 & \sin{t} \\
+                0 & 1 & 0 \\
+                -\sin{t} & 0 & \cos{t} \\
+            \end{bmatrix}, 
+            \ 
+            R_3(t) = 
+            \begin{bmatrix}
+                \cos{t} & - \sin{t} & 0\\
+                \sin{t} & \cos{t} & 0\\
+                0 & 0 & 1
+            \end{bmatrix}
+        \]
+        の積で書ける.
+        
+        これより, $\xi \mapsto R_j(t) \xi \ (j = 1, 2, 3)$の無限小変換は
+        \[
+            \left. \frac{d}{dt} R_j(t) \xi \right|_{t = 0} = A_j \xi
+        \]
+        である. ただし,
+        \[
+            A_1(t) = 
+            \begin{bmatrix}
+                0 & 0 & 0 \\
+                0 & 0 & - 1 \\
+                0 & 1 & 0   
+            \end{bmatrix}, 
+            \ 
+            A_2(t) = 
+            \begin{bmatrix}
+                0 & 0 & 1 \\
+                0 & 0 & 0 \\
+                -1 & 0 & 0 \\
+            \end{bmatrix}, 
+            \ 
+            A_3(t) = 
+            \begin{bmatrix}
+                0 & - 1 & 0\\
+                1 & 0 & 0\\
+                0 & 0 & 0
+            \end{bmatrix}
+        \]
+        としている.
+        $\xi \mapsto R(t)\xi$の無限小変換は$A_1 \xi, A_2 \xi, A_3 \xi$の和で書ける:
+        \[
+            X_{\xi} = c_1 A_1 \xi + c_2 A_2 \xi +c_3 A_3 \xi.
+        \]
+
+        $L'_{v_i}(x, v) = m v_i $であるから, $R_j(t)$に対応するネーターの定理から
+        \[
+            G_j(x, \dot{x}) = \langle L'_v(x, \dot{x}), X_{x}\rangle = m \dot{x}^{\mathsf{T}} A_j x
+        \]
+        となる. $j = 1, 2, 3$それぞれについて書き下すと,
+        \[
+            G_1(x, v) = m (x_2 \dot{x}_3 - x_3 \dot{x}_2), \ 
+            G_2(x, v) = m (x_3 \dot{x}_1 - x_1 \dot{x}_3), \ 
+            G_3(x, v) = m (x_1 \dot{x}_2 - x_2 \dot{x}_1)
+        \]
+        であり, これは角運動量が第一積分であることを意味している.
+    \end{example}
+
+    \begin{example}[運動量保存則]
+        $n$体問題のラグランジアン
+        \[
+            L(x, v) = \sum_{i} \frac{m_i}{2}|v_i|^2 - \sum_{j \neq i} U_{i, j}(|x_i - x_j|) \quad (x_i \in \mathbb{R}^3, v_i \in T \mathbb{R}^3 \cong \mathbb{R}^3, k = 1, \cdots n)
+        \]
+        について, $e_1 = [1, 0, 0]^{\mathsf{T}}, e_2 = [0, 1, 0]^{\mathsf{T}}, e_3 = [0, 0, 1]^{\mathsf{T}}$として,
+        平行移動に関する$M$上の$1$パラメータ変換群
+        \[
+            \varphi^{t}_k(x) = x + t e_k
+        \]
+        を考えると, 対応する$TM$上の$1$パラメータ変換群$\Phi^{t}(x, v)$は
+        \[
+            \Phi^{t}_{k}(x, v) = (x + t e_k, v)
+        \]
+        となる. これによってラグランジアンは不変である.
+
+        $M$上の$1$パラメータ変換群$\varphi^{t}_k(x)$の無限小変換は$X_{k, x} = e_k$であるから,
+        ネーターの定理から, $P = \sum_{i} m v_i \in \mathbb{R}^3$として,
+        \[
+            G_k(x, v) = \langle L'_v(x, v), X_{k, x} \rangle = \langle \sum_{i} m v_i, e_k \rangle = P_k
+        \]
+        である. これは運動量保存則を表している.
+    \end{example}
+
+    \section{ハミルトン方程式に関するネーターの定理}
+        ハミルトニアンは時間によらないものとする.
+        まず, 次の事実を確認しておく.
+        \begin{proposition}
+            $\{\Psi^{t}\}_{t}$が$T^{*}M$上の$1$パラメータ変換群で, $\Psi^{t}$が完全シンプレクティックであるならば,
+            ある$T^{*}M$上の関数$G$が存在し, $\Psi^{t}$が$G$をハミルトニアンとするハミルトンベクトル場$X_G$のフローになっている.
+        \end{proposition}
+        \begin{proof}
+            ベクトル場$X$を$\Psi^{t}$の無限小変換とする:
+            \[
+                \left.\frac{d}{d t} \Psi^{t}(z)\right|_{t = 0} = X_z.
+            \]
+            正準$1$-形式$\lambda$をベクトル場$X$に沿ってリー微分すると, その定義から
+            \[
+                L_{X} \lambda = \left.\frac{d}{d t} ((\Psi^{t})^{*} \lambda - \lambda)\right|_{t = 0}
+            \]
+            である.
+            いま, 完全シンプレクティック性から, $(\Psi^{t})^{*} \lambda - \lambda = dF, F(0) = 0$となる関数$F(t)$が存在するので,
+            \[
+                L_{X} \lambda = \left.dF'_t\right|_{t = 0}
+            \]
+            一方, $\omega = d \lambda$とカルタンの公式から$L_{X} \lambda = \iota_{X} \omega + d (\iota_{X} \lambda)$であり, 
+            \[
+                \left.dF'_t\right|_{t = 0} = \iota_{X} \omega + d (\iota_{X} \lambda)
+            \]
+            である. $G:= \iota_{X} \lambda - F'_{t}|_{t = 0}$とすると, 
+            \[
+                \iota_{X} \omega = - d G
+            \]
+            となる. $X$がハミルトンベクトル場$X_G$にほかならないことを意味している.
+        \end{proof}
+
+        さて, ハミルトン系に対するネーターの定理は, ラグランジュ系のときより一般化された形で次のように述べられる.
+        \begin{theorem}[ネーター]
+            ハミルトニアン$H$が$T^{*}M$上の完全シンプレクティックな$1$パラメータ変換群$\{\Psi^{t}\}$について不変, 
+            つまり$H \circ \Psi^{t} = H$であるとすると,
+            $\{\Psi^{t}\}$の無限小変換はハミルトンベクトル場であり, そのハミルトニアンは$X_{H}$の第一積分である.
+        \end{theorem}
+        \begin{proof}
+            先の命題から, $\{\Psi^{t}\}$に対してある関数$G$が存在し, $\{\Psi^{t}\}$は$X_G$のフローになっている.
+            $H \circ \Psi^{t} = H$より$H$は$X_{G}$の第一積分であり, $X_G H = 0$である.
+            ところが,
+            \[
+                X_G H = \{G, H\} = - \{H, G\} = X_{H} G
+            \]
+            であるから, $X_{H} G = 0$であり$G$は$X_{H}$の第一積分である.
+        \end{proof}
+
+        $M$上の$1$パラメータ変換群$\{\varphi^{t}\}$については, $T^{*}M$上の$1$パラメータ変換群$\{\Psi^{t}\}$を
+        \[
+            \Psi^{t}(q, p) = (\varphi^{t}(q), \left(\left(\frac{\partial \varphi^{t}}{\partial q}\right)^{-1}\right)^{\mathsf{T}} p )
+        \]  
+        で定義すれば, $\lambda = p^{\mathsf{T}} d q$であるから,
+        \[
+            (\Psi^{t})^{*}\lambda =  p^{\mathsf{T}} \left(\frac{\partial \varphi^{t}}{\partial q}\right)^{-1} \left(\frac{\partial \varphi^{t}}{\partial q}\right) d q = \lambda
+        \]
+        であり, これより$\Psi^{t}$は完全シンプレクティックであるからネーターの定理が適用できる.
+    \begin{thebibliography}{10}
+    \nocite{*}
+	\bibitem{ItoODE} 伊藤 秀一. 常微分方程式と解析力学, 共立出版(1998).
+    \bibitem{AKN}V. Arnol'd, V. Kozlov, A. Neishtadt, Mathematical Aspects of Classical and Celestial Mechanics, Springer-Verlag Berlin Heidelberg (2006).
+\end{thebibliography}
+\end{document}
