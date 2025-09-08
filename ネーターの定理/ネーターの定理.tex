@@ -759,18 +759,82 @@
             (\Psi^{t})^{*}\lambda =  p^{\mathsf{T}} \left(\frac{\partial \varphi^{t}}{\partial q}\right)^{-1} \left(\frac{\partial \varphi^{t}}{\partial q}\right) d q = \lambda
         \]
         であり, これより$\Psi^{t}$は完全シンプレクティックであるからネーターの定理が適用できる.
+        このとき, 第一積分$G$は無限小変換$X = \frac{d}{dt} \Psi^{t}|_{t = 0}$として
+        $G = \iota_{X} \lambda - F'_{t}|_{t = 0}$で与えられたが, 
+        今回は$(\Psi^{t})^{*}\lambda - \lambda = 0$なので$F = 0$であり,
+        また$\lambda = \sum p_i dq_i$なので, $X = X_q \frac{\partial}{\partial q} + X_p \frac{\partial}{\partial p}$と書けば
+        \[
+            G = \iota_{X} \lambda = \langle p, X_q\rangle
+        \]
+        である. $X_q$は$\varphi^{t}$の無限小変換であり, またルジャンドル変換から$p = L'_{v}$なので, $G$はラグランジュ系のネーターの定理から導かれる第一積分と同じものである.
+
+        \begin{example}
+            角運動量保存則の導出をハミルトニアンの場合でも確認しておこう.
+
+            今回は回転行列$R_3(t)$についてだけ考える. (一般の場合も同様.)
+            $M$上の$1$パラメータ変換群$\varphi^{t}(x) = R_3(t) x$に対応する$T^{*}M$上の完全シンプレクティック$1$パラメータ変換群$\Psi^{t}(x, p)$は,
+            \[
+                \Psi^{t}(x, p) = (R_3(t) x, R_3(-t)^{\mathsf{T}} p)
+            \]
+            であらわされる.
+            無限小変換$X = \frac{d}{dt} \Psi^{t}|_{t = 0}$は$X_{(x, p)}(A_3 x, - A_3^{\mathsf{T}} p)$なので, 
+            \[
+                    G_3 = \langle p, X_q \rangle = p^{\mathsf{T}} A_3 x = x_1 p_2 - x_2 p_1
+            \]
+            となる. ルジャンドル変換$p = L'_v = m \dot{x}$よりこれは角運動量である.
+        \end{example}
 
         \begin{example}[ラプラス-ルンゲ-レンツベクトル]
-            ケプラー問題のハミルトニアン
+            $M = \mathbb{R}^3$の下で, ケプラー問題のハミルトニアン
             \[
-                H(q, p) = \frac{1}{2} |p|^2 - \frac{1}{|x|}
+                H(q, p) = \frac{1}{2} |p|^2 - \frac{1}{|q|}
             \]
             を考える.
-            (後でラプラス-ルンゲ-レンツベクトルと$SO(4)$の対応を書く.)
+            これは中心力場であるから角運動量保存則は当然成り立つが, 
+            ハミルトニアン$H$, 角運動量$G$とは別の第一積分であるラプラス-ルンゲ-レンツベクトル$R$が存在する:
+            これは局所座標の下で第$i$成分が
+            \[
+                (R(q, p))_i = - (q \cdot p) p_i + |p|^2 q_i - \frac{q_i}{|q|}
+            \]
+            で表されるものである.
+            これは$SO(4)$に由来する対称性から導かれる.
+    \vskip \baselineskip
+            ラプラス-ルンゲ-レンツベクトルが第一積分であることを\cite{Ku82}を参考にエネルギーが負(簡単のため, $H = -1/2$)の場合について導こう.
+            以下, $M = \mathbb{R}^n$としてより一般の場合について考える.
+
+            \red{TO DO: Moserの正則化変換を用いてラプラス-ルンゲ-レンツベクトルが第一積分であることを導出する.}
+
+            まず, 特異点$|q| = 0$を解消するときに用いる時間変数変換
+            \[
+                \frac{d s}{d t} = |q|^{-1}
+            \]
+            を考える. $\square ' = \frac{d}{d s} \square$とすればベクトル場は
+            \[
+                q_i' = |q|\frac{\partial H}{\partial p_i},  \ p_i' = - |q|\frac{\partial H}{\partial p_i}
+            \]
+            である. 
+            これ自体はハミルトン系ではなくなるが, そのベクトル場は$|q| X_{H}$と書けて,
+            特に等エネルギー曲面$\{H = -1/2\}$上のフローは別のハミルトニアン
+            \[
+                K = |q|\left(H + \frac{1}{2}\right) + 1 = \frac{|q|}{2}(|p|^2 + 1)
+            \]
+            の等位集合$\{K = 1\}$の上でのフローと一致する.
+            単位ベクトル$e$に対して, $(e, p) \mapsto (q(e, p), p) = (2(|p|^2 + 1)^{-1}, p)$が$\mathbb{S}^{n - 1} \times \mathbb{R}^{n}$から$\{K = 1\}$
+            への微分同相写像を定めるので, $\{K = 1\}$, ひいては$\{H = -1/2\}$はコンパクトでない.
+
+            ここで, Moserの正則化変換と呼ばれる変換を導入する.
+            $\bar{q} = (q_0, q), \bar{p} = (p0, p) \in \mathbb{R}^{n+1}$として, $\langle \bar{q}, \bar{p}\rangle = q_0 p_0 + q \cdot p$とする.
+            $\norm{\bar{q}} = \langle q, p\rangle^{1/2}$として
+            \[
+                T^{+}\mathbb{S}^{n} = \{(\bar{q}, \bar{p}) \in \mathbb{R}^{2(n+1)} | \norm{q} = 1, \langle p, q \rangle = 0, p \neq 0\}
+            \]
+            として$\mathbb{R}^{2(n + 1)}$の部分多様体を定める. これは$T \mathbb{S}^{n}$からゼロ切断を除いたものである.
+            $\lambda_1 = \bar{p} d\bar{q}$とすると, $d \lambda_1 |_{T^{+}\mathbb{S}^{n}}$は非退化になる.
         \end{example}
     \begin{thebibliography}{10}
     \nocite{*}
 	\bibitem{ItoODE} 伊藤 秀一. 常微分方程式と解析力学, 共立出版(1998).
-    \bibitem{AKN}V. Arnol'd, V. Kozlov, A. Neishtadt, Mathematical Aspects of Classical and Celestial Mechanics, Springer-Verlag Berlin Heidelberg (2006).
+    \bibitem{AKN} V. Arnol'd, V. Kozlov, A. Neishtadt, Mathematical Aspects of Classical and Celestial Mechanics, Springer-Verlag Berlin Heidelberg (2006).
+    \bibitem{Ku82} M. Kummer, On the Regularization of the Kepler Problem, Commun. Math. Phys, \textbf{84}, 133-152 (1982)
 \end{thebibliography}
 \end{document}
