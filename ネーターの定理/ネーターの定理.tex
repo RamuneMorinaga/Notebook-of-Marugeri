@@ -900,8 +900,15 @@
                     $\langle \bar{p}, \bar{q}\rangle = 0$より$\langle p, q\rangle = - p_0 q_0$ である.
                     \begin{align}
                         \sum y_i dx_i &= \sum (\norm{\bar{p}} + p_0)^{-1} p_i \ d ((\norm{\bar{p}} + p_0) q_i - q_0 p_i) \\
-                        &= \sum (\norm{\bar{p}} + p_0)^{-1} p_i ((\norm{\bar{p}} + p_0) d q_i + q_i d (\norm{\bar{p}} + p_0) - d (q_0 p_i))\\
-                        &= \text{\red{あとで計算する}}
+                        &= \sum_{i} (\norm{\bar{p}} + p_0)^{-1} p_i \left[ (\norm{\bar{p}} + p_0) d q_i + \frac{\norm{\bar{p}} + p_0}{\norm{\bar{p}}} q_i d p_0 + \sum_{j}\frac{q_i}{\norm{\bar{p}}} p_j d p_j - q_0 d p_i - p_i d q_0 \right] \\
+                        &= \sum_{i} p_i d q_i  \red{+ p_0 d q_0} + \left(\sum_{i}  p_i q_i\right) \frac{1}{\norm{\bar{p}}}d p_0 + \sum_{i} \frac{p_i q_i}{\norm{\bar{p}}(\norm{\bar{p}} + p_0)}\left(\sum_{j} p_j d p_j\right) \\
+                        & \quad \quad \red{- p_0 d q_0}  - \frac{q_0}{\norm{\bar{p}} + p_0} \left(\sum_{i} p_i d p_i\right) - \sum_{i} \frac{p_i^2}{\norm{\bar{p}} + p_0} d q_0 \\
+                        &= \bar{p} d \bar{q} -\frac{p_0 q_0}{\norm{\bar{p}}}d p_0 - \frac{p_0 q_0}{\norm{\bar{p}}(\norm{\bar{p}} + p_0)}\left(\norm{\bar{p}} d \norm{\bar{p}} - p_0 d p_0\right) \\
+                        &\quad \quad - p_0 d q_0 - \frac{q_0}{\norm{\bar{p}} + p_0} \left(\norm{\bar{p}} d \norm{\bar{p}} - p_0 d p_0\right) - \sum_{i} \frac{p_i^2}{\norm{\bar{p}} + p_0} d q_0 \\
+                        &=  \bar{p} d \bar{q} - \frac{\norm{\bar{p}} + p_0}{\norm{\bar{p}} + p_0} q_0 d \norm{\bar{p}} + \frac{- p_0 (\norm{\bar{p}} + p_0) + p_0^2 + p_0 \norm{\bar{p}}}{\norm{\bar{p}}(\norm{\bar{p}} + p_0)}q_0 d p_0 
+                         - \frac{p_0(\norm{\bar{p}} + p_0) + \left(\sum_{i} p_i^2 \right)}{\norm{\bar{p}} + p_0}d q_0 \\
+                        &= \bar{p} d\bar{q} - q_0 d \norm{\bar{p}} - \norm{\bar{p}}d q_0 \\
+                        &= \bar{p} d\bar{q} - d (q_0 \norm{\bar{p}})
                     \end{align}
                     したがって, 
                     \[
@@ -910,7 +917,7 @@
                 \end{enumerate}
             \end{proof}
 
-            Prop.より$\mu^{-1}(\{K = 1\}) = (T^{1} \mathbb{S}^n)' = T^{1} \mathbb{S}^n \cap \mathbb{R}^{2(n+1)}_{*}$となる.
+            Prop.2 より$\mu^{-1}(\{K = 1\}) = (T^{1} \mathbb{S}^n)' = T^{1} \mathbb{S}^n \cap \mathbb{R}^{2(n+1)}_{*}$となる.
             ただし, $T^{1} \mathbb{S}^{n}$は$\mathbb{S}^{n}$の単位接ベクトルのなすバンドルである.
             $(T^{1} \mathbb{S}^{n})'$に含まれない$T^{1} \mathbb{S}^{n}$の元は$(\bar{q}, \bar{p}) = (q_0, q, p_0, p) = (0, q, -1, 0)$であるが, 
             元のケプラー問題の特異点$x = 0$に対応する.
@@ -918,6 +925,8 @@
 
             ハミルトン系$(T^{+}\mathbb{S}^{n}, \omega_1 = d \lambda_1|_{T^{+} \mathbb{S}^{n}}, K_1 = \norm{p}|_{T^{+} \mathbb{S}^n})$
             を考えれば, その等位集合$\{K_1 = 1\}$上のフローは時間変換後の$\{K_0 = 1\}$上のフローとMoser写像$\mu$により写り変わる.
+            このフローを考えるために, より一般に$\mathbb{R}^{2(n+1)}$上のハミルトニアン$f$に対し, 
+            それを$T^{+} \mathbb{S}^{n}$に制限した$\hat{f}$がつくる$T^{+} \mathbb{S}^{n}$上のフローがどうなるか確認しておく.
 
         \end{example}
     \begin{thebibliography}{10}
