@@ -787,49 +787,138 @@
         \begin{example}[ラプラス-ルンゲ-レンツベクトル]
             $M = \mathbb{R}^3$の下で, ケプラー問題のハミルトニアン
             \[
-                H(q, p) = \frac{1}{2} |p|^2 - \frac{1}{|q|}
+                H(x, y) = \frac{1}{2} |y|^2 - \frac{1}{|x|}
             \]
             を考える.
             これは中心力場であるから角運動量保存則は当然成り立つが, 
             ハミルトニアン$H$, 角運動量$G$とは別の第一積分であるラプラス-ルンゲ-レンツベクトル$R$が存在する:
             これは局所座標の下で第$i$成分が
             \[
-                (R(q, p))_i = - (q \cdot p) p_i + |p|^2 q_i - \frac{q_i}{|q|}
+                (R(x, y))_i = - (x \cdot y) p_i + |y|^2 x_i - \frac{x_i}{|x|}
             \]
             で表されるものである.
             これは$SO(4)$に由来する対称性から導かれる.
     \vskip \baselineskip
             ラプラス-ルンゲ-レンツベクトルが第一積分であることを\cite{Ku82}を参考にエネルギーが負(簡単のため, $H = -1/2$)の場合について導こう.
-            以下, $M = \mathbb{R}^n$としてより一般の場合について考える.
+            以下, $M = \mathbb{R}^n$としてより一般の場合($n \geq 2$)について考える.
 
             \red{TO DO: Moserの正則化変換を用いてラプラス-ルンゲ-レンツベクトルが第一積分であることを導出する.}
 
-            まず, 特異点$|q| = 0$を解消するときに用いる時間変数変換
+            まず, 特異点$|x| = 0$を解消するときに用いる時間変数変換
             \[
-                \frac{d s}{d t} = |q|^{-1}
+                \frac{d s}{d t} = |x|^{-1}
             \]
             を考える. $\square ' = \frac{d}{d s} \square$とすればベクトル場は
             \[
-                q_i' = |q|\frac{\partial H}{\partial p_i},  \ p_i' = - |q|\frac{\partial H}{\partial p_i}
+                x_i' = |x|\frac{\partial H}{\partial y_i},  \ y_i' = - |x|\frac{\partial H}{\partial y_i}
             \]
             である. 
             これ自体はハミルトン系ではなくなるが, そのベクトル場は$|q| X_{H}$と書けて,
             特に等エネルギー曲面$\{H = -1/2\}$上のフローは別のハミルトニアン
             \[
-                K = |q|\left(H + \frac{1}{2}\right) + 1 = \frac{|q|}{2}(|p|^2 + 1)
+                K_0 = |x|\left(H + \frac{1}{2}\right) + 1 = \frac{|x|}{2}(|y|^2 + 1)
             \]
             の等位集合$\{K = 1\}$の上でのフローと一致する.
-            単位ベクトル$e$に対して, $(e, p) \mapsto (q(e, p), p) = (2(|p|^2 + 1)^{-1}, p)$が$\mathbb{S}^{n - 1} \times \mathbb{R}^{n}$から$\{K = 1\}$
+            単位ベクトル$e$に対して, $(e, y) \mapsto (x(e, p), y) = (2(|x|^2 + 1)^{-1}, y)$が$\mathbb{S}^{n - 1} \times \mathbb{R}^{n}$から$\{K = 1\}$
             への微分同相写像を定めるので, $\{K = 1\}$, ひいては$\{H = -1/2\}$はコンパクトでない.
 
             ここで, Moserの正則化変換と呼ばれる変換を導入する.
-            $\bar{q} = (q_0, q), \bar{p} = (p0, p) \in \mathbb{R}^{n+1}$として, $\langle \bar{q}, \bar{p}\rangle = q_0 p_0 + q \cdot p$とする.
+            $\bar{q} = (q_0, q), \bar{p} = (p_0, p) \in \mathbb{R}^{n+1}$として, $\langle \bar{p}, \bar{q}\rangle = p_0 q_0 + p \cdot q$とする.
             $\norm{\bar{q}} = \langle q, p\rangle^{1/2}$として
             \[
-                T^{+}\mathbb{S}^{n} = \{(\bar{q}, \bar{p}) \in \mathbb{R}^{2(n+1)} | \norm{q} = 1, \langle p, q \rangle = 0, p \neq 0\}
+                T^{+}\mathbb{S}^{n} = \{(\bar{q}, \bar{p}) \in \mathbb{R}^{2(n+1)} | \norm{\bar{q}} = 1, \langle \bar{p}, \bar{q} \rangle = 0, \bar{p} \neq 0\}
             \]
             として$\mathbb{R}^{2(n + 1)}$の部分多様体を定める. これは$T \mathbb{S}^{n}$からゼロ切断を除いたものである.
             $\lambda_1 = \bar{p} d\bar{q}$とすると, $d \lambda_1 |_{T^{+}\mathbb{S}^{n}}$は非退化になる.
+            実際, たとえば$q_0 \neq 0$の範囲で, 
+            $\displaystyle q_0 = \sqrt{1 - |q|^2}, \ p_0 = q_0^{-1} (p \cdot q) = \frac{p \cdot q}{\sqrt{1 - |q|^2}}$であるから, 
+            \begin{align}
+                d \lambda_1 |_{T^{+}\mathbb{S}^{n}}
+                &= d p_0 \wedge d q_0 + \sum d p_i \wedge d q_i \\
+                &= d \left( \frac{p \cdot q}{\sqrt{1 - |q|^2}} \right) \wedge d(\sqrt{1 - |q|^2}) + \sum d p_i \wedge d q_i \\
+                &= \sum \left( - \frac{q_i^2}{1 - |q|^2}\right) d p_i \wedge d q_i 
+            \end{align}
+            であり, $q_0 \neq 0$の下では$|q| \neq 0$なので$d \lambda_1 |_{T^{+}\mathbb{S}^{n}} \neq 0$となる.
+            他の$q_k \neq 0$の下でも同様である.
+
+            $\mathbb{R}^{2(n+1)}_{*} := \{(\bar{q}, \bar{p}) \in \mathbb{R}^{2(n+1)} | p_0 + \norm{\bar{p}} \neq 0\}$
+            として, 写像$\bar{\mu} : \mathbb{R}^{2(n+1)}_{*} \rightarrow \mathbb{R}^{2n}$を
+            \[
+                (x, y) = \bar{\mu}(\bar{q}, \bar{p}) = ((\norm{\bar{p}} + p_0) q - q_0 p, \ (\norm{\bar{p}} + p_0)^{-1} p)
+            \]
+            であるとする. 
+            $(T^{+} \mathbb{S}^{n})' := T^{+} \mathbb{S}^{n} \cap \mathbb{R}^{2(n+1)}_{*}$として,
+            Moser写像$\mu: (T^{+} \mathbb{S}^{n})' \rightarrow (\mathbb{R}^{n} \backslash \{0\}) \times \mathbb{R}^{n}$
+            を$\bar{\mu}$の$T^{+} \mathbb{S}^{n}$への制限として定める. 
+            
+            \begin{proposition}
+                Moser写像$\mu: (T^{+} \mathbb{S}^{n})' \rightarrow (\mathbb{R}^{n} \backslash \{0\}) \times \mathbb{R}^{n}$は次の(i)-(iii)を満たす:
+                \begin{enumerate}[(i)]
+                   \item $\mu$は微分同相写像,
+                   \item $K_1 = K_0 \circ \mu = \norm{\bar{p}}$,
+                   \item $\mu^{*} d \lambda_{0} = d \lambda_1 |_{(T^{+} \mathbb{S}^{n})'}$, ただし$\lambda_0 =  y d x, \ \lambda_1 = \bar{p} d \bar{q}$.
+                \end{enumerate}
+            \end{proposition}
+            \begin{proof}
+                \begin{enumerate}[(i)]
+                    \item 逆関数$\mu^{-1}: (x, y) \mapsto (\bar{q}, \bar{p})$は
+                    \begin{align}
+                        q_0 &= - 2 (x \cdot y)[|x|(1 + |y|^2)]^{-1}, \ q = [|x|(1 + |y|^2)]^{-1}((1 + |y|^2)x - 2 (x \cdot y) y), \\
+                        p_0 &= \frac{1}{2}|x|(1 - |y|^2), \ p = |x|y
+                    \end{align}
+                    で与えられる. 確かに,
+                    \begin{align}
+                        \norm{\bar{q}}^2 &= [|x|(1 + |y|^2)]^{-2}(4 (x \cdot y)^2 + \sum ((1 + |y|^2)x_i - 2 (x \cdot y) y_i)^2 )\\
+                        &= [|x|(1 + |y|^2)]^{-2}(4 (x \cdot y)^2 + |x|^2(1 + |y|^2)^2 - 4(x \cdot y)^2 (1 + |y|^2) + 4 (x \cdot y)^2 |y|^2  ) \\
+                        &= 1, \\
+                        \langle \bar{p}, \bar{q}\rangle &= (\frac{1}{2}|x|(1 - |y|^2)) (- 2 (x \cdot y)[|x|(1 + |y|^2)]^{-1}) + (x \cdot y) - 2 (x \cdot y)|y|^2(1 + |y|^2)^{-1} \\
+                        &=  - (x \cdot y)(1 - |y|^2)(1 + |y|^2)^{-1} + (x \cdot y) (1 - 2|y|^2(1 + |y|^2)^{-1}) \\
+                        &= (x \cdot y)(1 + |y|^2)^{-1}(- (1 - |y|^2) + 1 + |y|^2 - 2 |y|^2)\\
+                        &= 0, \\
+                        p_0 + \norm{p} &= \frac{1}{2}|x|\sqrt{(1 - |y|^2)^2 + 4 |y|^2}^{1/2} + \frac{1}{2}|x|(1 - |y|^2) \\
+                        &= \frac{1}{2}|x|(1 + |y|^2) + \frac{1}{2}|x|(1 - |y|^2) \\
+                        &= |x| \neq 0
+                    \end{align}
+                    であるから, $\mu^{-1}(x, y) \in (T^{+} \mathbb{S}^{n})'$であり, 
+                    \begin{align}
+                        (\norm{\bar{p}} + p_0) q - q_0 p &= |x|([|x|(1 + |y|^2)]^{-1}((1 + |y|^2)x - 2 (x \cdot y) y)) + 2 (x \cdot y)[|x|(1 + |y|^2)]^{-1} |x|y \\
+                        &= x - 2 (x \cdot y)(1 + |y|^2)^{-1} y + 2 (x \cdot y)(1 + |y|^2)^{-1} y \\
+                        &= x \\
+                        (\norm{\bar{p}} + p_0)^{-1} p &= \left(\frac{1}{2}|x|\sqrt{(1 - |y|^2)^2 + 4 |y|^2}^{1/2} + \frac{1}{2}|x|(1 - |y|^2)\right)^{-1} |x|y \\
+                        &= y
+                    \end{align}
+                    となる. $\mu, \mu^{-1}$の可微分性は明らか.
+                    \item $|x| = \norm{\bar{p}} + p_0, |y| = (|\norm{\bar{p}} + p_0|)^{-1}|p|$より, 
+                    \begin{align}
+                        K(x(\bar{q}, \bar{p}), y(\bar{q}, \bar{p})) &= \frac{|x|}{2}(|y|^2 + 1)\\
+                        &= \frac{\norm{\bar{p}} + p_0}{2}\left(\frac{|p|^2}{(\norm{\bar{p}} + p_0)^2} + 1\right) \\
+                        &= \frac{\norm{\bar{p}} + p_0}{2} \frac{|p|^2 + \norm{\bar{p}}^2 + p_0^2 + 2 p_0 \norm{\bar{p}}}{(\norm{\bar{p}} + p_0)^2} \\
+                        &= \frac{\norm{\bar{p}} + p_0}{2} \frac{2 (\norm{\bar{p}}^2 + p_0 ) \norm{\bar{p}}}{(\norm{\bar{p}} + p_0)^2} \\
+                        &= \norm{\bar{p}}.
+                    \end{align}
+                    \item $|p|^2 = \norm{\bar{p}}^2 - p_0^2$より$\sum p_i d p_i = \norm{\bar{p}} d \norm{\bar{p}} - p_0 d p_0$, 
+                    $\langle \bar{p}, \bar{q}\rangle = 0$より$\langle p, q\rangle = - p_0 q_0$ である.
+                    \begin{align}
+                        \sum y_i dx_i &= \sum (\norm{\bar{p}} + p_0)^{-1} p_i \ d ((\norm{\bar{p}} + p_0) q_i - q_0 p_i) \\
+                        &= \sum (\norm{\bar{p}} + p_0)^{-1} p_i ((\norm{\bar{p}} + p_0) d q_i + q_i d (\norm{\bar{p}} + p_0) - d (q_0 p_i))\\
+                        &= \text{\red{あとで計算する}}
+                    \end{align}
+                    したがって, 
+                    \[
+                        \mu^{*} d \lambda_0 = d \left(\sum y_i d x_i\right) = d \left(\bar{p} d \bar{q} - d(q_0 \norm{p})\right) = d \bar{p} \wedge d\bar{q} = d \lambda_1.
+                    \]
+                \end{enumerate}
+            \end{proof}
+
+            Prop.より$\mu^{-1}(\{K = 1\}) = (T^{1} \mathbb{S}^n)' = T^{1} \mathbb{S}^n \cap \mathbb{R}^{2(n+1)}_{*}$となる.
+            ただし, $T^{1} \mathbb{S}^{n}$は$\mathbb{S}^{n}$の単位接ベクトルのなすバンドルである.
+            $(T^{1} \mathbb{S}^{n})'$に含まれない$T^{1} \mathbb{S}^{n}$の元は$(\bar{q}, \bar{p}) = (q_0, q, p_0, p) = (0, q, -1, 0)$であるが, 
+            元のケプラー問題の特異点$x = 0$に対応する.
+            これより, $(T^{1} \mathbb{S}^{n})'$の代わりに$T^{1} \mathbb{S}^{n}$を考えてよい.
+
+            ハミルトン系$(T^{+}\mathbb{S}^{n}, \omega_1 = d \lambda_1|_{T^{+} \mathbb{S}^{n}}, K_1 = \norm{p}|_{T^{+} \mathbb{S}^n})$
+            を考えれば, その等位集合$\{K_1 = 1\}$上のフローは時間変換後の$\{K_0 = 1\}$上のフローとMoser写像$\mu$により写り変わる.
+
         \end{example}
     \begin{thebibliography}{10}
     \nocite{*}
