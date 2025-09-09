@@ -61,7 +61,7 @@
 
 \title{ネーターの定理}
 \begin{document}
-\date{2025年1月23日}
+\date{2025年9月10日}
 \author{まるげり}
 \setcounter{section}{-1}
 \maketitle
@@ -446,7 +446,7 @@
         \]
         である. こちらをハミルトンベクトル場$X_{H}$の定義とすることも多い.
         
-        特に, ハミルトニアン$H$が時間$t$によらずに定まるとき, $H(q, p)$はハミルトン方程式の解に沿って不変である.
+        ハミルトニアン$H$が時間$t$によらずに定まるとき, $H(q, p)$はハミルトン方程式の解に沿って不変である.
         実際,
         \[
             \frac{d}{d t} H(q(t), p(t)) = \frac{\partial H}{\partial q} \dot{q} + \frac{\partial H}{\partial p} \dot{p} = \frac{\partial H}{\partial q} \frac{\partial H}{\partial p} - \frac{\partial H}{\partial p} \frac{\partial H}{\partial q} = 0
@@ -831,15 +831,19 @@
             として$\mathbb{R}^{2(n + 1)}$の部分多様体を定める. これは$T \mathbb{S}^{n}$からゼロ切断を除いたものである.
             $\lambda_1 = \bar{p} d\bar{q}$とすると, $d \lambda_1 |_{T^{+}\mathbb{S}^{n}}$は非退化になる.
             実際, たとえば$q_0 \neq 0$の範囲で, 
-            $\displaystyle q_0 = \sqrt{1 - |q|^2}, \ p_0 = q_0^{-1} (p \cdot q) = \frac{p \cdot q}{\sqrt{1 - |q|^2}}$であるから, 
+            $\displaystyle q_0 = \sqrt{1 - |q|^2}, \ p_0 = - q_0^{-1} (p \cdot q) = \frac{- p \cdot q}{\sqrt{1 - |q|^2}}$であるから, 
             \begin{align}
                 d \lambda_1 |_{T^{+}\mathbb{S}^{n}}
                 &= d p_0 \wedge d q_0 + \sum d p_i \wedge d q_i \\
-                &= d \left( \frac{p \cdot q}{\sqrt{1 - |q|^2}} \right) \wedge d(\sqrt{1 - |q|^2}) + \sum d p_i \wedge d q_i \\
-                &= \sum \left( - \frac{q_i^2}{1 - |q|^2}\right) d p_i \wedge d q_i 
+                &= d \left( \frac{- p \cdot q}{\sqrt{1 - |q|^2}} \right) \wedge d(\sqrt{1 - |q|^2}) + \sum d p_i \wedge d q_i \\
+                &= \sum \left( 1 + \frac{q_i^2}{1 - |q|^2}\right) d p_i \wedge d q_i  \\
+                &= \sum \left(\frac{1 - |q|^2 + q_i^2}{1 - |q|^2}\right) d p_i \wedge d q_i
             \end{align}
-            であり, $q_0 \neq 0$の下では$|q| \neq 0$なので$d \lambda_1 |_{T^{+}\mathbb{S}^{n}} \neq 0$となる.
-            他の$q_k \neq 0$の下でも同様である.
+            である. もしすべての$i = 1, \cdots, n$について$1 - |q|^2 + q_i^2 = 0$となるなら,
+            $1 = |q|^2 - q_i^2 \leq |q|^2 \leq 1$ より$|q|^2 = 1$となるが, このとき$q_i ^2 = -1 + |q|^2 = 0$となってしまい
+            $|q| = 0$に矛盾. したがって, ある$i$があって$1 - |q|^2 + q_i^2 \neq 0$となるので, 
+            $q_0 \neq 0$の下で$d \lambda_1 |_{T^{+}\mathbb{S}^{n}} \neq 0$となる.
+            他の$q_k \neq 0$の下でも同様の議論で非退化性が導かれる.
 
             $\mathbb{R}^{2(n+1)}_{*} := \{(\bar{q}, \bar{p}) \in \mathbb{R}^{2(n+1)} | p_0 + \norm{\bar{p}} \neq 0\}$
             として, 写像$\bar{\mu} : \mathbb{R}^{2(n+1)}_{*} \rightarrow \mathbb{R}^{2n}$を
@@ -927,7 +931,10 @@
             を考えれば, その等位集合$\{K_1 = 1\}$上のフローは時間変換後の$\{K_0 = 1\}$上のフローとMoser写像$\mu$により写り変わる.
             このフローを考えるために, より一般に$\mathbb{R}^{2(n+1)}$上のハミルトニアン$f$に対し, 
             それを$T^{+} \mathbb{S}^{n}$に制限した$\hat{f}$がつくる$T^{+} \mathbb{S}^{n}$上のフローがどうなるか確認しておく.
-
+            ハミルトンベクトル場は
+            \[
+                \iota_{X_f}\omega_1 = 
+            \]
         \end{example}
     \begin{thebibliography}{10}
     \nocite{*}
