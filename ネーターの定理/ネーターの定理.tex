@@ -791,10 +791,10 @@
             \]
             を考える.
             これは中心力場であるから角運動量保存則は当然成り立つが, 
-            ハミルトニアン$H$, 角運動量$G$とは別の第一積分であるラプラス-ルンゲ-レンツベクトル$R$が存在する:
+            ハミルトニアン$H$, 角運動量$G$とは別の第一積分であるラプラス-ルンゲ-レンツベクトル$\tilde{D}$が存在する:
             これは局所座標の下で第$i$成分が
             \[
-                (R(x, y))_i = - (x \cdot y) p_i + |y|^2 x_i - \frac{x_i}{|x|}
+                (\tilde{D}(x, y))_i = - (x \cdot y) y_i + |y|^2 x_i - \frac{x_i}{|x|}
             \]
             で表されるものである.
             これは$SO(4)$に由来する対称性から導かれる.
@@ -947,7 +947,7 @@
                 \iota_{i_{*}X} \omega_1(i_{*}Y) = - i^{*}(d f)(Y) = - d f(i_{*}Y)
             \]
             が成り立つ. 
-            ここで, $(i_{*} Y)_{(\bar{q}, \bar{p})} \in i^{*}(T_{(\bar{q}, \bar{p})}(T^{+} \mathbb{S}^{n})) \subset T_{(\bar{q}, \bar{p})} \mathbb{R}^{2(n+1)}$である.
+            ここで, $(i_{*} Y)_{(\bar{q}, \bar{p})} \in i_{*}(T_{(\bar{q}, \bar{p})}(T^{+} \mathbb{S}^{n})) \subset T_{(\bar{q}, \bar{p})} \mathbb{R}^{2(n+1)}$である.
             
             一方で, $\mathbb{R}^{2(n+1)}$上のハミルトンベクトル場$\tilde{X}$は
             \[
@@ -1002,13 +1002,67 @@
                 \]
                 となるのでは?
                 )
-
-
             したがって, ハミルトンベクトル場$X_{\hat{f}}$は次の$\mathbb{R}^{2(n+1)}$上のベクトル場の$T^{+} \mathbb{S}^{n}$への制限である:
             \[
-                \tilde{X}_{f} = \langle \nabla_p f,  \left(\frac{\partial}{\partial q}\right)\rangle - \langle \nabla_q f,  \left(\frac{\partial}{\partial p}\right)\rangle + \langle \nabla_p f,  \Gamma \left(\frac{\partial}{\partial p}\right)\rangle.
+                \tilde{X}_{f} = \langle \nabla_p f,  \left(\frac{\partial}{\partial \bar{q}}\right)\rangle - \langle \nabla_q f,  \left(\frac{\partial}{\partial \bar{p}}\right)\rangle + \langle \frac{\partial f}{\partial \bar{p}},  \Gamma \left(\frac{\partial}{\partial \bar{p}}\right)\rangle.
             \]
-            ただし, $\nabla$は共変微分, $\Gamma$は回転の生成子である.
+            ただし, $\nabla$は共変微分, $\Gamma$は回転の生成子である:
+            \[
+                \nabla_{\bar{p}} f = \frac{\partial f}{\partial \bar{p}} - \langle \frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle \bar{q}, \ \nabla_{\bar{q}} f = \frac{\partial f}{\partial \bar{q}} - \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q}, \ \left(\Gamma \left(\frac{\partial}{\partial p}\right) \right)_{i} = \sum_{j} (q_i p_j - p_i q_j) \frac{\partial}{\partial p_j}.
+            \]
+            \red{TO DO: この式の導出を行う}
+            \vskip \baselineskip
+            さて, $f = \norm{\bar{p}}$, つまり$\hat{f} = K_1$となる場合について考えれば,
+            \[
+                (\nabla_p f)_{i} = \frac{p_i}{\norm{\bar{p}}} - \frac{\bar{p} \cdot \bar{q}}{\norm{\bar{p}}} q_i =  \frac{p_i}{\norm{\bar{p}}}, \ (\nabla_{\bar{q}} f)_{i} = 0, \ \langle \frac{\partial f}{\partial \bar{p}},  \Gamma \left(\frac{\partial}{\partial \bar{p}}\right)\rangle = \left(\sum_{j} (q_j p_i - p_j q_i) \frac{p_j}{\norm{\bar{p}}} \right)\frac{\partial}{\partial p_i} = - q_i \frac{\partial}{\partial p_i}.
+            \]
+            であるから, 
+            \[
+                \tilde{X}_{f} = \sum_{i = 0}^{n} \frac{p_i}{\norm{\bar{p}}} \frac{\partial}{\partial q_i} - q_i \frac{\partial}{\partial p_i}.
+            \]
+            となる. 
+            特に, $\hat{f} = K_1 = 1$の曲面$T^{1} \mathbb{S}^n$上で,
+            \[
+                \dot{q} = p, \quad \dot{p} = -q
+            \]
+            となる.
+
+            このハミルトニアン$K_1 = \norm{\bar{p}}$は$R(t) \in SO(n+1)$による$\mathbb{R}^{2(n+1)}$への作用$(\bar{q}, \bar{p}) \mapsto (R(t) \bar{q}, R(-t)^{\mathsf{T}}\bar{p})$で不変であるから,
+            ネーターの定理から$R(t)$の無限小変換$A$を用いて第一積分$\bar{p}^{\mathsf{T}} A \bar{q}$が見つかる.
+            特に$j = 1, \cdots, n$として$n$個の第一積分$D_j = q_0 p_j - p_0 q_j$が見つかる.
+            これを$\mu^{-1}$で元のケプラー問題に戻してやれば,
+            \begin{align}
+                D_j &= q_0 p_j - p_0 q_j \\
+                &= - 2 (x \cdot y)[(1 + |y|^2)]^{-1}y_j - \frac{1}{2}(1 - |y|^2)(x_j - 2 (x \cdot y) [(1 + |y|^2)]^{-1} y_j)\\
+                &= \frac{1}{2}(|y|^2 - 1) x_j - (x \cdot y) y_j
+            \end{align}
+            これは$K_0 = |x|\left(H + \frac{1}{2}\right) + 1$のハミルトンフローで保存されるので,
+            \[
+                0 = \{K_0, D_j\} = \left\{|x|\left(H + \frac{1}{2}\right), D_j\right\} = \left(H + \frac{1}{2}\right) \left\{|x|, D_j\right\} + |x| \left\{H , D_j\right\}
+            \]
+            ここで, 
+            \[
+                \left\{D_j, |x|\right\} = \sum_{i} \frac{x_i}{|x|} (y_i x_j - x_i y_j - \delta_{i, j}(x \cdot y)) =  - |x| y_j 
+            \]
+            であるから, 
+            \[
+                \left\{H , D_j\right\} = |x|^{-1} \left(H + \frac{1}{2}\right) \left\{D_j, |x|\right\} = - \left(H + \frac{1}{2}\right) y_j.
+            \]
+            したがって, 
+            \begin{align}
+                \left\{H , D_j + \left(H + \frac{1}{2}\right) x_j\right\} 
+                &= \left\{H , D_j\right\} + \left(H + \frac{1}{2}\right) \left\{H , x_j\right\} \\
+                &= - \left(H + \frac{1}{2}\right) y_j + \left(H + \frac{1}{2}\right) \frac{\partial H}{\partial y_j} \\
+                &=  - \left(H + \frac{1}{2}\right) y_j + \left(H + \frac{1}{2}\right) y_j \\
+                &= 0.
+            \end{align}
+            以上から, 
+            \[
+                \tilde{D}_j =: D_j + \left(H + \frac{1}{2}\right) x_j =  - (x \cdot y) y_j + |y|^2 x_j - \frac{x_j}{|x|}
+            \]
+            は$H$のハミルトンフローで保存される. これはラプラス-ルンゲ-レンツベクトルである.
+
+            なお, 対称性を記述する$SO(n+1)$の元を取り直せば角運動量保存則が導かれる.
         \end{example}
     \begin{thebibliography}{10}
     \nocite{*}
