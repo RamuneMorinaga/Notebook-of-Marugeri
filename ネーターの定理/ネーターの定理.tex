@@ -927,14 +927,82 @@
             元のケプラー問題の特異点$x = 0$に対応する.
             これより, $(T^{1} \mathbb{S}^{n})'$の代わりに$T^{1} \mathbb{S}^{n}$を考えてよい.
 
-            ハミルトン系$(T^{+}\mathbb{S}^{n}, \omega_1 = d \lambda_1|_{T^{+} \mathbb{S}^{n}}, K_1 = \norm{p}|_{T^{+} \mathbb{S}^n})$
+            ハミルトン系$(T^{+}\mathbb{S}^{n}, \omega_1|_{T^{+} \mathbb{S}^{n}} = d \lambda_1|_{T^{+} \mathbb{S}^{n}}, K_1 = \norm{p}|_{T^{+} \mathbb{S}^n})$
             を考えれば, その等位集合$\{K_1 = 1\}$上のフローは時間変換後の$\{K_0 = 1\}$上のフローとMoser写像$\mu$により写り変わる.
             このフローを考えるために, より一般に$\mathbb{R}^{2(n+1)}$上のハミルトニアン$f$に対し, 
             それを$T^{+} \mathbb{S}^{n}$に制限した$\hat{f}$がつくる$T^{+} \mathbb{S}^{n}$上のフローがどうなるか確認しておく.
-            ハミルトンベクトル場は
+            埋め込み写像$i : T \mathbb{S}^n \rightarrow \mathbb{R}^{2(n+1)}$を考えれば,
+            $T \mathbb{S}^n$上のハミルトンベクトル場$X$は
             \[
-                \iota_{X_f}\omega_1 = \text{\red{ベクトル場の導出を書く.}}
+                \iota_{X}\omega_1|_{T \mathbb{S}^n} = - d f|_{_{T \mathbb{S}^n}}
             \]
+            である. $\mathbb{R}^{2(n+1)}$上に定まる正準$2$形式$\omega_1 = d \bar{p} \wedge d \bar{q}$について,
+            $\omega_1|_{T^{+} \mathbb{S}^{n}}$はその引き戻し$i^{*} \omega_1$である.
+            ベクトル場の押し出し$i_{*} X$について, 
+            \[
+                \iota_{X}(i^{*}\omega_1)(Y) = (i^{*}\omega_1)(X, Y) = \omega_1(i_{*} X, i_{*}Y) = \iota_{i_{*}X} \omega_1(i_{*}Y)
+            \]
+            を踏まえれば, $d f|_{_{T \mathbb{S}^n}}(Y) = d(i^{*}f)(Y) = (i^{*}(d f))(Y) = d f(i_{*}Y)$より, 
+            \[
+                \iota_{i_{*}X} \omega_1(i_{*}Y) = - i^{*}(d f)(Y) = - d f(i_{*}Y)
+            \]
+            が成り立つ. 
+            ここで, $(i_{*} Y)_{(\bar{q}, \bar{p})} \in i^{*}(T_{(\bar{q}, \bar{p})}(T^{+} \mathbb{S}^{n})) \subset T_{(\bar{q}, \bar{p})} \mathbb{R}^{2(n+1)}$である.
+            
+            一方で, $\mathbb{R}^{2(n+1)}$上のハミルトンベクトル場$\tilde{X}$は
+            \[
+                \iota_{\tilde{X}}\omega_1(\tilde{Y}) = - d f(\tilde{Y})
+            \]
+            であるが, 特に$\tilde{Y} = i_{*} Y$と選べば,
+            \[
+                \iota_{\tilde{X}}\omega_1(i_{*}Y) = - d f(i_{*}Y) = \iota_{i_{*}X} \omega_1(i_{*}Y)
+            \]
+            である. 結果, 
+            \[
+                \omega_1(\tilde{X} - i_{*}X, i_{*}Y) = 0
+            \]
+            (   Q.このとき, $i_{*}Y \in T_{(\bar{q}, \bar{p})(T \mathbb{S}^n)}$より
+                $\tilde{X} - i_{*}X \in (T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n))^{\omega_1}$
+                であるが, 一方で$(v, w) \in \mathbb{R}^{2(n+1)}$について
+                \[
+                    \omega_1(
+                        \begin{bmatrix}
+                            v \\
+                            w
+                        \end{bmatrix},
+                        \begin{bmatrix}
+                            \dot{q} \\
+                            \dot{p}
+                        \end{bmatrix}
+                        )
+                        = \begin{bmatrix}
+                            v & w
+                        \end{bmatrix}
+                        \begin{bmatrix}
+                            O & E_n \\
+                            -E_n & O
+                        \end{bmatrix}
+                        \begin{bmatrix}
+                            \dot{q} \\
+                            \dot{p}
+                        \end{bmatrix}
+                        = v \cdot \dot{p} - w \cdot \dot{q}
+                \]
+                であるから, 
+                \[
+                        (T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n))^{\omega_1} 
+                        = \textrm{span} \left\{\begin{bmatrix}
+                            0 \\
+                            q
+                        \end{bmatrix}, 
+                        \begin{bmatrix}
+                            -q \\
+                            p
+                        \end{bmatrix}\right\} \subset T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n)
+                \]
+                となるのでは?
+                )
+
 
             したがって, ハミルトンベクトル場$X_{\hat{f}}$は次の$\mathbb{R}^{2(n+1)}$上のベクトル場の$T^{+} \mathbb{S}^{n}$への制限である:
             \[

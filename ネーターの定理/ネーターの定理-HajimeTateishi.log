@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.141592653-p4.1.0-u1.29-230214-2.6 (utf8.uptex) (TeX Live 2023) (preloaded format=uplatex 2023.9.23)  10 SEP 2025 23:40
+This is e-upTeX, Version 3.141592653-p4.1.0-u1.29-230214-2.6 (utf8.uptex) (TeX Live 2023) (preloaded format=uplatex 2023.9.23)  10 SEP 2025 02:24
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -496,7 +496,8 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 \c@cor=\count315
 \c@conj=\count316
 \c@axiom=\count317
- (./ネーターの定理.aux)
+
+No file ネーターの定理.aux.
 \openout1 = `ネーターの定理.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
@@ -517,7 +518,6 @@ LaTeX Font Info:    Checking defaults for JY2/mc/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
 LaTeX Font Info:    Checking defaults for JT2/mc/m/n on input line 63.
 LaTeX Font Info:    ... okay on input line 63.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: dvips
 *geometry* verbose mode - [ preamble ] result:
@@ -629,23 +629,34 @@ LaTeX Font Info:    Font shape `JY2/mc/bx/n' in size <10> not available
 (Font)              Font shape `JY2/gt/m/n' tried instead on input line 559.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 9.6222pt on input line 559.
- [8] [9] [10] [11] [12] [13]
+ [8] [9] [10]
+
+LaTeX Warning: Citation `Ku82' on page 11 undefined on input line 802.
+
+[11] [12]
 LaTeX Font Info:    Font shape `JT2/mc/m/n' will be
-(Font)              scaled to size 4.8111pt on input line 994.
- [14] (./ネーターの定理.aux)
+(Font)              scaled to size 4.8111pt on input line 936.
+ [13] [14] (./ネーターの定理.aux)
  ***********
 pLaTeX2e <2023-02-14u04>+1, based on
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 19268 strings out of 475586
- 400417 string characters out of 5777886
+ 19262 strings out of 475586
+ 400296 string characters out of 5777886
  1948621 words of memory out of 5000000
- 40479 multiletter control sequences out of 15000+600000
+ 40475 multiletter control sequences out of 15000+600000
  577875 words of font info for 125 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  83i,14n,93p,567b,444s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ネーターの定理.dvi (14 pages, 94964 bytes).
+Output written on ネーターの定理.dvi (14 pages, 91532 bytes).
