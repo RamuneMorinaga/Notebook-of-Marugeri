@@ -802,8 +802,6 @@
             ラプラス-ルンゲ-レンツベクトルが第一積分であることを\cite{Ku82}を参考にエネルギーが負(簡単のため, $H = -1/2$)の場合について導こう.
             以下, $M = \mathbb{R}^n$としてより一般の場合($n \geq 2$)について考える.
 
-            \red{TO DO: Moserの正則化変換を用いてラプラス-ルンゲ-レンツベクトルが第一積分であることを導出する.}
-
             まず, 特異点$|x| = 0$を解消するときに用いる時間変数変換
             \[
                 \frac{d s}{d t} = |x|^{-1}
@@ -959,66 +957,183 @@
             \]
             である. 結果, 
             \[
-                \omega_1(\tilde{X} - i_{*}X, i_{*}Y) = 0
+                \omega_1(\tilde{X} - i_{*}X, i_{*}Y) = 0.
             \]
-            (   Q.このとき, $i_{*}Y \in T_{(\bar{q}, \bar{p})(T \mathbb{S}^n)}$より
-                $\tilde{X} - i_{*}X \in (T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n))^{\omega_1}$
-                であるが, 一方で$(v, w) \in \mathbb{R}^{2(n+1)}$について
-                \[
+            このとき, $i_{*}Y \in T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n)$より
+            \[
+                \tilde{X} - i_{*}X \in (T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n))^{\omega_1} := \{(v, w) T_{(\bar{q}, \bar{p})} \mathbb{R}^{2n} | \omega_1(
+                    \begin{bmatrix}
+                        v \\
+                        w
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        \dot{q} \\
+                        \dot{p}
+                    \end{bmatrix}
+                    ) = 0 \}
+            \]
+            である. 一般にはシンプレクティックベクトル空間$(V, \omega)$に対し, 
+            $V$の部分空間$W$について$W^{\omega} := \{\xi \in V | \omega(\xi, \eta) = 0, \ \forall \eta \in W\}$は$W \cap W^{\omega} \neq \{0\}$であるが, 
+            今回については
+            \[
+                T_{(\bar{q}, \bar{p})} \mathbb{R}^{2n} = T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n) \oplus (T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n))^{\omega_1}
+            \]
+            が成り立つ.
+            確かに, もし$\tilde{Z} \in  T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n) \cap (T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n))^{\omega_1}$となる$Z$が存在すれば,
+            $i$は埋め込みだから$(i_{*})_{(\bar{q}, \bar{p})} : T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n) \rightarrow T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n)$は全単射であるため,
+            ある$Z \in T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n)$が存在し$i_{*} Z = \tilde{Z}$を満たす. よって, 任意の$Y \in T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n)$に対して
+            \[
+                    \omega_1(i_{*}Z, i_{*}Y) = i^{*}\omega_1(Z, Y) = 0
+            \]
+            が成り立つ. 一方, $i^{*} \omega_1$は$T \mathbb{S}^n$上のシンプレクティック$2$形式なので, 非退化性から$Z = 0$.
+            したがって, $T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n) \cap (T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n))^{\omega_1} = \{0\}$となることがわかる.
+            一般に, $\mathrm{dim} V = \mathrm{dim} W + \mathrm{dim} W^{\omega}$なので, $T_{(\bar{q}, \bar{p})} \mathbb{R}^{2n}$の直和分解を与えることがわかる.
+
+            $(v, w) \in \mathbb{R}^{2(n+1)}$について
+            \[
+                \omega_1(
+                    \begin{bmatrix}
+                        v \\
+                        w
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        \dot{q} \\
+                        \dot{p}
+                    \end{bmatrix}
+                    )
+                    = \begin{bmatrix}
+                        v & w
+                    \end{bmatrix}
+                    \begin{bmatrix}
+                        O & E_n \\
+                        -E_n & O
+                    \end{bmatrix}
+                    \begin{bmatrix}
+                        \dot{q} \\
+                        \dot{p}
+                    \end{bmatrix}
+                    = v \cdot \dot{p} - w \cdot \dot{q}
+            \]
+            である. 条件$\bar{q} \cdot \bar{q} = 1, \bar{p} \cdot \bar{q} = 0$より
+            $\bar{q} \cdot \dot{\bar{q}} = 1, \bar{p} \cdot \dot{\bar{q}} + \bar{q} \cdot \dot{\bar{p}} = 0$であるため, 
+            \[
+                    (T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n))^{\omega_1} 
+                    = \textrm{span} \left\{
+                    \begin{bmatrix}
+                        0 &
+                        \bar{q}
+                    \end{bmatrix}
+                    \begin{bmatrix}
+                        \left(\frac{\partial}{\partial \bar{q}}\right) \\
+                        \left(\frac{\partial}{\partial \bar{p}}\right)
+                    \end{bmatrix}, 
+                    \begin{bmatrix}
+                        -\bar{q} &
+                        \bar{p}
+                    \end{bmatrix}
+                    \begin{bmatrix}
+                        \left(\frac{\partial}{\partial \bar{q}}\right) \\
+                        \left(\frac{\partial}{\partial \bar{p}}\right)
+                    \end{bmatrix}
+                    \right\} 
+                    = \textrm{span} \left\{
+                        \langle \bar{q}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle,
+                        - \langle \bar{q}, \left(\frac{\partial}{\partial \bar{q}}\right)\rangle + \langle \bar{p}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle
+                    \right\} 
+            \]
+            となるため, 適当なスカラー量$c_1, c_2$により
+            \begin{align}
+                    i_{*} X &= \tilde{X} 
+                    + c_1 \langle \bar{q}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle
+                    + c_2 \left( - \langle \bar{q}, \left(\frac{\partial}{\partial \bar{q}}\right)\rangle + \langle \bar{p}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle \right)\\
+                    &= \tilde{X} - c_2 \langle \bar{q}, \left(\frac{\partial}{\partial \bar{q}}\right)\rangle + \langle c_1 \bar{q} + c_2 \bar{p}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle
+            \end{align}
+            となる. $i_{*} X \in T_{i(\bar{q}, \bar{p})}i(T \mathbb{S}^n)$なので, 
+            $\displaystyle \tilde{X} = \langle \frac{\partial f}{\partial \bar{p}},  \left(\frac{\partial}{\partial \bar{q}}\right)\rangle - \langle \frac{\partial f}{\partial \bar{q}},  \left(\frac{\partial}{\partial \bar{p}}\right)\rangle$であるから,
+            \begin{align}
+                0 &= \omega_1(i_{*} X, \langle \bar{q}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle) \\
+                &= \omega_1(\tilde{X}, \langle \bar{q}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle) + c_2 \omega_1(\left( - \langle q, \left(\frac{\partial}{\partial q}\right)\rangle + \langle p, \left(\frac{\partial}{\partial p}\right)\rangle \right), \langle \bar{q}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle)\\
+                &= \omega_1(\begin{bmatrix}
+                        \frac{\partial f}{\partial \bar{p}} \\
+                        - \frac{\partial f}{\partial \bar{q}}
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        0 \\
+                        \bar{q}
+                    \end{bmatrix}) + c_2 
                     \omega_1(
-                        \begin{bmatrix}
-                            v \\
-                            w
-                        \end{bmatrix},
-                        \begin{bmatrix}
-                            \dot{q} \\
-                            \dot{p}
-                        \end{bmatrix}
-                        )
-                        = \begin{bmatrix}
-                            v & w
-                        \end{bmatrix}
-                        \begin{bmatrix}
-                            O & E_n \\
-                            -E_n & O
-                        \end{bmatrix}
-                        \begin{bmatrix}
-                            \dot{q} \\
-                            \dot{p}
-                        \end{bmatrix}
-                        = v \cdot \dot{p} - w \cdot \dot{q}
-                \]
-                であるから, 
-                \[
-                        (T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n))^{\omega_1} 
-                        = \textrm{span} \left\{\begin{bmatrix}
-                            0 \\
-                            q
-                        \end{bmatrix}, 
-                        \begin{bmatrix}
-                            -q \\
-                            p
-                        \end{bmatrix}\right\} \subset T_{(\bar{q}, \bar{p})}(T \mathbb{S}^n)
-                \]
-                となるのでは?
-                )
-            したがって, ハミルトンベクトル場$X_{\hat{f}}$は次の$\mathbb{R}^{2(n+1)}$上のベクトル場の$T^{+} \mathbb{S}^{n}$への制限である:
+                    \begin{bmatrix}
+                        -\bar{q} \\
+                        \bar{p}
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        0 \\
+                        \bar{q}
+                    \end{bmatrix}
+                    ) \\
+                    &= \langle\frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle
+                    - c_2 \\
+                0 &= \omega_1(i_{*} X, \left( - \langle q, \left(\frac{\partial}{\partial q}\right)\rangle + \langle p, \left(\frac{\partial}{\partial p}\right)\rangle \right)) \\
+                &= \omega_1(\tilde{X}, \left( - \langle q, \left(\frac{\partial}{\partial q}\right)\rangle + \langle p, \left(\frac{\partial}{\partial p}\right)\rangle \right)) + c_1 \omega_1(\langle q, \left(\frac{\partial}{\partial p}\right)\rangle, \left( - \langle q, \left(\frac{\partial}{\partial q}\right)\rangle + \langle p, \left(\frac{\partial}{\partial p}\right)\rangle \right)) \\
+                &= \omega_1(
+                    \begin{bmatrix}
+                        \frac{\partial f}{\partial \bar{p}} \\
+                        - \frac{\partial f}{\partial \bar{q}}
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        -\bar{q} \\
+                        \bar{p}
+                    \end{bmatrix}) + c_1
+                    \omega_1(
+                    \begin{bmatrix}
+                        0 \\
+                        \bar{q}
+                    \end{bmatrix},
+                    \begin{bmatrix}
+                        -\bar{q} \\
+                        \bar{p}
+                    \end{bmatrix}
+                    )\\
+                &= \left(\langle \frac{\partial f}{\partial \bar{p}}, \bar{p}\rangle - \langle \frac{\partial f}{\partial \bar{q}}, \bar{q}\rangle\right) + c_1
+            \end{align}
+            である. したがって, 
             \[
-                \tilde{X}_{f} = \langle \nabla_p f,  \left(\frac{\partial}{\partial \bar{q}}\right)\rangle - \langle \nabla_q f,  \left(\frac{\partial}{\partial \bar{p}}\right)\rangle + \langle \frac{\partial f}{\partial \bar{p}},  \Gamma \left(\frac{\partial}{\partial \bar{p}}\right)\rangle.
+                c_1 = - \langle \frac{\partial f}{\partial \bar{p}}, \bar{p}\rangle + \langle \frac{\partial f}{\partial \bar{q}}, \bar{q}\rangle, \ c_2 = \langle\frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle
             \]
-            ただし, $\nabla$は共変微分, $\Gamma$は回転の生成子である:
-            \[
-                \nabla_{\bar{p}} f = \frac{\partial f}{\partial \bar{p}} - \langle \frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle \bar{q}, \ \nabla_{\bar{q}} f = \frac{\partial f}{\partial \bar{q}} - \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q}, \ \left(\Gamma \left(\frac{\partial}{\partial p}\right) \right)_{i} = \sum_{j} (q_i p_j - p_i q_j) \frac{\partial}{\partial p_j}.
-            \]
-            \red{TO DO: この式の導出を行う}
+            であり, 
+            \begin{align}
+                - c_2 \langle \bar{q}, \left(\frac{\partial}{\partial \bar{q}}\right)\rangle 
+                &= \langle - \langle\frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle \bar{q}, \left(\frac{\partial}{\partial \bar{q}}\right)\rangle\\
+                \langle c_1 \bar{q} + c_2 \bar{p}, \left(\frac{\partial}{\partial \bar{p}}\right)\rangle 
+                &= \langle \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q},  \frac{\partial}{\partial \bar{p}} \rangle
+                + \sum_{i = 0}^{n} \left[\left(\sum_{j = 0}^{n} \frac{\partial f}{\partial p_j} q_j\right)p_i - \left(\sum_{j = 0}^{n} \frac{\partial f}{\partial p_j} p_j\right)q_i \right]\frac{\partial}{\partial p_i} \\
+                &= \langle \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q},  \frac{\partial}{\partial \bar{p}} \rangle
+                + \sum_{j = 0}^{n} \left[\left(\sum_{i = 0}^{n} \frac{\partial f}{\partial p_i} q_i\right)p_j - \left(\sum_{i = 0}^{n} \frac{\partial f}{\partial p_i} p_i\right)q_j \right]\frac{\partial}{\partial p_j} \\
+                &= \langle \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q},  \frac{\partial}{\partial \bar{p}} \rangle
+                + \sum_{i = 0}^{n} \frac{\partial f}{\partial p_i} \left[ \sum_{j = 0}^{n}(q_i p_j - p_i q_j) \frac{\partial}{\partial p_j}\right]
+            \end{align}
+
+
             \vskip \baselineskip
+            以上から, $T^{+} \mathbb{S}^{n}$上のハミルトンベクトル場$X_{\hat{f}}$の$\mathbb{R}^{2(n+1)}$上への押し出し$\hat{X}_{\hat{f}} := i_{*} X_{f}$は
+            \[
+                \hat{X}_{\hat{f}} = \langle \nabla_{\bar{p}} f,  \left(\frac{\partial}{\partial \bar{q}}\right)\rangle - \langle \nabla_{\bar{q}} f,  \left(\frac{\partial}{\partial \bar{p}}\right)\rangle + \langle \frac{\partial f}{\partial \bar{p}},  \Gamma \left(\frac{\partial}{\partial \bar{p}}\right)\rangle
+            \]
+            と書ける.
+            ただし, $\nabla_{\bar{p}}, \nabla_{\bar{q}}, \Gamma$は以下で定める:
+            \[
+                \nabla_{\bar{p}} f := \frac{\partial f}{\partial \bar{p}} - \langle \frac{\partial f}{\partial \bar{p}}, \bar{q} \rangle \bar{q}, \ 
+                \nabla_{\bar{q}} f := \frac{\partial f}{\partial \bar{q}} - \langle \frac{\partial f}{\partial \bar{q}}, \bar{q} \rangle \bar{q}, \ 
+                \left(\Gamma \left(\frac{\partial}{\partial \bar{p}}\right) \right)_{i} := \sum_{j} (q_i p_j - p_i q_j) \frac{\partial}{\partial p_j}.
+            \]
+
             さて, $f = \norm{\bar{p}}$, つまり$\hat{f} = K_1$となる場合について考えれば,
             \[
                 (\nabla_p f)_{i} = \frac{p_i}{\norm{\bar{p}}} - \frac{\bar{p} \cdot \bar{q}}{\norm{\bar{p}}} q_i =  \frac{p_i}{\norm{\bar{p}}}, \ (\nabla_{\bar{q}} f)_{i} = 0, \ \langle \frac{\partial f}{\partial \bar{p}},  \Gamma \left(\frac{\partial}{\partial \bar{p}}\right)\rangle = \left(\sum_{j} (q_j p_i - p_j q_i) \frac{p_j}{\norm{\bar{p}}} \right)\frac{\partial}{\partial p_i} = - q_i \frac{\partial}{\partial p_i}.
             \]
             であるから, 
             \[
-                \tilde{X}_{f} = \sum_{i = 0}^{n} \frac{p_i}{\norm{\bar{p}}} \frac{\partial}{\partial q_i} - q_i \frac{\partial}{\partial p_i}.
+                \hat{X}_{\hat{f}} = \sum_{i = 0}^{n} \frac{p_i}{\norm{\bar{p}}} \frac{\partial}{\partial q_i} - q_i \frac{\partial}{\partial p_i}.
             \]
             となる. 
             特に, $\hat{f} = K_1 = 1$の曲面$T^{1} \mathbb{S}^n$上で,
