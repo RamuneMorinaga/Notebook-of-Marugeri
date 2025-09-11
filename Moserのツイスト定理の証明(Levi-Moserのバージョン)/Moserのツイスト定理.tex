@@ -1,0 +1,152 @@
+\documentclass[a4paper]{ujarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+\usepackage{bm} %太字
+\usepackage{tcolorbox} %定理環境のやつ
+\usepackage{physics}
+\tcbuselibrary{breakable, skins, theorems}
+\usepackage{enumerate} %箇条書き
+\usepackage{ulem} %下線
+\usepackage{mathrsfs} %花文字
+\usepackage{url}
+
+%コマンド
+\newcommand{\red}[1]{\textcolor{red}{#1}} %赤文字
+\newcommand{\vecn}[1]{({#1}_1, \cdots, {#1}_{n})}
+\newcommand{\inner}[2]{(#1, #2)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lpn}[1]{\|#1\|_{L^{p}}}
+\newcommand{\esssup}[1]{\mathop{\mathrm{ess.sup}}_{#1}}
+\newcommand{\cl}[1]{\bar{#1}}
+\newcommand{\pd}[2]{\partial_{#1}^{#2}}
+\newcommand{\alev}{\ \mathrm{a.e.}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\weak}{\ \mathrm{(weakly)}}
+\newcommand{\Div}{\mathrm{div}}
+\newcommand{\Grad}{\mathrm{grad} }
+\newcommand{\Rot}{\mathrm{rot} }
+
+
+\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+\newcommand{\rme}{\mathrm{e}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem{cor}{Corlollary}
+\newtheorem{remark}{Remark}
+\newtheorem{conj}{Conjecture}
+\newtheorem{axiom}{Axiom}
+%%証明環境
+\makeatletter
+\renewenvironment{proof}[1][Proof]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+
+\title{Moserのツイストの定理}
+\begin{document}
+\date{2025年9月11日}
+\author{まるげり}
+\maketitle
+    Levi-Moser\cite{LM01}のノート. 
+    面積保存ツイスト写像の母関数に解析性を課すが, ツイスト定理の証明としては一番読みやすいと思う. 
+
+    \section{背景: 面積保存ツイスト写像, 母関数}
+        アニュラス$\mathbb{A} = \mathbb{S}^1 \times \mathbb{R}$上の面積保存ツイスト写像$\varphi(x_1, y_1) = (x_2, y_2)$とは, 
+        面積保存性$\varphi^{*}(dy_2 \wedge dx_2) = d y_1 \wedge d x_1$と
+        ツイスト性$\displaystyle \frac{\partial x_2}{\partial y_1} > 0$を持つものである.
+
+        記号の濫用で, $\mathbb{S}^1 \times \mathbb{R}$の普遍被覆$\mathbb{R}^2$上の元もまた$(x, y)$のように書き, 
+        また$\varphi$の$\mathbb{R}^2$への持ち上げも$\varphi$と書くことにすると, 
+        面積保存ツイスト写像$\varphi$が特に$\mathbb{A}$上の完全シンプレクティック写像($\varphi^{*}(y dx) - y dx$が$\mathbb{A}$上の完全形式になる)とき, 
+        $\varphi$の母関数と呼ばれる, 次の性質を満たす関数$h: \mathbb{R}^2 \rightarrow \mathbb{R}$が存在する:\\
+        $h_1, h_2$をそれぞれ$h$の第$1$成分, 第$2$成分での偏微分としたときに, $h(x_1 + 1, x_2 + 1) = h(x_1, x_2), h_{12} < 0$であり, 
+        さらに
+        \[
+            \left\{
+            \begin{aligned}
+                h_1(x_1, x_2) &= - y_1 \\
+                h_2(x_1, x_2) &= y_2
+            \end{aligned}
+            \right.
+            \iff \varphi(x_1, y_1) = (x_2, y_2)
+        \]
+        となる.\\
+        (たぶん, $\mathbb{R}^2$で考える以上はポアンカレの補題から閉形式$\varphi^{*}(y dx) - y dx$が完全形式になることが保証されるけど, 
+        アニュラス$\mathbb{A}$上でもなお$h$が意味を持つためには別で$\mathbb{A}$上で完全形式になることを保証しないといけない...のだと思う.)
+        
+        特に$\varphi$が母関数$h$を持つなら, $(x_1, y_1)$が与えられた下で, $\{(x_n, y_n)\}_{n}$が軌道$\{\varphi^{n}(x_1, y_1)\}_{n}$になることと
+        \[
+                h_2(x_{i-1}, x_{i}) + h_1(x_{i}, x_{i+1}) = 0, \ y_i = - h_2(x_{i}, x_{i+1}) \quad (\forall i \in \mathbb{Z})
+        \]
+        が同値であることがわかる.
+
+    \section{不変曲線と差分方程式への簡約化}
+        面積保存ツイスト写像$\varphi$の不変曲線$\gamma \subset \mathbb{A}$とは, 
+        $\varphi$の不変集合であって$\mathbb{R}^2$上への持ち上げを$w(\theta) = (u(\theta), v(\theta))$としたときに
+        $u(\theta) - \theta$および$v(\theta)$が周期$1$の周期関数となるものである.
+        これは, $u(\theta + 1) - (\theta + 1) = u(\theta) - \theta$より$u(\theta + 1) - u(\theta) = 1$より, 
+        アニュラス$\mathbb{A}$を$x$方向に一周して戻ってくる曲線であることを意味している.
+        
+        さて, ある回転数$\omega$についての不変曲線$\gamma$, つまり
+        \[
+                \varphi(w(\theta)) = w(\theta + \omega)
+        \]
+        を見つけたい. これはラグランジュ方程式と呼ばれることもある次の$2$階差分方程式
+        \[
+            E[u(\theta)] = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta), u(\theta - \omega)) \equiv 0
+        \]
+        が解ければ, $v(\theta) = - h_1(u(\theta), u(\theta + \omega))$とおくことで不変曲線を見つけることができる.
+        以下, $u^{+}(\theta) = u(\theta + \omega), u^{-}(\theta) = u(\theta - \omega)$とする.
+
+        \begin{remark}
+            あとで使うので, $u_{\theta} E[u]$の平均値$\displaystyle \int^{1}_{0} (u_{\theta} E[u])(\theta) d \theta = 0$を計算しておく.
+            \[
+                \frac{\partial h}{\partial \theta}(u, u^{+}) = u_{\theta} (h_1(u, u^{+}) + h_2(u, u^{+}))
+            \]
+            より, $\nabla f := f(\theta + \omega) - f(\theta)$と表記すれば,
+            \begin{align}
+                \frac{\partial h}{\partial \theta}(u, u^{+}) - u_{\theta} h_2(u^{-}, u)
+                &= u_{\theta} (h_1(u, u^{+}) + h_2(u, u^{+}) - h_2(u, u^{+}) + h_2(u^{-}, u)) \\
+                &= u_{\theta} (h_1(u, u^{+}) + h_2(u^{-}, u)) \\
+                &= u_{\theta} E[u]
+            \end{align}
+            したがって, 
+            \[
+                u_{\theta} E[u] = \frac{\partial h}{\partial \theta}(u, u^{+}) - u_{\theta} h_2(u^{-}, u)
+            \]
+            と表すことができる.
+            ここで, $h(x_1+1, x_2 + 1) = h(x_1, x_2)$であることと, 
+            $f(\theta)$が周期$1$の周期関数であれば$\displaystyle \int^{1}_{0} (\nabla f)(\theta) d \theta = \int^{1}_{0} (f(\theta + \omega) - f(\theta)) d \theta = 0$であることから,
+            結局
+            \[
+                \int^{1}_{0} (u_{\theta} E[u])(\theta) d \theta = 0
+            \]
+            である.
+
+        \end{remark}
+
+        \red{TO DO: ツイスト定理の証明をまとめる}
+    \begin{thebibliography}{10}
+    \nocite{*}
+	\bibitem{LM01}  M. Levi and J. Moser, A Lagrangian proof of the invariant curve theorem for twist mappings, 
+    Smooth ergodic theory and its applications (Seattle, WA, 1999), Proc. Sympos. Pure Math. \textbf{69}, 733-746, Amer. Math. Soc., Providence, RI, 2001 
+\end{thebibliography}
+\end{document}
