@@ -110,9 +110,9 @@
                 \varphi(w(\theta)) = w(\theta + \omega)
         \]
         を見つけたい. これはラグランジュ方程式と呼ばれることもある次の$2$階差分方程式
-        \[
+        \begin{equation} \label{eq:3}
             E[u(\theta)] = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta), u(\theta - \omega)) \equiv 0
-        \]
+        \end{equation}
         が解ければ, $v(\theta) = - h_1(u(\theta), u(\theta + \omega))$とおくことで不変曲線を見つけることができる.
         以下, $u^{+}(\theta) = u(\theta + \omega), u^{-}(\theta) = u(\theta - \omega)$とする.
 
@@ -143,6 +143,64 @@
 
         \end{remark}
 
+        \begin{example}[standard map]
+            $S(x)$を周期関数として, $\varphi(x_1, y_1) = (x_2, y_2)$を
+            \begin{align}
+                x_2 &= x_1 + y_1 + S'(x_1), \\
+                y_2 &= y_1 + S'(x_1)
+            \end{align}
+            で定める. 母関数$h$は
+            \[
+                h(x_1, x_2) = \frac{1}{2}(x_1 - x_2)^2 + S(x_1)
+            \]
+            である. これに対するラグランジュ方程式\eqref{eq:3}は
+            \[
+                u(\theta + \omega) - 2 u(\theta) + u(\theta - \omega) = S'(u(\theta))
+            \]
+            と書ける.
+        \end{example}
+
+    \section{ツイスト定理}
+
+        ツイスト定理は, $\omega$がディオファントス数であるときに,
+        $E[u_0] \approx 0$なる$u_0(\theta)$から始めて$E[u] \equiv 0$となる$u(\theta)$の存在を示す定理である.
+        
+        \[
+            W_r := \left\{f: \mathbb{C} \rightarrow \mathbb{C} \middle| f : \text{実解析的}, \ f(\theta + 1) = f(\theta), \ |f|_r := \sup_{|\mathrm{Im} \theta| \leq r} |f(\theta)| < \infty \right\}
+        \]
+        する.
+
+        複素領域$\mathcal{D} \subset \mathbb{C}^2$を考え, その$R$-近傍を$\mathcal{D}_{R} := \{z \in \mathcal{D} | \sup_{y \in \mathcal{D}}|y - z| \}$と書くことにする.
+        \begin{itemize}
+            \item $h$に関する仮定: \\
+            $h(x_1, x_2)$が$(x_1, x_2) \in \mathcal{D}$で解析的, $(x_1, x_2) \in \mathcal{D} \cap \mathbb{R}^2$で実, 
+            $h(x_1 + 1, x_2 + 1) = h(x_1, x_2)$を満たす. \\
+            また, ある定数$\kappa > 0, M > 0$により, 
+            \begin{align}
+                \min_{\mathcal{D}} |h_{12}| &> \kappa, \label{eq:5} \\
+                |h|_{C^3(\mathcal{D})} &< M. \label{eq:6}
+            \end{align}
+            \item $u_0$に関する仮定: \\
+            ある$r \in (0, 1)$に対して, $u_0(\theta) - \theta \in W_r$である. \\
+            さらに, ある(十分大きな)$N_0 > 0$に対し, 
+            \begin{align}
+                &(u_0, u^{+}_0) \in \mathcal{D}_{R} \quad (|\mathrm{Im} \theta| < r), \\
+                &|(u_0)_{\theta}|_r < N_0, \quad |(u_0)^{-1}_{\theta}|_r < N_0.
+            \end{align}
+        \end{itemize}
+
+        \begin{theorem}[ツイスト定理]
+            $\omega$がディオファントス数, つまり, ある$K > 0, \sigma > 0$が存在して, 
+            任意の$p, q \in mathbb{Z} \backslash \{0\}$について
+            \begin{equation}
+                |\omega - \frac{p}{q}| \geq \frac{K}{q^{2 + \sigma}}
+            \end{equation}
+            であるとする.
+
+            $h, u_0$が上の仮定を満たすとする. このとき, ある定数$\delta = \delta(r, h, M, N_0, K, \sigma, \kappa)$が存在し,
+            もし$|E(u_0)|_r < \delta$であればラグランジュ方程式$E[u] \equiv 0$の解$u$で, $u_0$に近く, $u(\theta) - \theta \in W_{r/2}$を満たし, 
+            $u(\theta) - \theta$の$\theta \in \mathbb{S}^1$での平均値が$0$になるものがただ一つ存在する.
+        \end{theorem}
         \red{TO DO: ツイスト定理の証明をまとめる}
     \begin{thebibliography}{10}
     \nocite{*}
