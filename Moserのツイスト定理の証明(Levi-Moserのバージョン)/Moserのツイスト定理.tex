@@ -184,14 +184,14 @@
             ある$r \in (0, 1)$に対して, $u_0(\theta) - \theta \in W_r$である. \\
             さらに, ある(十分大きな)$N_0 > 0$に対し, 
             \begin{align}
-                &(u_0, u^{+}_0) \in \mathcal{D}_{R} \quad (|\mathrm{Im} \theta| < r), \\
-                &|(u_0)_{\theta}|_r < N_0, \quad |(u_0)^{-1}_{\theta}|_r < N_0.
+                &(u_0, u^{+}_0) \in \mathcal{D}_{R} \quad (|\mathrm{Im} \theta| < r) \label{eq:7}, \\
+                &|(u_0)_{\theta}|_r < N_0, \quad |(u_0)^{-1}_{\theta}|_r < N_0. \label{eq:8}
             \end{align}
         \end{itemize}
 
         \begin{theorem}[ツイスト定理]
             $\omega$がディオファントス数, つまり, ある$K > 0, \sigma > 0$が存在して, 
-            任意の$p, q \in mathbb{Z} \backslash \{0\}$について
+            任意の$p, q \in \mathbb{Z} \backslash \{0\}$について
             \begin{equation}
                 |\omega - \frac{p}{q}| \geq \frac{K}{q^{2 + \sigma}}
             \end{equation}
@@ -201,6 +201,78 @@
             もし$|E(u_0)|_r < \delta$であればラグランジュ方程式$E[u] \equiv 0$の解$u$で, $u_0$に近く, $u(\theta) - \theta \in W_{r/2}$を満たし, 
             $u(\theta) - \theta$の$\theta \in \mathbb{S}^1$での平均値が$0$になるものがただ一つ存在する.
         \end{theorem}
+
+        \begin{example}
+            摂動を受けたツイスト写像
+            \begin{align}
+                x_2 &= x_1 + y_1 + \epsilon f(x_1, y_1, \epsilon) \\
+                y_2 &= y_1 + \epsilon g(x_1, y_1, \epsilon)
+            \end{align}
+            が領域$\mathcal{D} := \{(x_1, x_2) \in \mathbb{C}^2 | a < \mathrm{Re}(x_1 - x_2) < b, \ |\mathrm{Im} x_1| < 1, \ |\mathrm{Im} x_2| < 1\}$上で定義された
+            母関数$h(x_1, x_2) = \frac{1}{2}(x_1 - x_2)^2 + \epsilon H(x_1, x_2, \epsilon)$を持つとする. ($|H|_{C^3(\mathcal{D})}$が有界まで要りそう.)
+
+            ディオファントス数$\omega \in (a, b)$と$u_0(\theta) = \theta$を選ぶ.
+            いま, $\epsilon$を十分小さく取れば, 
+            $|h_{12}| = |- 1 + \epsilon H_{12}| > 1 - O(\epsilon)$より\eqref{eq:5}はok.
+            $|h_{i}| \leq |x_1 - x_2| + \epsilon |H_{1}| < b + 2 + O(\epsilon), |h_{ii}| = |1 + \epsilon H_{ii}|  < 1 + O(\epsilon), |h_{ijk}| < \epsilon|H_{ijk}| < O(\epsilon)$
+            より\eqref{eq:6}もok. 
+            $\displaystyle R =  \min\left\{\frac{1}{2\sqrt{2}}(b - \omega), \frac{1}{2\sqrt{2}}(\omega - a), r\right\}$として, 
+            $(u_0, u^{+}_0) = (\theta, \theta + \omega) \in D_{R} \ (|\mathrm{Im} \theta| < r)$より\eqref{eq:7}はok.
+            $u_0 = (u_0)^{-1} = \theta$なので$N_0 = \max\{-a, b\} + r$とすれば\eqref{eq:8}もok.
+
+            以上から, ツイスト定理が使えて, 不変曲線の存在が証明できる.
+        \end{example}
+
+        \section{homological equation}
+        ツイスト定理の証明のカギは, 初期解$u_0$から始めて"修正ニュートン法"によって$E[u]$の零点を探すことである.
+        $\tilde{u} = u + v$として, $E[\tilde{u}]$は
+        \[
+            E[u + v] = E[u] + E'[u] v + Q(v)
+        \]
+        と書ける. ここで, $Q$は剰余項であり, $E'[u]v$はガトー微分である.
+        具体的に計算すると, $h_{ij}^{-} = h_{ij}(u^{-}, u)$として, 
+        \begin{equation} \label{eq:11}
+            E'[u] v = (h_{11} + h_{22}^{-})v + h_{12} v^{+} + h_{12}^{-} v^{-}
+        \end{equation}
+        と書き下すことができる.
+
+        ふつうのニュートン法では, $v$に関する方程式
+        \begin{equation} \label{eq:12}
+            E'[u] v = - E[u]
+        \end{equation}
+        の解として$v$を定める.
+
+        今回は, \eqref{eq:12}の代わりに, 両辺に$u_{\theta}$を掛けて左辺から$v \frac{d}{d \theta} E[u] = v E'[u] u_{\theta}$を引いた方程式
+        \begin{equation} \label{eq:13}
+            u_{\theta} E'[u] v - v E'[u] u_{\theta} = - u_{\theta} E[u]
+        \end{equation}
+        の解として$v$を与える. もちろんこれは\eqref{eq:12}とは等価ではない式だが, この場合の更新則$u \mapsto u + v$でも$E[u]$の零点へ収束することを後に示す.
+        \eqref{eq:13}のままだと扱いにくいので, 少し変形する. 左辺が
+        \[
+            u_{\theta} E'[u] v - v E'[u] u_{\theta} = h_{12}(u_{\theta} v^{+} - u_{\theta}^{+} v) + h_{12}^{-}(u_{\theta} v^{-} - u_{\theta}^{-} v)
+        \]
+        であることに注意して, 新変数$w := \frac{v}{u_{\theta}}$を導入すれば, 
+        \[
+            h_{12}(u_{\theta} v^{+} - u_{\theta}^{+} v) + h_{12}^{-}(u_{\theta} v^{-} - u_{\theta}^{-} v) = h_{12} u_{\theta} u_{\theta}^{+}(w^{+} -  w) - h_{12}^{-} u^{-}_{\theta} u_{\theta} (w - w^{-}) = \nabla^{*}(h_{12} u_{\theta} u_{\theta}^{+} \nabla w )
+        \]
+        となる. ただし, 
+        \[
+            \nabla f(\theta) := f(\theta + \omega) - f(\theta), \quad \nabla^{*} f(\theta) := f(\theta) - f(\theta - \omega)
+        \]
+        と表記した.
+
+        まとめると, $w$に関する関数方程式
+        \begin{equation} \label{eq:14}
+            \nabla^{*}(h_{12} u_{\theta} u_{\theta}^{+} \nabla w ) = - u_{\theta} E[u]
+        \end{equation}
+        の解として$w$を選び, 更新則
+        \begin{equation} \label{eq:15}
+            \tilde{u} = u + v, \quad v = u_{\theta} w
+        \end{equation}
+        を考える. 初期解$u_0$から始めて最終的に$u$が$E[u]$の零点に収束することを示す.
+        \section{homological equationの求解}
+        $u$を既知, $w$を未知の関数とする.
+
         \red{TO DO: ツイスト定理の証明をまとめる}
     \begin{thebibliography}{10}
     \nocite{*}
