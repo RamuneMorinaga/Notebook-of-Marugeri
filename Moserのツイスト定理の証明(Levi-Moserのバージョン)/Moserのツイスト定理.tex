@@ -62,7 +62,7 @@
 
 \title{Moserのツイストの定理}
 \begin{document}
-\date{2025年9月11日}
+\date{2025年9月26日}
 \author{まるげり}
 \maketitle
     Levi-Moser\cite{LM01}のノート. 
@@ -192,7 +192,7 @@
         \begin{theorem}[ツイスト定理]
             $\omega$がディオファントス数, つまり, ある$K > 0, \sigma > 0$が存在して, 
             任意の$p, q \in \mathbb{Z} \backslash \{0\}$について
-            \begin{equation}
+            \begin{equation} \label{eq:9}
                 |\omega - \frac{p}{q}| \geq \frac{K}{q^{2 + \sigma}}
             \end{equation}
             であるとする.
@@ -271,9 +271,100 @@
         \end{equation}
         を考える. 初期解$u_0$から始めて最終的に$u$が$E[u]$の零点に収束することを示す.
         \section{homological equationの求解}
-        $u$を既知, $w$を未知の関数とする.
+        本節では, \eqref{eq:14}の解の評価を目標とする.
+        
+        $u$を既知, $w$を未知の関数とする. また, $\omega$はディオファントス条件\eqref{eq:9}を満たすものとする.
+        \begin{lemma} \label{lem:8}
+            $u(\theta)$が条件
+            \begin{equation} \label{eq:16}
+                (u, u^{+}) \in \mathcal{D}_{R} \quad \text{for} (|\mathrm{Im} \theta| < r)
+            \end{equation}
+            および
+            \begin{equation} \label{eq:17}
+                |u_{\theta}|_r < N, \quad |u^{-1}_{\theta}|_r < N \quad \text{for} (|\mathrm{Im} \theta| < r)
+            \end{equation}
+            を満たすとする. 
+            
+            このとき, \eqref{eq:14}の解$w \in W_{\rho}$が任意の$0 < \rho < r$に対して存在し, $\displaystyle [w] := \int^{1}_{0} w d \theta = 0$(平均がゼロ)の下で一意である.
+            さらに, 対応する$v := u_{\theta} w$について, 以下の不等式評価が得られる:
+            \begin{equation} \label{eq:18}
+                |v|_{\rho} \leq \frac{c}{(r - \rho)^{2 \tau}} |E(u)|_{r}, \ |v_{\theta}|_{\rho} \leq \frac{c}{(r - \rho)^{2 \tau + 1}} |E(u)|_{r}.
+            \end{equation}
+            ただし, $c = c(M ,N, K, \sigma)$であり, $\tau = 2 + \sigma$である.
+        \end{lemma}
 
-        \red{TO DO: ツイスト定理の証明をまとめる}
+        このLemma \ref{lem:8}を示すには, 次のLemmaを用いればいい.
+        \begin{lemma} \label{lem:9}
+            $\Omega$がディオファントス条件\eqref{eq:9}を満たし, かつ$g \in W_r$の平均値について$[g] = 0$が成り立つとする.
+
+            このとき, 差分方程式
+            \begin{equation} \label{eq:19}
+                \nabla \psi = g
+            \end{equation}
+            は任意の$0 < r' < r$に対して解$\psi \in W_{r'}$を持ち, これは$[\psi] = 0$の下で一意である.
+            さらに, $\psi$について次の不等式評価が得られる:
+            \begin{equation} \label{eq:20}
+                |\psi|_{r'} < c(K, \sigma) \frac{|g|_{r}}{(r - r')^{\tau}}.
+            \end{equation}
+            ただし, $\tau = 2 + \sigma$である.
+        \end{lemma}
+
+        \begin{proof}[Proof of Lemma \ref{lem:9}]
+            フーリエ級数展開により, $\displaystyle g = \sum g_n e^{2 \pi i \theta}, \psi = \sum \psi_n e^{2 \pi i \theta}$と表示する.\\
+            $(\nabla \psi)(\theta) := \psi(\theta + \omega) - \psi(\theta) = \sum \psi_n (e^{2 \pi i n \omega} - 1) e^{2 \pi i \theta}$であるから, 
+            \eqref{eq:19}の解は
+            \begin{equation} \label{eq:21}
+                \psi_n = \frac{g_n}{e^{2 \pi i \omega} - 1}, \ \psi_0 = 0
+            \end{equation}
+            と書ける. (後半は$[\psi] = 0$の帰結.)
+            
+            この時点ではまだ解が(形式的に)フーリエ級数で書けると述べたまでであるから, 
+            \eqref{eq:21}が定義可能であること(特に$e^{2 \pi i \omega} - 1 \neq 0$であること)と
+            級数$\sum \psi_n e^{2 \pi n \theta}$が$W_r'$上で絶対収束することを示さないといけない.
+
+            ディオファントス条件\eqref{eq:9}から, 任意の$n, m \in \mathbb{Z} \backslash \{0\}$について,
+            \[
+                |n \omega - m| \geq \frac{K}{|n|^{1 + \sigma}}
+            \]
+            であるから, 特に$\displaystyle m := \arg \min_{m \in \mathbb{Z} \backslash \{0\}}|n \omega - m|$とすれば, $|x| \leq 1/2$で$|\sin{\pi x}| \geq 2|x|$なので, 
+            \[
+                |e^{2 \pi i \omega} - 1| = |e^{\pi i \omega}| |e^{\pi i \omega} - e^{- \pi i \omega}| = 2 |\sin{n \pi \omega}| = 2 |\sin{\pi (n \omega - m)}| \geq 4 |n \omega - m| > \frac{c(K)}{|n|^{1 + \sigma}}
+            \]
+            したがって 
+            \begin{equation} \label{eq:22}
+                |e^{2 \pi i \omega} - 1| > \frac{c(K)}{|n|^{1 + \sigma}} 
+            \end{equation}
+            であり, $e^{2 \pi i \omega} - 1 \neq 0$より\eqref{eq:21}は定義できる.
+
+            また, $g \in W_r$であることと$\displaystyle |g_n| |W_r| = \left| \int_{W_r} g \cdot e^{-2 \pi i n \theta} d \theta \right| \leq |W_r| |g|_r e^{- 2 \pi n |r|}$から, 
+            \begin{equation} \label{eq:23}
+                |g_n| \leq |g|_r e^{- 2 \pi |n| r}
+            \end{equation}
+            が成り立つ. \eqref{eq:22}, \eqref{eq:23}を用いて\eqref{eq:21}を評価すれば,
+            $0 < r' < \forall s < r$に対して,
+            \begin{equation}
+                |\psi_n| \leq |g|_r c(K)^{-1} e^{- 2 \pi |n| r} |n|^{1 + \sigma} = |g|_r c(K)^{-1} e^{- 2 \pi |n| s} e^{- 2 \pi |n| (r - s)} |n|^{1 + \sigma}.
+            \end{equation}
+            ここで, $x > 0$に対して$x e^{-x} \leq e^{-1}$であるが, $x = \frac{a |n|}{b}$とすれば$e^{-a |n|} |n|^{b} \leq e^{-b} (b/a)^{b}$であるので, 
+            $a = 2 \pi (r - s), b = 1 + \sigma$として, $c_1(K, \sigma) := c(K)^{-1} e^{-(1 + \sigma)} ((1 + \sigma)/(2 \pi))^{1 + \sigma}$とすれば, 
+            \[
+                |\psi_n| \leq  c_1(K, \sigma) |g|_r \frac{1}{(r - s)^{1 + \sigma}} e^{- 2 \pi |n| s} .
+            \]
+            したがって, 
+            \[
+                \sum |\psi_n| e^{2 \pi |n| r'} \leq c_1(K, \sigma) |g|_r \frac{1}{(r - s)^{1 + \sigma}} \sum  e^{- 2 \pi |n| (s - r')} = \frac{2 c_1(K, \sigma) |g|_r}{(r - s)^{1 + \sigma}} (1 - e^{- 2 \pi (s - r')})^{-1}.
+            \]
+            であり, フーリエ級数$\sum \psi_n e^{2 \pi i \theta}$は$W_{r'}$の上で絶対収束し, 以上をもって\eqref{eq:19}の解の存在が保証される.
+            また, $0 < q < 1/2$で$(1 - e^{- 2 \pi q})^{-1} < q^{-1}$となることを用いると, $(s - r') < 1/2$のときに
+            \[
+                |\psi|_{r'} \leq \sum |\psi_n| e^{2 \pi |n| r'} \leq \frac{2 c_1(K, \sigma) |g|_r}{(r - s)^{1 + \sigma}(s - r')} 
+            \]
+            となり, 特に$s = (r + r')/2$とすれば(これは, $r < 1$から$s - r' = (r - r')/2 < 1/2$であるため許容される), 不等式評価\eqref{eq:20}を得る.
+        \end{proof}
+
+        \begin{proof}[Proof of Lemma \ref{lem:8}]\\
+            \red{TO DO: ツイスト定理の証明をまとめる}
+        \end{proof}
     \begin{thebibliography}{10}
     \nocite{*}
 	\bibitem{LM01}  M. Levi and J. Moser, A Lagrangian proof of the invariant curve theorem for twist mappings, 
