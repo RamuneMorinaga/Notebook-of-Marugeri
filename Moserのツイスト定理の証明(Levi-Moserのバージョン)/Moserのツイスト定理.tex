@@ -444,6 +444,21 @@
             となる. したがって, あらためて$c = 2^{2 \tau + 1} c'$とすれば, \eqref{eq:18}の第二式が導ける.
         \end{proof}
         
+        \section{$E(u)$の2次収束性}
+        Lemma \ref{lem:8}によって得られる$v = u_{\theta} w$を使って,
+        更新則$\tilde{u} = u + v$で暫定解を更新する.
+        \begin{lemma}
+            $u$をLemma \ref{lem:8}を満たすものとし, $\tilde{u} = u + v$がある$\rho \in (0, r)$について
+            条件
+            \begin{equation} 
+                (\tilde{u}, \tilde{u}^{+}) \in \mathcal{D}_{R} \quad \text{for} (|\mathrm{Im} \theta| < \rho)
+            \end{equation}
+            を満たすとする. このとき,
+            \begin{equation} \label{eq:29}
+                |E(\tilde{u})|_{\rho} \leq \frac{c_6}{(r - \rho)^{4 \tau}} |E(u)|^2_{r}
+            \end{equation}
+            が成り立つ. ただし, $c_6 = c_6(M, N, K, \kappa, \sigma)$.
+        \end{lemma}
         \red{TO DO: ツイスト定理の証明をまとめる}
     \begin{thebibliography}{10}
     \nocite{*}
