@@ -362,9 +362,89 @@
             となり, 特に$s = (r + r')/2$とすれば(これは, $r < 1$から$s - r' = (r - r')/2 < 1/2$であるため許容される), 不等式評価\eqref{eq:20}を得る.
         \end{proof}
 
-        \begin{proof}[Proof of Lemma \ref{lem:8}]\\
-            \red{TO DO: ツイスト定理の証明をまとめる}
+        \begin{proof}[Proof of Lemma \ref{lem:8}]
+            $p = (h_{12} u_{\theta} u_{\theta}^{+})^{-1}$とし, $g = - u_{\theta} E(u)$とする. $\mu$を適当な定数として, \eqref{eq:14}を書き直せば, 
+            \begin{equation} \label{eq:25}
+                \begin{aligned}
+                    \nabla^{*} \psi &= g \\
+                    p^{-1} \nabla w &= \psi + \mu
+                \end{aligned}
+            \end{equation}
+            と書ける.($\nabla^{*}\mu = 0$に注意.)
+
+            $[u_{\theta} E(u)] = 0$を思い出せば, \eqref{eq:25}の上の式にLemma \ref{lem:9}を適用できて,
+            平均がゼロの唯一解$\psi$で任意の$0 < r' < r$で
+            \begin{equation} \label{eq:26}
+                |\psi|_{r'} \leq \frac{c(K, \sigma)}{(r - r')^{\tau}} |g|_{r}
+            \end{equation}
+            となるものが存在する.
+
+            \eqref{eq:25}の下の式から, $w$は$\nabla w = p(\psi + \mu)$の解である.
+            この式にLemma\ref{lem:9}を適用するためには右辺の平均がゼロであるように$\mu$を選ぶ必要があるが,
+            \begin{equation} \label{eq:27}
+                \mu := - \frac{\int p \psi d \theta}{\int p d \theta}
+            \end{equation}
+            とすれば
+            \[
+                \int p(\psi + \mu) d \theta = \int p \psi d \theta + \mu \int p d \theta = 0
+            \]
+            が満たされる.  仮定から$\min |h_{12}| > \kappa, |h|_{C^2} < M, |u_{\theta}| < N, |u_{\theta}^{-1}| < N$であるから,
+            $M^{-1} N^{-2} < |p| = |h_{12}|^{-1} |u_{\theta}|^{-1} |u_{\theta}^{+}|^{-1} < \kappa^{-1} N^2$および\eqref{eq:26}から,
+            \[
+                |\mu| = \left|\int p \psi d \theta\right| \cdot \left|\int p d \theta\right|^{-1} < \kappa^{-1} M N^4\frac{c(K, \sigma)}{(r - r')^{\tau}} |g|_{r}
+            \]
+            であるから\eqref{eq:27}は定義可能である.
+            以上から, $\nabla w = p(\psi + \mu)$にLemma\ref{lem:9}を適用することで, 
+            平均がゼロになる唯一解$w$が存在することがわかり, この解は任意の$0 < \rho < r'$に対し, 
+            \[
+                |w|_{\rho} \leq c_1\frac{|p(\psi + \mu)|_{r'}}{(r' - \rho)^{\tau}} \leq \frac{c_2}{(r - r')^{\tau} (r' - \rho)^{\tau}}|g|_{r}
+            \]
+            となる. (2つ目の不等式では$|p|, |\mu|, |\psi|$の評価を用いた.)
+
+            特に, $\rho = 2r' - r$と選べば(実際, $r' - \rho = r - r' > 0$より可能), 
+            $r' = (r + \rho)/2$および$|g| = |u_{\theta}| |E(u)| < N |E(u)|$より, 
+            \begin{equation} \label{eq:28}
+                |w|_{\rho} \leq \frac{c_3(M, N, K, \kappa, \sigma)}{(r - \rho)^{2\tau}}|E(u)|_{r}
+            \end{equation}
+            となる.
+            $v := u_{\theta} w$なので, $|u_{\theta}| < N$より\eqref{eq:18}の第一式が成立.
+
+            第二式は, コーシーの積分定理(あるいは, グルサの定理)を用いて導出する.
+            任意の$\rho' \in (\rho, r)$について, 上の議論を再度繰り返すことで, $w \in W_{\rho'}$, 
+            つまり$v = u_{\theta} w \in W_{\rho'}$としてもよい. 
+            (Lemma \ref{lem:9}における解の一意性と一致の定理から, これは$w \in W_{\rho}$からの解析接続である.)
+
+            $|\mathrm{Im} \theta | < \rho'$に関するコーシーの積分定理(あるいは, グルサの定理)から, 
+            $|\mathrm{Im} \theta | < \rho$となる$\theta$について, 
+            $\theta$を囲む任意の閉曲線$C' \in \{|\mathrm{Im} \theta | < \rho'\}$で
+            \[
+                |v_{\theta}(\theta)| \leq \frac{1}{2 \pi} \int_{C'} \frac{|v(\varphi)|}{|\varphi - \theta|^2} d \varphi \leq \frac{|v|_{\rho'}}{2 \pi} \int_{C'} \frac{1}{|\varphi - \theta|^2} d \varphi
+            \]
+            となる. (左辺の$\theta$の属する複素領域(幅$2 \rho$の帯)より右辺で考える複素領域(幅$2 \rho'$の帯)を広くするのがポイント！)
+
+            特に, $C'$を中心$\theta$, 半径$R$の円とすれば, 
+            \[
+                |v_{\theta}(\theta)| \leq \frac{|v|_{\rho'}}{2 \pi} \cdot 2 \pi R \cdot R^{-2} = \frac{|v|_{\rho'}}{R}
+            \]
+            である. 最も評価が良くなるのは, $R$を$\{|\mathrm{Im} \theta | < \rho'\}$の中でできるだけ大きく取った時, 
+            つまり$R = \rho' - s$のときであるが, $s < \rho$だったので, 
+            \[
+                |v_{\theta}(\theta)| \leq \frac{|v|_{\rho'}}{\rho' - s} \leq \frac{|v|_{\rho'}}{\rho' - \rho}.
+            \]
+            したがって, $|v_{\theta}|_{\rho} \leq \displaystyle \frac{|v|_{\rho'}}{\rho' - \rho}$である.
+
+            一方, \eqref{eq:18}の第一式から,
+            \[
+                |v_{\theta}|_{\rho} \leq \frac{c'}{(r - \rho')^{2 \tau}(\rho' - \rho)} |E(u)|_{r}
+            \]
+            であるが, 特に$\rho' = (r + \rho)/2$と選べば,
+            \[
+                |v_{\theta}|_{\rho} \leq \frac{2^{2 \tau + 1} c'}{(r - \rho)^{2 \tau + 1}} |E(u)|_{r}
+            \]
+            となる. したがって, あらためて$c = 2^{2 \tau + 1} c'$とすれば, \eqref{eq:18}の第二式が導ける.
         \end{proof}
+        
+        \red{TO DO: ツイスト定理の証明をまとめる}
     \begin{thebibliography}{10}
     \nocite{*}
 	\bibitem{LM01}  M. Levi and J. Moser, A Lagrangian proof of the invariant curve theorem for twist mappings, 
