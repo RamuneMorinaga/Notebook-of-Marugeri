@@ -111,10 +111,27 @@
         \]
         を見つけたい. これはラグランジュ方程式と呼ばれることもある次の$2$階差分方程式
         \begin{equation} \label{eq:3}
-            E[u(\theta)] = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta - \omega), u(\theta)) \equiv 0
+            E[u](\theta) = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta - \omega), u(\theta)) \equiv 0
         \end{equation}
         が解ければ, $v(\theta) = - h_1(u(\theta), u(\theta + \omega))$とおくことで不変曲線を見つけることができる.
         以下, $u^{+}(\theta) = u(\theta + \omega), u^{-}(\theta) = u(\theta - \omega)$とする.
+
+        \begin{remark}
+            ラグランジュ方程式は, 変分問題
+            \[
+                \delta \int^1_0 h(u(\theta), u(\theta + \omega)) d \theta = 0
+            \]
+            についてのオイラー - ラグランジュ方程式になっている. (パーシバルの変分原理).
+
+            実際, $\displaystyle A(u) := \int^1_0 h(u(\theta), u(\theta + \omega)) d \theta$としたときに
+            \begin{align}
+                \left. \frac{d}{d t} A(u + t v) \right|_{t = 0} &= \int^1_0 h_{1}(u, u^{+})v + h_{2}(u, u^{+}) v^{+} d \theta \\
+                &= \int^1_0 h_{1}(u, u^{+})v + h_{2}(u^{-}, u) v d \theta \\
+                &= \int^1_0 E[u] v d \theta
+            \end{align}
+            であるから, 任意の$v$についてこれがゼロになるのは$E[u] \equiv 0$のときである.
+
+        \end{remark}
 
         \begin{remark}
             あとで使うので, $u_{\theta} E[u]$の平均値$\displaystyle \int^{1}_{0} (u_{\theta} E[u])(\theta) d \theta = 0$を計算しておく.
