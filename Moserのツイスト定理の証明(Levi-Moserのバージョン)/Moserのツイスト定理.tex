@@ -111,7 +111,7 @@
         \]
         を見つけたい. これはラグランジュ方程式と呼ばれることもある次の$2$階差分方程式
         \begin{equation} \label{eq:3}
-            E[u(\theta)] = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta), u(\theta - \omega)) \equiv 0
+            E[u(\theta)] = h_1(u(\theta), u(\theta + \omega)) + h_2(u(\theta - \omega), u(\theta)) \equiv 0
         \end{equation}
         が解ければ, $v(\theta) = - h_1(u(\theta), u(\theta + \omega))$とおくことで不変曲線を見つけることができる.
         以下, $u^{+}(\theta) = u(\theta + \omega), u^{-}(\theta) = u(\theta - \omega)$とする.
@@ -270,7 +270,8 @@
             \tilde{u} = u + v, \quad v = u_{\theta} w
         \end{equation}
         を考える. 初期解$u_0$から始めて最終的に$u$が$E[u]$の零点に収束することを示す.
-        \section{homological equationの求解}
+
+    \section{homological equationの求解}
         本節では, \eqref{eq:14}の解の評価を目標とする.
         
         $u$を既知, $w$を未知の関数とする. また, $\omega$はディオファントス条件\eqref{eq:9}を満たすものとする.
@@ -459,6 +460,45 @@
             \end{equation}
             が成り立つ. ただし, $c_6 = c_6(M, N, K, \kappa, \sigma)$.
         \end{lemma}
+        \begin{proof}
+            関数空間$W_{\rho}$におけるテイラーの定理から, 剰余項を$Q$とおけば, 
+            \[
+                |E(\tilde{u})|_{\rho} = |E(u + v)|_{\rho} = |E(u) + E'(u) v + Q|_{\rho}
+            \]
+            だった. \eqref{eq:13}から, $u_{\theta} E(u) + u_{\theta} E'(u) v  = v E'(u) u_{\theta}$であるから,
+            両辺を$u_{\theta}$で割れば($|u_{\theta}^{-1}| < N$より$u_{\theta} \neq 0$), 
+            \[
+                E(u) + E'(u) v = E'(u) u_{\theta} = w \frac{d}{d \theta} E(u).
+            \]
+            $E(u) \in W_{r}$なので, コーシーの積分定理から$\displaystyle \left|\frac{d}{d \theta} E(u)\right|_{\rho} \leq c \frac{|E(u)|_{r}}{r - \rho}$であるから,
+            \eqref{eq:28}と合わせて, 
+            \begin{equation}
+                |E(u) + E'(u) v|_{\rho} \leq c_4 \frac{|E(u)|^2_{r}}{(r - \rho)^{2 \tau + 1}} < c_4 \frac{|E(u)|^2_{r}}{(r - \rho)^{4 \tau}}.
+            \end{equation}
+            一方で, $Q$はある$t' \in (0, 1)$について
+            \[
+                Q = \frac{1}{2} \frac{d^2}{d t^2} E(u + t' v)
+            \]
+            だが, $E(u) = h_1(u, u^{+}) + h_2(u^{-}, u)$に入れて実際計算すると,
+            \begin{align}
+               \frac{d}{d t} E(u + t v) &= (h_{11}(u + t v, u^{+} + t v^{+}) + h_{22}(u^{-} + t v^{-}, u + t v)) v \\
+                &\quad + h_{12}(u + t v, u^{+} + t v^{+}) v^{+} +  h_{12}(u^{-} + t v^{-}, u + t v) v^{-},\\
+               \frac{d^2}{d t^2} E(u + t v) &= (h_{111}(u + t v, u^{+} + t v^{+}) + h_{222}(u^{-} + t v^{-}, u + t v)) v^2 \\
+               &\quad + 2 h_{112}(u + t v, u^{+} + t v^{+}) v v^{+} + 2 h_{122}(u^{-} + t v^{-}, u + t v) v^{-} v \\
+               &\quad + h_{122}(u + t v, u^{+} + t v^{+}) (v^{+})^2 + h_{112}(u^{-} + t v^{-}, u + t v) (v^{-})^2 
+            \end{align}
+            であるから, \eqref{eq:18}から
+            \begin{equation}
+                |Q|_{\rho} \leq c_5 |v|^2_{\rho} \leq c'\frac{|E(u)|^2_{r}}{(r - \rho)^{4 \tau}}.
+            \end{equation}
+            三角不等式から, \eqref{eq:29}が導ける.
+        \end{proof}
+
+    \section{反復過程とその極限}
+        $n \rightarrow \infty$で$r_{n} \rightarrow r_{\infty} > 0$となる単調減少列$\{r_n\}$を,
+        $r_0 = r, r_{n} =  r_{\infty} + 2^{-n}(r_0 - r_{\infty}) $で与え,
+        また$\{u_n\}$を\eqref{eq:14}の$u = u_{n-1}$での解$w_{n-1} \in W_{r_n}$を用いて$u_n = u_{n-1} + (u_{n-1})_{\theta} w_{n-1}$で定める.
+        
         \red{TO DO: ツイスト定理の証明をまとめる}
     \begin{thebibliography}{10}
     \nocite{*}
