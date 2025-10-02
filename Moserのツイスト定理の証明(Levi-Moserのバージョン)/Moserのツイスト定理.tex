@@ -62,7 +62,7 @@
 
 \title{Moserのツイストの定理}
 \begin{document}
-\date{2025年9月26日}
+\date{\today}
 \author{まるげり}
 \maketitle
     Levi-Moser\cite{LM01}のノート. 
@@ -187,7 +187,7 @@
         \]
         する.
 
-        複素領域$\mathcal{D} \subset \mathbb{C}^2$を考え, その$R$-近傍を$\mathcal{D}_{R} := \{z \in \mathcal{D} | \sup_{y \in \mathcal{D}}|y - z| \}$と書くことにする.
+        複素領域$\mathcal{D} \subset \mathbb{C}^2$を考え, その縁を距離$R$ぶんだけ削った領域を$\mathcal{D}_{R} := \{z \in \mathcal{D} | \sup_{y \in \mathcal{\partial D}}|y - z| > R\}$と書くことにする.
         \begin{itemize}
             \item $h$に関する仮定: \\
             $h(x_1, x_2)$が$(x_1, x_2) \in \mathcal{D}$で解析的, $(x_1, x_2) \in \mathcal{D} \cap \mathbb{R}^2$で実, 
@@ -199,14 +199,14 @@
             \end{align}
             \item $u_0$に関する仮定: \\
             ある$r \in (0, 1)$に対して, $u_0(\theta) - \theta \in W_r$である. \\
-            さらに, ある(十分大きな)$N_0 > 0$に対し, 
+            さらに, ある(十分大きな)$N_0 > 1$に対し, 
             \begin{align}
                 &(u_0, u^{+}_0) \in \mathcal{D}_{R} \quad (|\mathrm{Im} \theta| < r) \label{eq:7}, \\
                 &|(u_0)_{\theta}|_r < N_0, \quad |(u_0)^{-1}_{\theta}|_r < N_0. \label{eq:8}
             \end{align}
         \end{itemize}
 
-        \begin{theorem}[ツイスト定理]
+        \begin{theorem}[ツイスト定理] \label{thm:twi}
             $\omega$がディオファントス数, つまり, ある$K > 0, \sigma > 0$が存在して, 
             任意の$p, q \in \mathbb{Z} \backslash \{0\}$について
             \begin{equation} \label{eq:9}
@@ -297,7 +297,7 @@
             \begin{equation} \label{eq:16}
                 (u, u^{+}) \in \mathcal{D}_{R} \quad \text{for} (|\mathrm{Im} \theta| < r)
             \end{equation}
-            および
+            および ある$N > 1$で
             \begin{equation} \label{eq:17}
                 |u_{\theta}|_r < N, \quad |u^{-1}_{\theta}|_r < N \quad \text{for} (|\mathrm{Im} \theta| < r)
             \end{equation}
@@ -465,7 +465,7 @@
         \section{$E(u)$の2次収束性}
         Lemma \ref{lem:8}によって得られる$v = u_{\theta} w$を使って,
         更新則$\tilde{u} = u + v$で暫定解を更新する.
-        \begin{lemma}
+        \begin{lemma} \label{lem:10}
             $u$をLemma \ref{lem:8}を満たすものとし, $\tilde{u} = u + v$がある$\rho \in (0, r)$について
             条件
             \begin{equation} 
@@ -515,8 +515,82 @@
         $n \rightarrow \infty$で$r_{n} \rightarrow r_{\infty} > 0$となる単調減少列$\{r_n\}$を,
         $r_0 = r, r_{n} =  r_{\infty} + 2^{-n}(r_0 - r_{\infty}) $で与え,
         また$\{u_n\}$を\eqref{eq:14}の$u = u_{n-1}$での解$w_{n-1} \in W_{r_n}$を用いて$u_n = u_{n-1} + (u_{n-1})_{\theta} w_{n-1}$で定める.
-        
-        \red{TO DO: ツイスト定理の証明をまとめる}
+        (つまり, $v_n = u_{n+1} - u_{n}$である.)
+        \vskip \baselineskip
+        まず, Theorem \ref{thm:twi}のもとで, Lemma \ref{lem:8}, Lemma \ref{lem:10}を繰り返し適用できると仮定したときに,
+        収束先が存在して$E(u) \equiv 0$となることを示したい.
+
+        Lemma \ref{lem:8}の\eqref{eq:18}を$u = u_n, r = r_n, N = 2 N_0$として適用すれば, 
+        $\epsilon_n := |E(u_n)|_{r_n}$として, 
+        \begin{equation} \label{eq:32}
+            |v_n|_{r_{n+1}} \leq \frac{c_1}{(r_n - r_{n-1})^{2 \tau}} \epsilon_n
+        \end{equation}
+        であり, 
+        \begin{equation} \label{eq:33}
+            |(v_n)_{\theta}|_{r_{n+1}} \leq \frac{c_1}{(r_n - r_{n-1})^{2 \tau + 1}} \epsilon_n
+        \end{equation}
+        である.
+        また, $r_n - r_{n-1} = 2^{-(n+1)}(r_0 - r_{\infty})$であるので,
+        $\displaystyle a := 2^{4 \tau}, c_7 := c_6 \frac{2^{4 \tau}}{r_0 - r_{\infty}}$とすれば,
+        Lemma \ref{lem:10}から,
+        \begin{equation} \label{eq:34}
+            \epsilon_{n+1} \leq \frac{c_6 \epsilon_n^2}{(r_n - r_{n-1})^{2 \tau + 1}} \epsilon_n = c_7 a^n \epsilon_n^2.
+        \end{equation}
+
+        問題は. $n$を大きくしたときに$a^n$の発散するのと$\epsilon_n^2$が$0$に近づくのはどちらが早いかということである.
+        これを調べるには$\{\eta_n\}$を
+        \begin{equation} \label{eq:35}
+            \eta_n := a^{n+1} c_7 \epsilon_n
+        \end{equation}
+        で定めればよく, 実際\eqref{eq:34}から
+        \[
+            \eta_{n+1} = a^{n+2} c_7 \epsilon_{n+1} \leq a^{2n+2} c_7^2 \epsilon_{n}^2 = \eta_n^2
+        \]
+        であるから, $\eta_0 = a c_7 \epsilon_0 < 1$の下で$\eta_n \leq \eta_0^{2^n} \rightarrow 0$, つまり$\epsilon_n \leq \eta_n \rightarrow 0$がわかる.
+        \eqref{eq:32}から$|v_n|_{r_{\infty}} \leq |v_n|_{r_{n+1}} \rightarrow 0$であるが,
+        特にこれは指数関数より早く収束するので, 無限和$u_0 + \sum_{k = 0}^{\infty} v_k$は絶対収束し, $u_\infty \in W_{r_{\infty}}$となる.
+        これにより, $\displaystyle E(u_\infty) = \lim_{n \rightarrow \infty} E(u_n) = 0$がわかる. 
+        \vskip \baselineskip
+
+        次に, $u = u_n, r = r_n, N = 2 N_0$としたときに
+        Lemma \ref{lem:8}, Lemma \ref{lem:10}の仮定\eqref{eq:16} \eqref{eq:17}を満たすことを示す.
+
+        これは, 
+        \begin{equation} \label{eq:36}
+            |u_n - u_0|_{r_n} < \frac{R}{2}
+        \end{equation}
+        および
+        \begin{equation} \label{eq:37}
+            |(u_n - u_0)_{\theta}|_{r_n} < \frac{1}{2N_0}
+        \end{equation}
+        を示せば十分である. 実際, \eqref{eq:36}および\eqref{eq:7}から\eqref{eq:16}で$R$を$R/2$に置き換えたものが満たされ, \eqref{eq:27}および\eqref{eq:8}から,
+        \[
+            |(u_n)_{\theta}|_{r_n} \leq |(u_n - u_0)_{\theta}|_{r_n} + |(u_0)_{\theta}|_{r_n} < \frac{1 + 2 N_0^2}{2 N_0} < 2 N_0
+        \]
+        であるから, \eqref{eq:17}で$N = 2 N_0$としたものが満たされる.
+
+        さて, \eqref{eq:36}, \eqref{eq:37}を示す.
+        $\lambda \leq 4 \tau, \eta_0 < 1/2$としたとき, $2^{\lambda} \leq a, \eta_n < \eta_0^{n+1}$であり, 
+        ゆえに$\displaystyle \sum_{n = 0}^{\infty} \eta_n \leq \sum_{n = 0}^{\infty} \eta_0^{n+1} = \frac{\eta_0}{1 - \eta_0} \leq 2 \eta_0$であるので,
+        評価式
+        \begin{equation} \label{eq:38}
+            \sum_{n = 0}^{\infty} \frac{\epsilon_n}{(r_n - r_{n+1})^{\lambda}} \leq c_7^{-1} (r_0 - r_{\infty})^{- \lambda} \sum_{n = 0}^{\infty} \eta_n \leq \frac{2 \eta_0}{c_7 (r_0 - r_{\infty})^{\lambda}} = \frac{2 a \epsilon_0}{(r_0 - r_{\infty})^{\lambda}}
+        \end{equation} 
+        が得られる. この和は$\epsilon_0$の選び方次第で小さくすることができる.
+
+        $\nu < n$となるすべての自然数$\nu$で\eqref{eq:36}, \eqref{eq:37}が成り立っているとすると,
+        \eqref{eq:32}および\eqref{eq:38}から, 
+        \[
+            |u_n - u_0|_{r_n} < \sum_{\nu = 0}^{n - 1}|v_{\nu}|_{r_{\nu}} \leq \sum_{\nu = 0}^{n - 1} \frac{c_1 \epsilon_{\nu}}{(r_{\nu} - r_{\nu+1})^{2 \tau}} < c_1 2 a \frac{\epsilon_0}{(r_{0} - r_{\infty})^{2 \tau}}.
+        \]
+        同様に, \eqref{eq:33}, \eqref{eq:38}から
+        \[
+            |(u_n - u_0)_{\theta}|_{r_n} < \sum_{\nu = 0}^{n - 1}|(v_{\nu})_{\theta}|_{r_{\nu}} \leq \sum_{\nu = 0}^{n - 1} \frac{c_1 \epsilon_{\nu}}{(r_{\nu} - r_{\nu+1})^{2 \tau + 1}} < c_1 2 a \frac{\epsilon_0}{(r_{0} - r_{\infty})^{2 \tau + 1}}.
+        \]
+        どちらの評価式も右辺は$n$によらないので, 
+        必要に応じて$\epsilon_0 =: \delta$を適当に取り直せば, $n$でも\eqref{eq:36}, \eqref{eq:37}が満たされることがわかる.
+
+        以上をもって, Theorem \ref{thm:twi}が示された.
     \begin{thebibliography}{10}
     \nocite{*}
 	\bibitem{LM01}  M. Levi and J. Moser, A Lagrangian proof of the invariant curve theorem for twist mappings, 
