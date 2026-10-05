@@ -1,0 +1,440 @@
+\documentclass[a4paper]{ujarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+\usepackage{bm} %太字
+\usepackage{tcolorbox} %定理環境のやつ
+\usepackage{physics}
+\tcbuselibrary{breakable, skins, theorems}
+\usepackage{enumerate} %箇条書き
+\usepackage{ulem} %下線
+\usepackage{mathrsfs} %花文字
+\usepackage{url}
+
+%コマンド
+\newcommand{\red}[1]{\textcolor{red}{#1}} %赤文字
+\newcommand{\vecn}[1]{({#1}_1, \cdots, {#1}_{n})}
+\newcommand{\inner}[2]{(#1, #2)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lpn}[1]{\|#1\|_{L^{p}}}
+\newcommand{\esssup}[1]{\mathop{\mathrm{ess.sup}}_{#1}}
+\newcommand{\cl}[1]{\bar{#1}}
+\newcommand{\pd}[2]{\partial_{#1}^{#2}}
+\newcommand{\alev}{\ \mathrm{a.e.}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\weak}{\ \mathrm{(weakly)}}
+\newcommand{\Div}{\mathrm{div}}
+\newcommand{\Grad}{\mathrm{grad} }
+\newcommand{\Rot}{\mathrm{rot} }
+
+
+\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+\newcommand{\rme}{\mathrm{e}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{cor}{Corlollary}
+\newtheorem{conj}{Conjecture}
+\newtheorem{axiom}{Axiom}
+%%証明環境
+\makeatletter
+\renewenvironment{proof}[1][Proof]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+
+\title{単振り子のシンプレクティック数値積分法および広田差分}
+\begin{document}
+\date{2026年6月14日}
+\author{まるげり}
+
+\maketitle
+\setcounter{section}{-1}
+
+\section{まえがき}
+
+    こんなこと書いている場合ではない.
+
+\section{単振り子}
+    質量$m$, 半径を$l$とする.
+    一様重力場において, 半径$l$の円周上($x^2 + y^2 = l^2$)に拘束された運動を考える.
+    上の拘束条件の微分$x \dot{x} + y \dot{y} = 0$を考えれば, 考慮すべき速度の拘束は, 各$(x, y) \in N := \{x^2 + y^2 - l^2 = 0\}$において
+    \begin{align}
+        f_1(x, y, \dot{x}, \dot{y}) &:= x \dot{x} + y \dot{y} = 0
+    \end{align}
+    と書けて, 陰関数定理から接ベクトル束$T \mathbb{R}^2$の部分ベクトル束(接分布)$E$を与える.
+    この拘束は, $1$形式$(\omega_1)_{(x, y)} = x d x + y dy$と書ける.
+    明らかに任意の$T_{(x, y)} N$の元$\xi(x, y)$について$\omega(\xi) = 0$となるから$N$は積分多様体である.
+    (この$\xi$を\textbf{法速度ベクトル}という.)
+    いま, 拘束なしの一様重力場のラグランジアン
+    \[
+        L = \frac{1}{2}m(\dot{x}^2 + \dot{y}^2) - m g (l - y)
+    \]
+    に対して, ラグランジュ微分$\displaystyle [L](q(t)) = \left.\frac{d}{d t} \frac{\partial L}{\partial v}\right|_{v = \dot{q}(t)} - \left.\frac{\partial L}{\partial q}\right|_{q = q(t)}$は
+    \[
+        [L](x(t), y(t)) = 
+        \begin{bmatrix}
+            m\ddot{x}, \ 
+            m\ddot{y} - mg
+        \end{bmatrix}
+    \]
+    であり, これはカップリングを通して$(T^{*}_{q(t)} \mathbb{R}^2)^2$上の元とみなせる. 
+    つまり, $[L](x(t), y(t)) = m\ddot{x} dx + (m\ddot{y} - mg) dy$とみなす.
+
+    $N \subset \mathbb{R}^2$上の曲線$q(t)$が拘束のついたラグランジュ系の運動になるのは,
+    $\omega_1(\xi) = 0$となる任意の$\xi(t) = (\xi_1(t), \xi_2(t)) \in T_{q(t)} \mathbb{R}^2$に対して,
+    \[
+        [L](x(t), y(t)) \cdot \xi(t) = 0
+    \]
+    となるときである. これを\textbf{ダランベール-ラグランジュの原理}という.
+    今$\omega_1(\xi) = 0$となる接ベクトル$\xi$は$\displaystyle y \frac{\partial}{\partial x} -x \frac{\partial}{\partial y}$で張られる部分空間の元だから,
+
+    \[
+        [L](x(t), y(t)) \cdot \xi(t) = m\ddot{x} y - m x (\ddot{y} - g) = 0.
+    \]
+    一方で, $N$上で$(x, y) = (l \sin{\theta}, - l \cos{\theta})$\ (振れ角の取り方に注意)なので,
+    \begin{align}
+        \ddot{x}y &= - l^2 \ddot{\theta} \cos^2{\theta} + l^2 \dot{\theta}^2 \sin{\theta} \cos{\theta} = 0, \\
+        - x (\ddot{y} - g) &= - l^2 \ddot{\theta} \sin^2{\theta} - l^2 \dot{\theta}^2 \sin{\theta} \cos{\theta} + gl \sin{\theta}  = 0
+    \end{align}
+    であるから, 結局拘束の入ったオイラー-ラグランジュ方程式は
+    \[
+        - l^2 \ddot{\theta} + gl \sin{\theta} = 0
+    \]
+    である. これが単振り子の運動方程式である.
+    これから, $N$上でのラグランジアンは$\displaystyle L(\theta, \dot{\theta}) = \frac{1}{2} l^2 \dot{\theta}^2 + gl \cos{\theta}$と書ける.
+    ハミルトニアンは$\displaystyle q = \theta, \  p = \frac{\partial L}{\partial \dot{\theta}} = l^2 \dot{\theta}$として, 
+    $\dot{\theta} = l^{-2} p$であるので$\displaystyle H(q, p) = l^{-2} p^2 - L(q, l^{-2}p) = \frac{p^2}{2 l^2} - gl \cos{q}$である.
+
+    なお, ダランベール-ラグランジュの原理から, $T^{*}\mathbb{R}|_{N}$上では余接ベクトル$[L](x(t), y(t))$は$\omega_1$を用いて
+    \[
+        [L](x(t), y(t)) = \lambda \omega_1 = \lambda x dx + \lambda y dy
+    \]
+    と表されることがわかる. この$\lambda$を\textbf{ラグランジュの未定乗数}という.
+    
+    \section{1次のシンプレクティック数値積分}
+
+    ハミルトニアン$H$が可積分ハミルトニアン$H_A, \ H_B$を用いて
+    \[
+        H = H_{A} + H_{B}
+    \]
+    と表されるとする. $H, H_{A}, H_B$のハミルトンベクトル場を$X, X_{A}, X_B$と表せば, シンプレクティック$2$形式$\omega$について
+    $dH = dH_{A} + d H_B$より$\omega(\cdot, X) = \omega(\cdot, X_A) + \omega(\cdot, X_B) = \omega(\cdot, X_A + X_B)$であるから,
+    シンプレクティック形式の非退化性から
+    \[
+        X = X_{A} + X_B
+    \] 
+    であり, ステップ幅を$h = t/n$, $t_{0} = 0, \ t_{i+1} = t_{i} + h$とすれば, 指数写像$\exp(tX) = \exp(t(X_A + X_B))$について,
+    \[
+        \exp(tX) = \prod_{j = 1}^{n} \exp((t_{j} - t_{j-1})(X_A + X_B)) = \prod_{j = 1}^{n} \exp(h(X_A + X_B)).
+    \]
+    したがって, 数値積分を$1$ステップ進めることは$\exp{hA + h B}$を作用させることと同じである.
+    $A$と$B$は可換ではないためBCH公式を用いることに注意しながら$\exp{hA + h B}$を$\exp{hA}$と$\exp{h B}$の積の形で表せば, 
+    シンプレクティック構造を保存する数値積分スキームが得られる.
+
+    特に, 自然ハミルトン系
+    \[
+        H(q, p) = \frac{1}{2} p^2 + V(q)
+    \]
+    について, \textbf{1次のシンプレクティック数値積分}のスキームは, $H_A = p^2/2, \ H_{B} = V(q)$とすれば,
+    $\displaystyle X_{A} = p \frac{\partial}{\partial q}, \ X_B = - V'(q) \frac{\partial}{\partial p}$であるから,
+    \begin{align}
+        q_{n+1} &= q_n + h p_{n+1} = q_{n} + h p_{n} - h^2 V'(q_n) \\
+        p_{n+1} &= p_{n} - h V'(q_n)
+    \end{align}
+    と書き下せる.
+
+    たとえば, $l = 1$としたときの単振り子では$V(q) = - g \cos{q}, \ V'(q) = g \sin{q}$であるから
+    \begin{align}
+        q_{n+1} &= q_{n} + h p_{n} - h^2 g \sin{q_{n}} \\
+        p_{n+1} &= p_{n} - h g \sin{q_{n}}
+    \end{align}
+    である.
+
+    いま, 単振り子について, ステップ幅$h$を固定した下で重力加速度$g$を動かすことを考える.
+    連続系では重力加速度$g$の値にかかわらず可積分なのは明らかである. 
+    また, 平衡点$(q, p) = (- \pi , 0), (\pi, 0)$を繋ぐseparatrixが存在する.
+    
+    一方, 変数変換$(q, p) \mapsto (\bar{q}, \bar{p}) = (q - \pi, h p)$を考えてみると, 
+    $\sin{\bar{q}_{n} + \pi} = - \sin{\bar{q}_{n}}$であるので
+    $1$次のシンプレクティック数値積分スキームは
+    \begin{align}
+        \bar{q}_{n+1} &= \bar{q}_{n} + \bar{p}_{n} +  h^2 g \sin{\bar{q}_{n}}, \\
+        \bar{p}_{n+1} &= \bar{p}_{n} + h^2 g \sin{\bar{q}_{n}}
+    \end{align}
+    となる. $q \in \mathbb{S}^1$であるから, 
+    $K = h^2 g$とすれば, 上のスキームはアニュラス上の写像力学系$T: (\theta, I) \mapsto (\theta_1, I_1)$
+    \begin{equation}
+        \left\{
+        \begin{aligned}
+            \theta_1 &= \theta + I + K \sin{\theta}, \\
+            I_1 &= I + K \sin{\theta}
+        \end{aligned}
+        \right.
+    \end{equation}
+    になっている. 
+    この写像は \textbf{Standard map} と呼ばれており, $K > 63/64 (= 0.984375)$で不変曲線が消滅することが知られている(MacKay-Percival, 1985).
+    また, どんなに小さい$K > 0$でもseparatrix splitが生じる事も知られており(Gelfreich, 1994)\footnote{どうやら(Lazutkin, 1984)や(Gelfreich-Lazutkin-Svanidze, 1994)の証明でConjectureとしていた部分を最終的に解決したのがこれらしい.},
+    連続系のときの性質をかなり失っているといえる.
+    
+    Standard mapのヤコビ行列
+    \[
+        DT(\theta, I) = 
+        \begin{bmatrix}
+            1 + K \cos{\theta} & 1 \\
+            K \cos{\theta} & 1\\
+        \end{bmatrix}
+    \]
+    は, 不動点$(\theta, I) = (2k\pi, 0), \ ((2k+1)\pi, 0) \ (k \in \mathbb{Z})$においては
+    $DT(2k\pi, 0) = 
+        \begin{bmatrix}
+            1 + K  & 1 \\
+            K & 1\\
+        \end{bmatrix}, 
+        \ DT((2k+1)\pi, 0) = 
+        \begin{bmatrix}
+            1 - K & 1 \\
+            -K & 1\\
+        \end{bmatrix}$
+    である.
+    $DT(2k\pi, 0)$の固有値は$\lambda = \frac{2 + K \pm \sqrt{K(K+4)}}{2}$となり, 
+    不動点$(2k\pi, 0)$は双曲型である.
+    $DT(2k\pi, 0)$の固有値は$\lambda = \frac{2 - K \pm \sqrt{K(K-4)}}{2}$となり, 
+    不動点$((2k+1)\pi, 0)$は$0 < K < 4$で楕円型, $K > 4$で双曲型である.
+    ($K\approx 4$では軌道はまだ不動点は近くの楕円型周期点に巻き付くホモクリニック軌道から出るKAM曲線で遮られている.)
+
+    \section{広田差分}
+    単振り子の可積分性(第一積分の存在性)を保った差分化には\textbf{広田差分}が知られている.
+
+    単振り子の運動方程式
+    \begin{equation} 
+        \frac{d^2 q}{d t^2} = - g \sin{q}
+    \end{equation}
+    は, 時間変数変換$\tau = \sqrt{g} t$とすると,
+    \begin{equation} \label{eq:pend}
+        \frac{d^2 q}{d \tau^2} = - \sin{q}
+    \end{equation}
+    という形に書き換えられる.
+
+    以降, $\tau$を改めて$t$とおき, 方程式\eqref{eq:pend}を考える.
+    変数変換
+    \begin{equation} \label{eq:hirota}
+        q(t) = 4 \arctan{\frac{G(t)}{F(t)}}
+    \end{equation}
+    を考える. (これはSine-Gordon方程式$u_{tt} - u_{xx} + \sin{u} = 0$の特殊解を広田の方法で求めるときと同じ操作である.)
+    $2$つの関数$f(t), g(t)$に対して定義される\textbf{広田の$D$-演算子}(あるいは双線形微分作用素)
+    \[
+        D^{n}_{t} (f, g) := \left. \left(\frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)^{n}(f(t) g(s)) \right|_{s = t}
+    \]
+    を用いると,
+    \begin{align}
+        D^2_{t}(G, F) &= \left. \left(\frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)^{n}(G(t) F(s)) \right|_{s = t} \\
+        &= G'' F - 2 F' G' + F'' G, \\
+        D^{2}_{t}(F, F) &= 2 (F'' F - F'^2)
+    \end{align}
+    となるので, 
+    \begin{align}
+        (F^2 - G^2) D^2_t(G, F) - F G (D^2_t(F, F) - D^{2}_{t}(G, G)) 
+        &= (F^2 - G^2)(G'' F - 2 G' F' + G F'') \\
+        &\quad - 2 FG( F'' F - F'^2 - G'' G + G'^2) \\
+        &= F^3 G'' - 2 F^2 F' G' + F^2 G F'' - F G^2 G'' + 2 G^2 F' G' - G^3 F'' \\
+        &\quad  - 2 (F^2 G F'' - F G F'^2 - F G^2 G'' + F G G'^2) \\
+        &= (F G'' - G F'') (F^2 + G^2) - 2 (G' F - F' G)(G G' + F F')
+    \end{align}
+    
+    また, $\tan{\varphi} = x$とおくと, 
+    $\displaystyle \cos{\varphi} = \frac{1}{\sqrt{1 + x^2}}, \ \sin{\varphi} = \frac{x}{\sqrt{1 + x^2}}$であるから,
+    \begin{align}
+        \sin{2 \varphi} &= 2 \sin{\varphi} \cos{\varphi} = \frac{2x}{1 + x^2}, \\
+        \cos{2 \varphi} &= \cos^2{\varphi} - \sin^{2}{\varphi} = \frac{1 - x^2}{1 + x^2} \\
+        \sin{4 \varphi} &= 2 \sin{2 \varphi} \cos{2 \varphi} = \frac{4 x(1 - x^2)}{(1 + x^2)^2}
+    \end{align}
+    であるから,
+    \begin{align}
+        \frac{d q}{d t} &= \frac{4 F^2}{G^2 + F^2} \frac{G' F - F' G}{F^2} = \frac{4(G' F - F' G)}{G^2 + F^2} \\
+        \frac{d^2 q}{d t^2} &= \frac{4(G'' F - F'' G)(G^2 + F^2) - 8(G' F - F' G)(G G' + F F')}{(G^2 + F^2)^2} \\
+        &= \frac{4[(F^2 - G^2) D^2_t(G, F) - F G (D^2_t(F, F) - D^{2}_{t}(G, G))]}{(G^2 + F^2)^2}, \\
+        - \sin{q} &= - \sin\left(4 \arctan{\frac{G(t)}{F(t)}}\right) \\
+        &= - \frac{4 F G (F^2 - G^2)}{(F^2 + G^2)^2}
+    \end{align}
+    
+    \eqref{eq:pend}は
+    \begin{equation} \label{eq:pend2}
+        (F^2 - G^2) D^2_t(G, F) - F G (D^2_t(F, F) - D^{2}_{t}(G, G)) = - F G (F^2 - G^2)
+    \end{equation}
+    と表せる.
+    ここで, 任意にパラメータ$\lambda$を与えた下で, 
+    $F(t), G(t)$がもし双線型な連立方程式
+    \begin{equation} \label{eq:pend3}
+        \begin{aligned}
+            D^2_t(G, F) &= (\lambda - 1) G(t) F(t), \\
+            D^2_t(F, F) - D^{2}_{t}(G, G) &= \lambda (F^2 - G^2)
+        \end{aligned}
+    \end{equation}
+    の解であれば, これは\eqref{eq:pend2}を満たし, \eqref{eq:hirota}を通して\eqref{eq:pend}の解を与える.
+
+    これを差分幅$\delta > 0$を適当に取ったのち, 以下の方法で差分化する:
+    \begin{enumerate}
+        \item まず, 微分作用素$D$に対して, \textbf{シフト演算子}$\exp(D)$を
+        \[
+            f(t) \mapsto (\exp(D) f)(t) := \sum_{k = 0}^{\infty} \frac{1}{k!} (D^{k}f)(t)
+        \]
+        で定義する. 定数$a$について, $\displaystyle D = a \frac{d}{d t}$のとき, 
+        右辺は$\displaystyle \sum_{k = 0}^{\infty} \frac{f^{k}(t)}{k!} a^k = \sum_{k = 0}^{\infty} \frac{f^{(k)}(t)}{k!}((t + a) - t)^k$と書き換えられるので,
+        \[
+            \left(\exp(a \frac{d}{d t}) f\right)(t) = f(t + a)
+        \]  
+        であることに注意する. 
+        \item 次に, \textbf{中心差分演算子}$\Delta^2(D)$と\textbf{平均化演算子}$\Pi^2(D)$を, 
+        \begin{align}
+            \Delta^2(D) f &:= \frac{1}{\delta} \frac{\exp(\delta D) - \exp( - \delta D)}{2} f, \\
+            \Pi^2(D) f &:= \frac{\exp(\delta D) + \exp(- \delta D)}{2} f
+        \end{align}
+        で定める. 双曲線関数$\displaystyle \sinh(x) = \frac{e^{x} - e^{-x}}{2}, \ \cosh(x) = \frac{e^{x} + e^{-x}}{2}$のアナロジーとみて,
+        \begin{align}
+            \Delta^2(D) f &= \frac{1}{\delta} \sinh(\delta D) f, \\
+            \Pi^2(D) f &:= \cosh(\delta D)f
+        \end{align}
+        とも表記する. $\displaystyle D = \frac{d}{d x}$の場合は, 
+        \begin{align}
+            \Delta^2(\frac{d}{d x}) f &:= \frac{1}{\delta} \frac{\exp(\delta \frac{d}{d t}) - \exp( - \delta \frac{d}{d t})}{2} f = \frac{f(t + \delta) - f(x - \delta)}{2 \delta}, \\
+            \Pi^2 f(\frac{d}{d x}) &:= \frac{\exp(\delta \frac{d}{d t}) + \exp(- \delta \frac{d}{d t})}{2} f =  \frac{f(t + \delta) + f(x - \delta)}{2}
+        \end{align}
+        となり, 通常の意味での中心差分や平均と一致する.
+        \item 広田の$D$-演算子$D_t$に対する\textbf{シフト演算子}$\exp(D_t)$は($D_t$はもはや微分作用素ではないものの)同様にして
+        \begin{equation}
+            \exp(D_t)(f, g) := \sum_{k = 0}^{\infty} \frac{1}{k!} (D_{t}^{k}(f, g))(t) = \left. \exp(\left(\frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)) (f(t) g(s)) \right|_{s = t}
+        \end{equation}
+        で定義する. これにより,\textbf{中心差分演算子}$\Delta^2(D_t)$と\textbf{平均化演算子}$\Pi^2(D_t)$も
+        \begin{align}
+            \Delta^2(D_{t})(f, g) &= \frac{1}{\delta} \frac{\exp(\delta D_t)(f, g) - \exp( - \delta D_t)(f, g)}{2} = \frac{1}{\delta} \sinh(\delta D_t)(f, g), \\
+            \Pi^2(D_{t}) (f, g) &:= \frac{\exp(\delta D_t)(f, g) + \exp(- \delta D_t)(f, g)}{2} = \cosh(\delta D_t)(f,g)
+        \end{align}
+        で定義する.
+        $\displaystyle \frac{\partial}{\partial t}, \ \frac{\partial}{\partial s}$は可換な作用素なので, 
+        \begin{align}
+            \exp \left( \delta \left(\frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right) \right) (f(t) g(s)) 
+            &= \exp\left(\delta \frac{\partial}{\partial t}\right) f(t) \exp \left(- \delta \frac{\partial}{\partial s}\right) g(s) \\
+            &= f(t + \delta) g(s - \delta)
+        \end{align}
+        となる. ゆえに,
+        \[
+            \exp(\delta D_t)(f, g) = f(t + \delta) g(t - \delta).
+        \]
+        \item さて, \eqref{eq:pend3}で$D_t$を$\frac{1}{\delta} \sinh(\delta D_t)(f, g)$に "形式的に" 置き換えた式を考える.
+        つまり, \eqref{eq:pend3}の中に現れる$D$-演算子が, 多項式$P(x)$に対して
+        \[
+            P(D_t)(f, g) := \left. P\left((\frac{\partial}{\partial t} - \frac{\partial}{\partial s})\right)f(t) g(s) \right|_{s = t}
+        \]
+        という形で定義されていたものであるとき, $P(D_t)(f, g)$をべき級数$\tilde{P}(x) := P(\frac{1}{\delta} \sinh(\delta x))$によって形式的に定まる
+        \[
+            P(\frac{1}{\delta} \sinh(\delta D_t))(f, g) := \left.\tilde{P}\left((\frac{\partial}{\partial t} - \frac{\partial}{\partial s})\right)f(t) g(s) \right|_{s = t}
+        \]
+        に置き換えるという操作を行う. 
+        
+        具体的には, $P(x) = x^2$の場合である$D_t^2(G, F)$を$\displaystyle \tilde{P}(x) := \frac{1}{\delta^2} \sinh^2(\delta x) = (x^2 + \frac{\delta^2 x^4}{3} + O(\delta^4))$で定まる
+        \[
+            \frac{1}{\delta^2} \sinh^2(\delta D_{t})(G, F) := \left. \left( \frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)^{2}G(t) F(s) + \frac{\delta^2}{3} \left( \frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)^{4} G(t) F(s) + O(\delta^4)\right|_{s = t}
+        \]
+        という演算子に置き換える. ($\delta$についての定数項が$D^2(G, F)$であることに注意.)
+        % さらに, 積$G(t) F(t)$を形式的に
+        % \[
+        %     \cosh^2(\delta D_{t})(G, F) := \left. G(t) F(s) + \delta^2 \left( \frac{\partial}{\partial t} - \frac{\partial}{\partial s}\right)^{2} G(t) F(s) + O(\delta^4)\right|_{s = t}
+        % \]
+        % に置き換える. 
+
+        操作後の式は
+        \begin{equation}
+            \begin{aligned}
+                \frac{1}{\delta^2} \sinh^2(\delta D_{t})(G, F) &= (\lambda - 1) F(t) G(t), \\
+                \frac{1}{\delta^2} \sinh^2(\delta D_{t})(F, F) -  \frac{1}{\delta^2} \sinh^2(\delta D_{t})(G, G) &= \lambda (F(t)^2 - G(t)^2)
+            \end{aligned}
+        \end{equation}
+        と表示でき, $\delta \rightarrow 0$の極限で確かに\eqref{eq:pend3}と一致している.
+
+        \item 以上を踏まえて, \eqref{eq:pend3}の差分方程式を
+        \begin{equation} \label{eq:sabun1}
+            \begin{aligned}
+                \sinh^2(\delta D_{t})(G, F) &= \delta^2 (\lambda - 1) F(t) G(t), \\
+                \sinh^2(\delta D_{t})(F, F) - \sinh^2(\delta D_{t})(G, G) &= \delta^2 \lambda (F(t)^2 - G(t)^2)
+            \end{aligned}
+        \end{equation}
+        とする.
+
+        \item ここで, $(F, G)$を$(\rho, q)$に以下のやり方で変数変換する:
+        \begin{align}
+            F(t) &= \exp \frac{\rho(t)}{4} \cos{\frac{q(t)}{4}}, \\
+            G(t) &= \exp \frac{\rho(t)}{4} \sin{\frac{q(t)}{4}}.
+        \end{align}
+        \eqref{eq:sabun1}を, 
+        \begin{align}
+            &\sinh^2(\delta D_{t})(G, F) \\
+            &= \frac{1}{4}(\exp(2 \delta D_t)(G, F) - 2 G F + \exp(- 2 \delta D_t)(G, F)) \\
+            &= \frac{1}{4}(F(t + 2 \delta) G( t - 2 \delta) - 2G(t)F(t) + F(t - 2 \delta) G( t + 2 \delta)) \\
+            &= \frac{1}{4}\left(\exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \sin{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}} - \exp \frac{\rho(t)}{2} \sin{\frac{q(t)}{2}} \right), \\
+            % \cosh^2(\delta D_{t})(G, F) &= \frac{1}{4}(\exp(2 \delta D_t)(G, F) + 2GF +  \exp(- 2 \delta D_t)(G, F)) \\
+            % &= \frac{1}{4}(F(t + 2 \delta) G( t + 2 \delta) + 2G(t)F(t) +  F(t - 2 \delta) G( t - 2 \delta))\\
+            % &= \frac{1}{8}\left(\exp \frac{\rho(t + 2 \delta)}{2} \sin{\frac{q(t + 2 \delta)}{2}} + 2 \exp \frac{\rho(t)}{2} \sin{\frac{q(t)}{2}} + \exp \frac{\rho(t - 2 \delta)}{2} \sin{\frac{q(t - 2 \delta)}{2}}\right), \\
+            &\sinh^2(\delta D_{t})(F, F) - \sinh^2(\delta D_{t})(G, G) \\
+            &= \frac{1}{2}(F(t + 2 \delta) F( t - 2 \delta) - F(t)^2  - G(t + 2 \delta) G( t - 2 \delta) + G(t)^2) \\
+            &= \frac{1}{2}\left( \exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \cos{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}} - \exp \frac{\rho(t)}{2} \cos{\frac{q(t)}{2}} \right)
+        \end{align}
+        を踏まえて計算すれば, \eqref{eq:sabun1}の第$1$式は
+        \begin{align}
+            &\exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \sin{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}} - \exp \frac{\rho(t)}{2} \sin{\frac{q(t)}{2}} 
+            = 2 \delta^2 (\lambda - 1) \exp \frac{\rho(t)}{2} \sin{\frac{q(t)}{2}}, \\
+            &\{1 + 2 \delta^2 (\lambda - 1) \} \exp \frac{\rho(t)}{2} \sin{\frac{q(t)}{2}} 
+            = \exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \sin{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}}
+        \end{align}
+        となる.
+        第二式も同様にして,
+        \begin{align}
+            &\exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \cos{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}} - \exp \frac{\rho(t)}{2} \cos{\frac{q(t)}{2}}
+            = 2 \delta^2 \lambda \exp \frac{\rho(t)}{2} \cos{\frac{q(t)}{2}}, \\
+            &\{1 + 2 \delta^2 \lambda \} \exp \frac{\rho(t)}{2} \cos{\frac{q(t)}{2}} 
+            = \exp \frac{\rho(t + 2 \delta) + \rho(t - 2 \delta)}{4} \cos{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}}.
+        \end{align}
+        二つの式の商を考えて$\rho(t)$を消去すれば,
+        \begin{align}
+            \frac{1 + 2 \delta^2 (\lambda - 1)}{1 + 2 \delta^2 \lambda} \tan{\frac{q(t)}{2}} 
+            &= \tan{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}}, \\
+            (1 + 2 \delta^2 (\lambda - 1)) \sin{\frac{q(t)}{2}} \cos{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}}
+            &= (1 + 2 \delta^2 \lambda) \sin{\frac{q(t + 2 \delta) + q(t - 2 \delta)}{4}} \cos{\frac{q(t)}{2}}, \\
+            (1 + (2 \lambda - 1) \delta^2) \sin{\frac{q(t + 2 \delta) - 2 q(t) + q(t - 2 \delta)}{4}}
+            &= - \delta^2 \sin{\frac{q(t + 2 \delta) + 2 q(t) + q(t - 2 \delta)}{4}}
+        \end{align}
+        となる.
+    \end{enumerate}
+    
+    最終的に差分方程式
+    \begin{equation} \label{eq:sabun}
+        \{1 + (2 \lambda - 1) \delta^2\} \sin{\frac{q(t + 2 \delta) - 2 q(t) + q(t - 2 \delta)}{4}} = - \delta^2 \sin{\frac{q(t + 2 \delta) + 2 q(t) + q(t - 2 \delta)}{4}}
+    \end{equation}
+    にできる. この差分方程式\eqref{eq:sabun}について,
+    \begin{equation}
+        \mathcal{H}(t) := \frac{2}{\delta^2} \{1 + 2 \lambda \delta^2\} \sin^2{\frac{q(t + \delta) - q(t - \delta)}{4}} + 2 \sin{\frac{q(t + \delta)}{2}} \sin{\frac{q(t - \delta)}{2}}
+    \end{equation}
+    を考えると, $\displaystyle \Delta^2(\frac{d}{d x}) \mathcal{H}(t) := \frac{\mathcal{H}(t + \delta) - \mathcal{H}(t - \delta)}{2 \delta} \equiv 0$となるため, 
+    $t_n = t_0 + n \delta$とすると$\mathcal{H}(t_0), \ \mathcal{H}(t_1)$が決まれば$\mathcal{H}(t_n)$は$n \in \mathbb{Z}$によらず一定になる.
+    すなわち$\mathcal{H}$は差分方程式\eqref{eq:sabun}の第一積分である.
+
+    \begin{thebibliography}{10} 
+        \nocite{*}
+        \bibitem{AKN} V. Arnold, V. Kozlov, A. Neishtadt, Mathematical Aspects of Classical and Celestial Mechanics (3rd ed.), Springer Science and Business Media (2007).
+        \bibitem{MN98} 峯崎 征隆, 中村 佳正, セパラトリックスをもつ可積分系の広田差分について, 数理解析研究所講究録, \textbf{1098}(1999), 118-129.
+    \end{thebibliography}
+\end{document}

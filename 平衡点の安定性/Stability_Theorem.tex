@@ -1,0 +1,380 @@
+\documentclass[a4paper]{ujarticle}
+\usepackage[margin=15mm]{geometry}
+\usepackage{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[bbgreekl]{mathbbol}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+\usepackage{bm} %太字
+\usepackage{tcolorbox} %定理環境のやつ
+\usepackage{physics}
+\tcbuselibrary{breakable, skins, theorems}
+\usepackage{enumerate} %箇条書き
+\usepackage{ulem} %下線
+\usepackage{mathrsfs} %花文字
+\usepackage{url}
+
+\usepackage{docmute}
+
+%コマンド
+\newcommand{\red}[1]{\textcolor{red}{#1}} %赤文字
+\newcommand{\vecn}[1]{({#1}_1, \cdots, {#1}_{n})}
+\newcommand{\inner}[2]{(#1, #2)}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lpn}[1]{\|#1\|_{L^{p}}}
+\newcommand{\esssup}[1]{\mathop{\mathrm{ess.sup}}_{#1}}
+\newcommand{\cl}[1]{\bar{#1}}
+\newcommand{\pd}[2]{\partial_{#1}^{#2}}
+\newcommand{\alev}{\ \mathrm{a.e.}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\weak}{\ \mathrm{(weakly)}}
+\newcommand{\Div}{\mathrm{div}}
+\newcommand{\Grad}{\mathrm{grad} }
+\newcommand{\Rot}{\mathrm{rot} }
+\newcommand{\am}{\mathrm{am}}
+\newcommand{\sn}{\mathrm{sn}}
+\newcommand{\cn}{\mathrm{cn}}
+\newcommand{\arcosh}[1]{\mathrm{arcosh}(#1)}
+\newcommand{\Ell}{\mathcal{E}\ell \ell}
+
+%\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+\newcommand{\rme}{\mathrm{e}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{maintheorem}{Main Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{cor}{Corollary}
+\newtheorem{conj}{Conjecture}
+\newtheorem*{conj*}{Conjecture}
+\newtheorem{ques}{Question}
+\newtheorem{axiom}{Axiom}
+%%証明環境
+\makeatletter
+\renewenvironment{proof}[1][Proof]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+
+\title{平衡点の安定性}
+\author{まるげり}
+
+\begin{document}
+    \maketitle
+    \cite[Chap. 12.1]{Meyer-Offin}をまとめただけのノート.
+    難しいことはやっていないけど, 
+    チェタエフの不安定性定理とCherryの例($2: - 1$共鳴を起こして不安定化する楕円型平衡点をもつハミルトン系の例)を知らんかったので, 備忘録として.
+
+    \section{安定性の定義}
+
+    $O \subset \mathbb{R}^m$上で定義された滑らかな関数$f: O \rightarrow \mathbb{R}^{m}$対し,
+    微分方程式
+    \begin{equation} \label{eq:bibun}
+        \dot{z} = f(z)
+    \end{equation}
+    を考える. 
+    ここで, $\zeta_0 \in O$が微分方程式\eqref{eq:bibun}の平衡点であるとは, 
+    \[
+        f(\zeta_0) = 0
+    \]
+    となることを指す.
+
+    微分方程式\eqref{eq:bibun}のフローを$\phi^{t}(\zeta)$とする.
+    平衡点$\zeta_0$が\textbf{positively stable} (resp. \textbf{negatively stable})である
+    \footnote{「前方安定」(resp. 「後方安定」)と訳すべき...とは思うけど, こう書いている日本語文献が見つからなかったので英語のまま保留.}
+    とは, 以下が成り立つことを指す: \\
+    $\forall \epsilon > 0, \, \exists \delta > 0$ \ s.t.
+    \[
+        |\zeta - \zeta_0| < \delta \implies \forall t \geq 0 (\text{resp.}\, t \leq 0), \, |\phi^{t}(\zeta) - \zeta_0| < \epsilon.
+    \]
+    また, 平衡点$\zeta_0$が\textbf{安定} (\textbf{stable})であるとは, 
+    $\zeta_0$が positively stable かつ negatively stable であることを指す.
+    平衡点$\zeta_0$が\textbf{不安定} (\textbf{unstable})であるとは, $\zeta_0$が安定でないことを指す.
+
+    平衡点の安定性の判別には, 線形安定性解析を用いることが多い. 
+    \eqref{eq:bibun}において$z = 0$が平衡点であるとしたとき,
+    $A = Df(0), \, g(z) = f(z) - Az$として, 
+    \[
+        \dot{z} = Az + g(z)
+    \]
+    と書き下す. 
+    $A$の固有値の実部がすべて負であるとき, $z = 0$は漸近安定になる. 
+    しかし, ハミルトン系に関してはフローは体積保存性を持つ(リュービルの定理)ので
+    漸近安定な平衡点が生じることはない.
+    (このことは, ハミルトン系において$A$はハミルトン行列になり, 
+    $\lambda$が$A$の固有値のとき$- \lambda$もまた$A$の固有値になってしまうことからも確認できる.)
+
+    したがって, 線形安定性解析において安定性を示す証拠となるのは固有値が楕円形, 
+    つまり純虚固有値のみからなる状況だが, これも安定であるための必要条件ではあっても十分条件ではない.
+    不安定な楕円型平衡点を持つ例としては, Cherryの例
+    \begin{equation} \label{eq:Cherry}
+        %H(\theta_1, \theta_2, I_1, I_2) = 2 I_1 - I_2 + I_1^{1/2} I_2 \cos{(\theta_1 + 2 \theta_2)}
+        H(x_1, x_2, y_1, y_2) = (x_1^2 + y_1^2) - \frac{1}{2}(x_2^2 + y_2^2) + x_1 x_2^2 - x_1 y_2^2 - 2 x_2 y_1 y_2
+    \end{equation}
+    が有名である. 
+    Whittakerの有名な解析力学の教科書 ("Analytical Dynamics of Particles and Rigid Bodies")では, 
+    第$2$版(1917年)では線形安定性解析を根拠に「平面円制限三体問題のラグランジュ点$L_4$は質量比$\mu$が$0 < \mu < \mu_1$の下で安定である」
+    と記していたが, 第$4$版(1937年)ではこの記述を削除し, 代わりに上のCherryの例を挙げて楕円型平衡点が必ずしも安定とは限らない旨を述べている(らしい).
+    \footnote{実際, $L_4$が安定になるのは「$0 < \mu \leq \mu_1$かつ$\mu \neq \mu_2, \, \mu_3$の場合」ということが知られている. 基本的には$4$次のバーコフ標準形に対してアーノルドの安定性定理を用いることで証明できるが, これを適用できない例外的な質量比が$\mu = \mu_1, \mu_2, \mu_3, \mu_c$と$4$つ表れる.
+    $\mu = \mu_c$で安定であるのは$6$次のバーコフ標準形に対してアーノルドの安定性定理を用いることで示される. 共鳴を起こす$\mu_1, \mu_2, \mu_3$ではアーノルドの安定性定理は使えず, $\mu = \mu_1$での安定性はポアンカレ-ホップ分岐の理論を通してMeyerとSchmidtにより1971年に示された. 
+    $\mu = \mu_2, \mu_3$で不安定であることは1966年にMarkeevによって示されており, 証明には後述のチェタエフの不安定性定理を用いている.}
+
+    \section{安定性を保証する方法}
+
+    微分方程式\eqref{eq:bibun}を考え, 平衡点を$\zeta_0 \in O$とする.
+    $\zeta_0$の開近傍$O$上で定義されたなめらかな関数$V : O \rightarrow \mathbb{R}$について,
+    $V$が点$\zeta_0$に関して\textbf{正定値}であるとは, ある$\zeta_0$-近傍$Q \subset O$が存在し,
+    \[
+        V(\zeta_0) < V(z) \quad(\forall z \in Q \backslash \{\zeta_0\})
+    \]
+    となることを指す.
+
+    以下, 関数$V$に対して$\dot{V} : O \rightarrow \mathbb{R}$を$\dot{V}(z) := \nabla V(z) \cdot f(z)$で定義する.
+    \begin{theorem}[\textbf{リャプノフの安定性定理} (Lyapunov's Stability Theorem)]
+        もし\eqref{eq:bibun}の平衡点$\zeta_0$に関して正定値である関数$V$が存在し, 
+        かつ$\zeta_0$のある近傍上で$\dot{V} \leq 0$であれば,
+        平衡点$\zeta_0$はpositively stableである.
+    \end{theorem}
+    このような関数$V$を\textbf{リャプノフ関数}という.
+    \begin{proof}
+        $\zeta_0 = 0, \, V(0) = 0$としても一般性を失わない.
+        任意に$\epsilon > 0$を与えておく.
+        $V$の正定値性からある$\eta > 0$が存在し, $0 < |z| \leq \eta$なる任意の$z \in O$に関して, 
+        \[
+            V(z) > V(0) = 0
+        \]
+        が成り立つ. 
+        $V$の滑らかさから, この$\eta > 0$は$\dot{V} \leq 0 \, (|z| \leq \eta)$かつ$\eta < \epsilon$を満たすように選ぶことができる.
+
+        この$\eta > 0$に対して, $M = \min \{V(z) \mid |z| = \eta\}$とする. 
+        $V(0) = 0$と$V$の連続性から, ある$0 < \delta < \eta$が存在し$V(z) < M \, (|z| < \delta)$を満たす.
+        $|\zeta| < \delta$とすると, ある$t_{*} > 0$が存在して$\forall t \in [0, t_{*})$に対して$|\phi^{t}(\zeta)| < \eta$となる.
+
+        もし$\zeta_0$がpositively stableでなければ, そのような$t_{*}$の中で最大のものを$t_{*} < \infty$として選ぶことができ, 
+        このとき$|\phi^{t_{*}}(\zeta)| = \eta$となる.
+        いま$v(t) := V(\phi^{t}(\zeta))$とすると, 
+        \[
+            v(0) = V(\zeta) < M, \quad \frac{d v}{dt}(t) = \nabla V(\phi^{t}(\zeta)) \cdot f(\phi^{t}(\zeta)) = \dot{V}(\phi^{t}(\zeta)) \leq 0 \quad (0 \leq t < t_{*})
+        \]
+        となる. これより
+        \[
+            v(t_{*}) = v(0) + \int^{t_{*}}_{0} \frac{d v}{dt}(t) d t \leq v(0) < M
+        \]
+        である. しかし, これは$|\phi^{t_{*}}(\zeta)| = \eta$より$v(t_{*}) = V(\phi^{t_{*}}(\zeta)) \geq \min \{V(z) \mid |z| = \eta\} = M$となることに矛盾する.
+        したがって, $t_{*} = \infty$であり$\zeta_0$がpositively stableである. 
+    \end{proof}
+
+    ハミルトニアン$H : O \subset \mathbb{R}^{2n} \rightarrow \mathbb{R}$に関するハミルトン系
+    \begin{equation} \label{eq:ham}
+        \dot{z} = J \nabla H(z)
+    \end{equation}
+    に対しては次が成り立つ.
+
+    \begin{theorem}[\textbf{ディリクレの安定性定理} (Dirichlet's Stability Theorem)]
+        もし\eqref{eq:ham}の平衡点$z_0$がハミルトニアン$H$の狭義の極小点または狭義の極大点であるならば,
+        平衡点$z_0$は安定である.
+    \end{theorem}
+
+    \begin{proof}
+        $H$および$- H$は\eqref{eq:ham}の第一積分である. 
+        必要なら$H$の代わりに$- H$を考えることにより, $z_0$を$H$の狭義の極小点であると仮定してよい.
+        このとき, $z_0$の近傍$Q$上で$H(z_0) < H(z), \ (\forall z \in Q \backslash \{z_0\})$であり,
+        さらに$\dot{H}(z) = \nabla H(z) \cdot J \nabla H(z) = 0$であるから, 我々はハミルトニアン$H(z)$をリャプノフ関数として採用することができ,
+        ゆえに\eqref{eq:ham}はpositively stableである.
+
+        一方で, 時間変数変換$t \mapsto - t$を考え, $\tilde{H} := - H$とすれば
+        \begin{equation} \label{eq:ham2}
+            \dot{z} = - J \nabla H(z) = J \nabla \tilde{H}(z)
+        \end{equation}
+        であるから,
+        $\dot{H}(z) = \nabla H(z) \cdot J \nabla \tilde{H}(z) = - \nabla H(z) \cdot J \nabla H(z) = 0$であるから,
+        改めて$H = - \tilde{H}$をリャプノフ関数として採用できる. 
+        そのため, \eqref{eq:ham2}はpositively stableであり, \eqref{eq:ham}はnegatively stableである.
+    \end{proof}
+
+    \section{不安定性を保証する方法}
+
+    不安定性を示す際, 次のチェタエフの不安定性定理が有用である.
+    \footnote{\cite[定理28.5]{Kasahara}と同じ主張. なお\cite{Kasahara}ではチェタエフの不安定性定理とリャプノフの安定性定理と一緒くたにして「リャプノフの方法」と呼んでいる.}
+
+    \begin{theorem}[\textbf{チェタエフの不安定性定理} (Chetaev's Instability Theorem)]
+        $\zeta_{0} \in O$を\eqref{eq:bibun}の平衡点とする.
+        $V: O \rightarrow \mathbb{R}$を滑らかな関数とし, $\Omega$を$O$の開部分集合とする.
+        関数$V$および開集合$\Omega$は以下を満たすと仮定する.
+        \begin{itemize}
+            \item $\zeta_0 \in \partial \Omega$.
+            \item $V(z) > 0 \quad (\forall z \in \Omega)$.
+            \item $V(z) = 0 \quad (\forall z \in \partial \Omega)$.
+            \item $\dot{V}(z) := \nabla V(z) \cdot f(z) > 0 \quad (\forall z \in \Omega)$.
+        \end{itemize}
+        このとき, ある$\zeta_0$-近傍$Q$が存在し, 任意の$\zeta \in Q \cap \Omega$に対してある$t_{*} > 0$が存在して$\phi^{t_{*}}(\zeta) \notin Q$となる.
+        特に, 平衡点$\zeta_0$は不安定である. 
+    \end{theorem}
+    このような関数$V$を\textbf{チェタエフ関数}という.
+
+    \begin{proof}
+        $\zeta_0 = 0$としても一般性を失わない.
+        $\epsilon > 0$を, 原点を中心とした半径$\epsilon$の閉球$B_{\epsilon} = \{|z| \leq \epsilon\}$が$O$に含まれるように選ぶ.
+        また, $Q := \Omega \cap \{|z| < \epsilon\}$と置く. このとき, $Q$は有界な開集合である.
+
+        仮定から$\zeta_0 = 0$は$\Omega$の境界点かつ$O$の内点であるので, $0$は$Q$の境界点である.
+        したがって, 任意の$\delta > 0$に対しある$p \in Q$が存在する. 
+        このとき, $|p| < \delta$であり, さらに$p \in \Omega$なので$V(p) > 0$である.
+        不安定性を示すには, この$p$に対してある$t_{*} < \infty$が存在して$|\phi^{t_{*}}(p)| \geq \epsilon$となることを示せばよい.
+
+        いま, $v(t) = V(\phi^{t}(p))$とする. 
+        $\phi^{t}(p)$に関して, 次の$2$通りのケースが考えられる. 
+        すなわち, 任意の$t > 0$で$\phi^{t}(p) \in Q$となるか, ある$t_{*} > 0$で$\phi^{t_{*}}(p) \in \partial Q$となるかである.
+
+        任意の$t > 0$で$\phi^{t}(p) \in Q$となると仮定する.
+        この場合, 仮定から任意の$z \in Q \subset \Omega$に対して$\dot{V}(z) > 0$なので,
+        \[
+            \frac{dv}{dt}(t) = \nabla V(\phi^{t}(p)) \cdot f(\phi^{t}(p)) = \dot{V}(\phi^{t}(p)) > 0
+        \]
+        が成り立つ. したがって$v(t)$は狭義単調増加であり$v(t) \geq v(0) > 0$となる.
+        前方軌道の閉包$\overline{\{\phi^{t}(p) \mid t \geq 0\} }\subset \bar{Q}$は有界閉集合なのでコンパクトであり, 
+        かつ適切に$\epsilon > 0$を取り直すことで$Q$の境界と交わらないとしてよい.
+        なぜなら, もし交わるなら$\displaystyle q := \lim_{t \rightarrow \infty} \phi^{t}(p)$が$\partial Q = \partial \Omega \cup \{|z| = \epsilon \}$上にある状況だが,
+        $v(t)$の狭義単調増加性から$V(q) = \lim_{t \rightarrow \infty} v(t) > v(0) > 0$なので$q \in \partial \Omega$であれば仮定$V(z) = 0 \, (z \in \partial \Omega)$に矛盾する.
+        ゆえに$q \in \{|z| = \epsilon \}$となるが,
+        $p$や$\delta$をそのままに$\epsilon > 0$を少しだけ小さい$\epsilon'$に取り直すことができて,
+        $q \notin \{|z| = \epsilon' \}$となる. 以上から$\overline{ \{\phi^{t}(p) \mid t \geq 0\}} \subset Q$としてよい.
+        このとき, コンパクト性から$\displaystyle \nabla V(z) \cdot f(z) = \dot{V}(z) > 0$は$\overline{ \{\phi^{t}(p) \mid t \geq 0\}}$上で最小値を持つ.
+        それを$\kappa > 0$とおくと, 
+        \[
+            \frac{dv}{dt}(t) = \nabla V(\phi^{t}(p)) \cdot f(\phi^{t}(p)) \geq \kappa > 0
+        \]
+        である. このことから
+        \[
+            v(t) = v(0) + \int^{t}_{0} \frac{dv}{dt}(t) dt \geq v(0) + \kappa t
+        \]
+        となり, 特に$t \rightarrow \infty$で$v(t) \rightarrow \infty$となる. 
+        しかし, コンパクト性から$V(z)$もやはり$\overline{ \{\phi^{t}(p) \mid t \geq 0\}}$上で最大値を持つため, $v(t) = V(\phi^{t}(p))$は有界のはずであり, 
+        矛盾する. 
+
+        以上のことから, ある$t_{*} > 0$で$\phi^{t_{*}}(p) \in \partial Q$となることがわかる.
+        このとき, 先ほどと同様にして$0 \leq t < t_{*}$において$\displaystyle \frac{dv}{dt}(t) > 0$であることがわかるので,
+        \[
+            v(t_{*}) = v(0) + \int^{t_{*}}_{0} \frac{dv}{dt}(t) dt \geq v(0) > 0
+        \]
+        である.
+        $q = \phi^{t_{*}}(p) \in \partial Q$としたとき, もし$q \in \partial \Omega$であれば仮定から$v(t_{*}) = V(q) = 0$となるが,
+        これは$v(t_{*}) > 0$に矛盾する. したがって$|q| = \epsilon$である. 
+        よって, 平衡点$\zeta_0 = 0$は不安定である.
+    \end{proof}
+
+    \begin{theorem}[\textbf{リャプノフの不安定性定理}(Lyapunov's Instability Theorem)]
+        もしある関数$V : O \rightarrow \mathbb{R}$が存在して, 
+        \eqref{eq:bibun}の平衡点$\zeta_0$に対して$V(\zeta_0) = 0$
+        かつある開近傍$O' \backslash \{\zeta_0\}$上で$V(z) > 0 \, (z \in O')$であり,
+        さらに$\dot{V} = \nabla V \cdot f$が$\zeta_0$に関して正定値であるならば,
+        平衡点$\zeta_0$は不安定である.
+    \end{theorem}
+
+    \begin{proof}
+        $f(\zeta_0) = 0$より$\dot{V}(\zeta_0) = 0$であることに注意すれば, 
+        $\dot{V}$の正定値性から適当な$\zeta_0$の開近傍$Q$に対して$Q \backslash \{\zeta_0\}$上で$\dot{V}(z) > \dot{V}(\zeta_0) = 0$である.
+        したがって, $\Omega := \{z \in O' \cap Q \mid V(z) > 0\}$とおけばチェタエフの不安定性定理から平衡点$\zeta_0$の不安定性が示せる.
+    \end{proof}
+
+    チェタエフの不安定性定理の応用として, Cherryの例\eqref{eq:Cherry}における平衡点の不安定性を示しておこう.
+    ハミルトニアン\eqref{eq:Cherry}によって定まるハミルトン系は,
+    \begin{equation} \label{eq:Cherry_ode}
+        \left\{
+            \begin{aligned}
+                \dot{x}_1 &= 2 y_1 - 2 x_2 y_2, & \dot{y}_1 &= - 2 x_1 - x_2^2 + y_2^2, \\
+                \dot{x}_2 &= - y_2 - 2 x_1 y_2 - 2 x_2 y_1, & \dot{y}_2 &= x_2 - 2 x_1 x_2 + 2 y_1 y_2
+            \end{aligned}
+        \right.
+    \end{equation}
+    となり, ヤコビ行列$A(x_1, x_2, y_1, y_2)$は
+    \begin{equation}
+        A(x_1, x_2, y_1, y_2) = 
+        \begin{bmatrix}
+            0 & - 2 y_2 & 2 & - 2 x_2 \\
+            - 2 y_2 & - 2 y_1 &- 2 x_2 & - 1 - 2 x_1 \\
+            - 2 & - 2 x_2 & 0 & 2 y_2 \\
+            - 2 x_2 & 1 - 2 x_1 &  2 y_2 & 2 y_1
+        \end{bmatrix}
+    \end{equation} 
+    と表される.
+    容易にわかるように$(x_1, x_2, y_1, y_2) = (0, 0, 0, 0)$は平衡点であり,
+    この点におけるヤコビ行列は
+    \begin{equation}
+        A(0, 0, 0, 0) = 
+        \begin{bmatrix}
+            0 & 0 & 2 & 0 \\
+            0 & 0 & 0 & - 1 \\
+            - 2 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0
+        \end{bmatrix}
+    \end{equation} 
+    である. 固有値は$i, -i, 2i, -2i$であり, 
+    ゆえに平衡点$(x_1, x_2, y_1, y_2) = (0, 0, 0, 0)$は楕円型である.
+
+    \begin{theorem}[Cherry]
+        ハミルトニアン\eqref{eq:Cherry}によって定まるハミルトン系\eqref{eq:Cherry_ode}について,
+        平衡点$(x_1, x_2, y_1, y_2) = (0, 0, 0, 0)$は不安定である.
+    \end{theorem}
+    \begin{proof}
+        関数$W$を
+        \[
+            %W(x_1, x_2, y_1, y_2) = - I_1^{1/2} I_2 \sin{(\theta_1 + 2 \theta_2)}
+            W(x_1, x_2, y_1, y_2) = - 2 x_1 x_2 y_2 - x_2^2 y_1 + y_1 y_2^2
+        \]
+        と定義すると,
+        \[
+            \nabla W(x_1, x_2, y_1, y_2) = 
+            \begin{bmatrix}
+                - 2 x_2 y_2 \\
+                - 2 x_1y_2 - 2 x_2 y_1 \\
+                - x_2^2 + y_2^2 \\
+                - 2 x_1 x_2 + 2 y_1 y_2
+            \end{bmatrix},
+            \quad 
+            f(x_1, x_2, y_1, y_2) =
+            \begin{bmatrix}
+                2 y_1 - 2 x_2 y_2 \\
+                - y_2 - 2 x_1 y_2 - 2 x_2 y_1 \\
+                - 2 x_1 - x_2^2 + y_2^2 \\
+                x_2 - 2 x_1 x_2 + 2 y_1 y_2
+            \end{bmatrix}
+        \]
+        より,
+        \begin{align}
+            \dot{W}(x_1, x_2, y_1, y_2) 
+            &= x_2^4 + y_2^4 + 4 x_1^2 x_2^2 + 4 x_1^2 y_2^2 + 4 x_2^2 y_1^2 + 2 x_2^2 y_2^2 + 4 y_1^2 y_2^2 \\
+            &= (x_2^2 + y_2^2)^2 + 4 (x_1^2 + y_1^2) (x_2^2 + y_2^2) \\
+            &= (x_2^2 + y_2^2) [4 (x_1^2 + y_1^2) + (x_2^2 + y_2^2)]
+        \end{align}
+        である.
+        もし$x_2^2 + y_2^2 = 0$ならば$W_2 = 0$となるので, 
+        $\Omega := \{W > 0\}$と定義すれば$\Omega$上で$x_2^2 + y_2^2 \neq 0$である. 
+        ゆえに$\Omega$上で$\dot{W} \geq (x_2^2 + y_2^2)^2 > 0$が成り立つ.
+        また, $W(0, 0, 0, 0) = 0$より$(0, 0, 0, 0) \in \partial \Omega$である.
+        したがって, $W(x_1, x_2, y_1, y_2)$をチェタエフ関数として選ぶことができ,
+        チェタエフの不安定性定理から平衡点$(x_1, x_2, y_1, y_2) = (0, 0, 0, 0)$が不安定だとわかる.
+    \end{proof}
+
+
+    \begin{thebibliography}{100}
+        \bibitem{Meyer-Offin}  K. Meyer, D. Offin, \textit{Introduction to Hamiltonian Dynamical Systems and the N-Body Problem} (third ed.),
+        Appl. Math. Sci., vol. 90, Springer-Verlag, 2017.
+        \bibitem{Kasahara} 笠原皓司, 微分方程式の基礎., 朝倉書店, 1982.
+    \end{thebibliography}
+
+\end{document}
